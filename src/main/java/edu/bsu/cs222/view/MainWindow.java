@@ -8,11 +8,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
     private final TextField searchInput = new TextField();
     private final Button searchButton = new Button("Search");
+    private final Text name = new Text("Name: Missingno");
+    private final Text type = new Text("Type: Normal / Bird");
+    private final Text abilities = new Text("Abilities: No ability");
+    private final Text stats = new Text("Stats: HP 33 Atk 136 Def 0 SpAtk 6 SpDef 6 Spd 29");
 
     @Override
     public void start(Stage primaryStage) {
@@ -36,7 +41,8 @@ public class MainWindow extends Application {
     private Parent createMainWindow() {
         VBox mainWindow = new VBox();
         mainWindow.getChildren().addAll(
-                createSearchBar()
+                createSearchBar(),
+                createPokeFacts()
         );
 
         return mainWindow;
@@ -49,5 +55,17 @@ public class MainWindow extends Application {
                 searchButton
         );
         return searchBar;
+    }
+
+    private Parent createPokeFacts() {
+        VBox pokeFacts = new VBox();
+        pokeFacts.getChildren().addAll(
+                name,
+                type,
+                abilities,
+                stats
+        );
+
+        return pokeFacts;
     }
 }
