@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -29,6 +30,7 @@ public class MainWindow extends Application {
     private void setUpWindowBasics(Stage primaryStage) {
         primaryStage.setTitle("Pokedex");
         primaryStage.setScene(new Scene(createMainWindow()));
+        primaryStage.getIcons().add(new Image("pokeball.png"));
     }
 
     private void setUpExit(Stage primaryStage) {
@@ -42,7 +44,7 @@ public class MainWindow extends Application {
         VBox mainWindow = new VBox();
         mainWindow.getChildren().addAll(
                 createSearchBar(),
-                createPokeFacts()
+                createUpperPortion()
         );
 
         return mainWindow;
@@ -55,6 +57,15 @@ public class MainWindow extends Application {
                 searchButton
         );
         return searchBar;
+    }
+
+    private Parent createUpperPortion() {
+        HBox upperPortion = new HBox();
+        upperPortion.getChildren().addAll(
+                createPokeFacts()
+        );
+
+        return upperPortion;
     }
 
     private Parent createPokeFacts() {
