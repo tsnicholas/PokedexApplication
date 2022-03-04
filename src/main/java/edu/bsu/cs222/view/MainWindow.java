@@ -17,7 +17,7 @@ public class MainWindow extends Application {
     private final Button searchButton = new Button("Search");
     private final Text name = new Text("Name: Missingno");
     private final Text type = new Text("Type: Normal / Bird");
-    private final Text abilities = new Text("Abilities: No ability");
+    private final Text abilities = new Text("Abilities: ???");
     private final Text stats = new Text("Stats: HP 33 Atk 136 Def 0 SpAtk 6 SpDef 6 Spd 29");
 
     @Override
