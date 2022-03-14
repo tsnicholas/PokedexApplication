@@ -1,5 +1,6 @@
 package edu.bsu.cs222.view;
 
+import edu.bsu.cs222.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -11,13 +12,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class MainWindow extends Application {
     private final TextField searchInput = new TextField();
     private final Button searchButton = new Button("Search");
-    private final Text name = new Text("Name: Missingno");
     private final Text type = new Text("Type: Normal / Bird");
     private final Text abilities = new Text("Abilities: ???");
     private final Text stats = new Text("Stats: HP 33 Atk 136 Def 0 SpAtk 6 SpDef 6 Spd 29");
+    private final ScrollPane lowerPortion = new ScrollPane();
+    private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
+    private Pokemon currentPokemon;
+
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     public void start(Stage primaryStage) {
@@ -44,7 +52,8 @@ public class MainWindow extends Application {
         mainWindow.getChildren().addAll(
                 createSearchBar(),
                 createUpperPortion(),
-                createDropDownMenu()
+                createDropDownMenu(),
+                lowerPortion
         );
 
         return mainWindow;
@@ -52,6 +61,7 @@ public class MainWindow extends Application {
 
     private Parent createSearchBar() {
         HBox searchBar = new HBox();
+        setUpButton();
         searchBar.getChildren().addAll(
                 searchInput,
                 searchButton
@@ -68,18 +78,6 @@ public class MainWindow extends Application {
         return upperPortion;
     }
 
-    private Parent createPokeFacts() {
-        VBox pokeFacts = new VBox();
-        pokeFacts.getChildren().addAll(
-                name,
-                type,
-                abilities,
-                stats
-        );
-
-        return pokeFacts;
-    }
-
     private Parent createDropDownMenu() {
         ComboBox<String> dropDownMenu = new ComboBox<>();
         dropDownMenu.getItems().addAll(
@@ -88,6 +86,42 @@ public class MainWindow extends Application {
         dropDownMenu.getSelectionModel().selectFirst();
         setUpDropDownMenu(dropDownMenu);
         return dropDownMenu;
+    }
+
+    private void setUpButton() {
+        searchButton.setOnAction(e -> {
+            searchInput.setDisable(true);
+            searchButton.setDisable(true);
+
+            executor.execute(() -> {
+                search();
+                Platform.runLater(() -> {
+                    searchInput.setDisable(false);
+                    searchButton.setDisable(false);
+                });
+            });
+        });
+    }
+
+    private void search() {
+        try {
+            currentPokemon = pokemonProcessor.process(searchInput.getText());
+        }
+        catch(RuntimeException doesNotExist) {
+            ErrorWindow noExistence = new ErrorWindow("This Pokemon doesn't exist");
+            noExistence.display();
+        }
+    }
+
+    private Parent createPokeFacts() {
+        VBox pokeFacts = new VBox();
+        pokeFacts.getChildren().addAll(
+                type,
+                abilities,
+                stats
+        );
+
+        return pokeFacts;
     }
 
     private void setUpDropDownMenu(ComboBox<String> dropDownMenu) {
