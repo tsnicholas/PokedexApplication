@@ -4,8 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,7 +43,8 @@ public class MainWindow extends Application {
         VBox mainWindow = new VBox();
         mainWindow.getChildren().addAll(
                 createSearchBar(),
-                createUpperPortion()
+                createUpperPortion(),
+                createDropDownMenu()
         );
 
         return mainWindow;
@@ -78,5 +78,21 @@ public class MainWindow extends Application {
         );
 
         return pokeFacts;
+    }
+
+    private Parent createDropDownMenu() {
+        ComboBox<String> dropDownMenu = new ComboBox<>();
+        dropDownMenu.getItems().addAll(
+                "Moveset"
+        );
+        dropDownMenu.getSelectionModel().selectFirst();
+        setUpDropDownMenu(dropDownMenu);
+        return dropDownMenu;
+    }
+
+    private void setUpDropDownMenu(ComboBox<String> dropDownMenu) {
+        dropDownMenu.setOnAction(e -> {
+
+        });
     }
 }
