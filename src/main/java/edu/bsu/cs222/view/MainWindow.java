@@ -12,20 +12,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 public class MainWindow extends Application {
     private final TextField searchInput = new TextField();
     private final Button searchButton = new Button("Search");
-    private final Text type = new Text("Type: Normal / Bird");
-    private final Text abilities = new Text("Abilities: ???");
-    private final Text stats = new Text("Stats: HP 33 Atk 136 Def 0 SpAtk 6 SpDef 6 Spd 29");
+    private final ComboBox<String> gameSelection = new ComboBox<>();
+    private final Text type = new Text("Type: ");
+    private final Text abilities = new Text("Abilities: ");
+    private final Text stats = new Text("Stats: HP  Atk  Def  SpAtk  SpDef  Spd ");
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
-
-    private final Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     public void start(Stage primaryStage) {
@@ -42,6 +38,7 @@ public class MainWindow extends Application {
 
     private void setUpExit(Stage primaryStage) {
         primaryStage.setOnCloseRequest(X -> {
+            primaryStage.close();
             Platform.exit();
             System.exit(0);
         });
@@ -61,9 +58,11 @@ public class MainWindow extends Application {
 
     private Parent createSearchBar() {
         HBox searchBar = new HBox();
+        setUpGameSelection();
         setUpButton();
         searchBar.getChildren().addAll(
                 searchInput,
+                gameSelection,
                 searchButton
         );
         return searchBar;
@@ -84,28 +83,31 @@ public class MainWindow extends Application {
                 "Moveset"
         );
         dropDownMenu.getSelectionModel().selectFirst();
-        setUpDropDownMenu(dropDownMenu);
         return dropDownMenu;
+    }
+
+    private void setUpGameSelection() {
+        gameSelection.getItems().addAll(
+                "yellow"
+        );
+        gameSelection.getSelectionModel().selectFirst();
     }
 
     private void setUpButton() {
         searchButton.setOnAction(e -> {
             searchInput.setDisable(true);
             searchButton.setDisable(true);
-
-            executor.execute(() -> {
-                search();
-                Platform.runLater(() -> {
-                    searchInput.setDisable(false);
-                    searchButton.setDisable(false);
-                });
+            search();
+            Platform.runLater(() -> {
+                searchInput.setDisable(false);
+                searchButton.setDisable(false);
             });
         });
     }
 
     private void search() {
         try {
-            currentPokemon = pokemonProcessor.process(searchInput.getText());
+            currentPokemon = pokemonProcessor.process(searchInput.getText(), gameSelection.getValue());
         }
         catch(RuntimeException doesNotExist) {
             ErrorWindow noExistence = new ErrorWindow("This Pokemon doesn't exist");
@@ -122,11 +124,5 @@ public class MainWindow extends Application {
         );
 
         return pokeFacts;
-    }
-
-    private void setUpDropDownMenu(ComboBox<String> dropDownMenu) {
-        dropDownMenu.setOnAction(e -> {
-
-        });
     }
 }
