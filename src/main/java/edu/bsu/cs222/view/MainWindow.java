@@ -1,11 +1,11 @@
 package edu.bsu.cs222.view;
 
+import edu.bsu.cs222.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,10 +15,13 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
     private final TextField searchInput = new TextField();
     private final Button searchButton = new Button("Search");
-    private final Text name = new Text("Name: Missingno");
-    private final Text type = new Text("Type: Normal / Bird");
-    private final Text abilities = new Text("Abilities: No ability");
-    private final Text stats = new Text("Stats: HP 33 Atk 136 Def 0 SpAtk 6 SpDef 6 Spd 29");
+    private final ComboBox<String> gameSelection = new ComboBox<>();
+    private final Text type = new Text("Type: ");
+    private final Text abilities = new Text("Abilities: ");
+    private final Text stats = new Text("Stats: HP  Atk  Def  SpAtk  SpDef  Spd ");
+    private final ScrollPane lowerPortion = new ScrollPane();
+    private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
+    private Pokemon currentPokemon;
 
     @Override
     public void start(Stage primaryStage) {
@@ -35,6 +38,7 @@ public class MainWindow extends Application {
 
     private void setUpExit(Stage primaryStage) {
         primaryStage.setOnCloseRequest(X -> {
+            primaryStage.close();
             Platform.exit();
             System.exit(0);
         });
@@ -44,7 +48,9 @@ public class MainWindow extends Application {
         VBox mainWindow = new VBox();
         mainWindow.getChildren().addAll(
                 createSearchBar(),
-                createUpperPortion()
+                createUpperPortion(),
+                createDropDownMenu(),
+                lowerPortion
         );
 
         return mainWindow;
@@ -52,8 +58,11 @@ public class MainWindow extends Application {
 
     private Parent createSearchBar() {
         HBox searchBar = new HBox();
+        setUpGameSelection();
+        setUpButton();
         searchBar.getChildren().addAll(
                 searchInput,
+                gameSelection,
                 searchButton
         );
         return searchBar;
@@ -68,10 +77,47 @@ public class MainWindow extends Application {
         return upperPortion;
     }
 
+    private Parent createDropDownMenu() {
+        ComboBox<String> dropDownMenu = new ComboBox<>();
+        dropDownMenu.getItems().addAll(
+                "Moveset"
+        );
+        dropDownMenu.getSelectionModel().selectFirst();
+        return dropDownMenu;
+    }
+
+    private void setUpGameSelection() {
+        gameSelection.getItems().addAll(
+                "yellow"
+        );
+        gameSelection.getSelectionModel().selectFirst();
+    }
+
+    private void setUpButton() {
+        searchButton.setOnAction(e -> {
+            searchInput.setDisable(true);
+            searchButton.setDisable(true);
+            search();
+            Platform.runLater(() -> {
+                searchInput.setDisable(false);
+                searchButton.setDisable(false);
+            });
+        });
+    }
+
+    private void search() {
+        try {
+            currentPokemon = pokemonProcessor.process(searchInput.getText(), gameSelection.getValue());
+        }
+        catch(RuntimeException doesNotExist) {
+            ErrorWindow noExistence = new ErrorWindow("This Pokemon doesn't exist");
+            noExistence.display();
+        }
+    }
+
     private Parent createPokeFacts() {
         VBox pokeFacts = new VBox();
         pokeFacts.getChildren().addAll(
-                name,
                 type,
                 abilities,
                 stats
