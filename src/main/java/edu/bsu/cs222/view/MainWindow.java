@@ -7,8 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -17,7 +19,7 @@ public class MainWindow extends Application {
     private final Button searchButton = new Button("Search");
     private final ComboBox<String> gameSelection = new ComboBox<>();
     private final Text type = new Text("Type: ");
-    private final Text stats = new Text("Stats: HP  Atk  Def  SpAtk  SpDef  Spd ");
+    private final Text stats = new Text("Stats:\nHP 40  Atk 45  Def 80\nSp 90   Spd 120");
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
@@ -25,7 +27,7 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         setUpWindowBasics(primaryStage);
-        setUpSizes();
+        setUpSizesAndFonts();
         primaryStage.show();
     }
 
@@ -35,9 +37,11 @@ public class MainWindow extends Application {
         primaryStage.getIcons().add(new Image("pokeball.png"));
     }
 
-    private void setUpSizes() {
-        lowerPortion.setPrefViewportHeight(500);
-        lowerPortion.setPrefViewportWidth(1000);
+    private void setUpSizesAndFonts() {
+        lowerPortion.setPrefViewportHeight(300);
+        lowerPortion.setPrefViewportWidth(700);
+        type.setFont(Font.font("Verdana", 25));
+        stats.setFont(Font.font("Verdana", 25));
     }
 
     private Parent createMainWindow() {
@@ -67,6 +71,7 @@ public class MainWindow extends Application {
     private Parent createUpperPortion() {
         HBox upperPortion = new HBox();
         upperPortion.getChildren().addAll(
+                createImageDisplay(),
                 createPokeFacts()
         );
 
@@ -75,6 +80,7 @@ public class MainWindow extends Application {
 
     private Parent createDropDownMenu() {
         ComboBox<String> dropDownMenu = new ComboBox<>();
+        dropDownMenu.setPrefWidth(700);
         dropDownMenu.getItems().addAll(
                 "Moveset"
         );
@@ -109,6 +115,13 @@ public class MainWindow extends Application {
             ErrorWindow noExistence = new ErrorWindow("This Pokemon doesn't exist");
             noExistence.display();
         }
+    }
+
+    private ImageView createImageDisplay() {
+        ImageView pokemonImage = new ImageView();
+        pokemonImage.setFitHeight(300);
+        pokemonImage.setFitWidth(300);
+        return pokemonImage;
     }
 
     private Parent createPokeFacts() {
