@@ -17,7 +17,6 @@ public class MainWindow extends Application {
     private final Button searchButton = new Button("Search");
     private final ComboBox<String> gameSelection = new ComboBox<>();
     private final Text type = new Text("Type: ");
-    private final Text abilities = new Text("Abilities: ");
     private final Text stats = new Text("Stats: HP  Atk  Def  SpAtk  SpDef  Spd ");
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
@@ -26,7 +25,7 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         setUpWindowBasics(primaryStage);
-        setUpExit(primaryStage);
+        setUpSizes();
         primaryStage.show();
     }
 
@@ -36,12 +35,9 @@ public class MainWindow extends Application {
         primaryStage.getIcons().add(new Image("pokeball.png"));
     }
 
-    private void setUpExit(Stage primaryStage) {
-        primaryStage.setOnCloseRequest(X -> {
-            primaryStage.close();
-            Platform.exit();
-            System.exit(0);
-        });
+    private void setUpSizes() {
+        lowerPortion.setPrefViewportHeight(500);
+        lowerPortion.setPrefViewportWidth(1000);
     }
 
     private Parent createMainWindow() {
@@ -119,7 +115,6 @@ public class MainWindow extends Application {
         VBox pokeFacts = new VBox();
         pokeFacts.getChildren().addAll(
                 type,
-                abilities,
                 stats
         );
 
