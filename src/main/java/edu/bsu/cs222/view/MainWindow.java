@@ -117,7 +117,7 @@ public class MainWindow extends Application {
             currentPokemon = pokemonProcessor.process(searchInput.getText(), gameSelection.getValue());
         }
         catch(RuntimeException doesNotExist) {
-            ErrorWindow noExistence = new ErrorWindow("This Pokemon doesn't exist");
+            ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());
             noExistence.display();
         }
     }
