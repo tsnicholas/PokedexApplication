@@ -1,6 +1,7 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.*;
+import edu.bsu.cs222.model.Pokemon;
+import edu.bsu.cs222.model.PokemonProcessor;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -29,13 +31,14 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) {
         setUpWindowBasics(primaryStage);
         setUpSizesAndFonts();
+        setUpHotKeys();
         primaryStage.show();
     }
 
     private void setUpWindowBasics(Stage primaryStage) {
         primaryStage.setTitle("Pokedex");
-        primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.getIcons().add(new Image("pokeball.png"));
+        primaryStage.setScene(new Scene(createMainWindow()));
     }
 
     private void setUpSizesAndFonts() {
@@ -44,6 +47,15 @@ public class MainWindow extends Application {
         searchInput.setPrefWidth(400);
         type.setFont(Font.font("Verdana", 25));
         stats.setFont(Font.font("Verdana", 25));
+    }
+
+    private void setUpHotKeys() {
+        searchInput.setOnKeyPressed(keyPressed -> {
+            if(keyPressed.getCode() == KeyCode.ENTER) {
+                eventTriggered();
+            }
+        });
+        searchButton.setOnAction(clicked -> eventTriggered());
     }
 
     private Parent createMainWindow() {
@@ -63,7 +75,6 @@ public class MainWindow extends Application {
         HBox searchBar = new HBox();
         searchBar.setAlignment(Pos.CENTER);
         setUpGameSelection();
-        setUpButton();
         searchBar.getChildren().addAll(
                 searchInput,
                 gameSelection,
@@ -95,20 +106,20 @@ public class MainWindow extends Application {
 
     private void setUpGameSelection() {
         gameSelection.getItems().addAll(
+                "red",
+                "blue",
                 "yellow"
         );
         gameSelection.getSelectionModel().selectFirst();
     }
 
-    private void setUpButton() {
-        searchButton.setOnAction(e -> {
-            searchInput.setDisable(true);
-            searchButton.setDisable(true);
-            search();
-            Platform.runLater(() -> {
-                searchInput.setDisable(false);
-                searchButton.setDisable(false);
-            });
+    private void eventTriggered() {
+        searchInput.setDisable(true);
+        searchButton.setDisable(true);
+        search();
+        Platform.runLater(() -> {
+            searchInput.setDisable(false);
+            searchButton.setDisable(false);
         });
     }
 
