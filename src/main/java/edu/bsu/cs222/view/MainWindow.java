@@ -118,6 +118,7 @@ public class MainWindow extends Application {
                 "test dummy"
         );
         dropDownMenu.getSelectionModel().selectFirst();
+        setUpMenuSwitcher();
         return dropDownMenu;
     }
 
@@ -167,5 +168,17 @@ public class MainWindow extends Application {
         );
 
         return pokeFacts;
+    }
+
+    private void setUpMenuSwitcher() {
+        dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) -> {
+            if(currentPokemon != null) {
+                if (newValue.equals("Move Set")) {
+                    lowerPortion.setContent(new Text("Name  Type    Power   Accuracy    Obtained By"));
+                } else if (newValue.equals("test dummy")) {
+                    lowerPortion.setContent(new Text("I am dummy"));
+                }
+            }
+        });
     }
 }
