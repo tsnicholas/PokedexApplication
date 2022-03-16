@@ -19,10 +19,12 @@ import javafx.stage.Stage;
 
 public class MainWindow extends Application {
     private final TextField searchInput = new TextField();
-    private final Button searchButton = new Button("Search");
     private final ComboBox<String> gameSelection = new ComboBox<>();
+    private final Button searchButton = new Button("Search");
     private final Text type = new Text("Type: ");
     private final Text stats = new Text("Stats:\nHP 40  Atk 45  Def 80\nSp 90   Spd 120");
+    private final ImageView pokemonImage = new ImageView();
+    private final ComboBox<String> dropDownMenu = new ComboBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
@@ -32,6 +34,7 @@ public class MainWindow extends Application {
         setUpWindowBasics(primaryStage);
         setUpEventTriggers();
         setUpSizesAndFonts();
+        // startUpDisplay(true);
         primaryStage.show();
     }
 
@@ -58,6 +61,15 @@ public class MainWindow extends Application {
         type.setFont(Font.font("Verdana", 25));
         stats.setFont(Font.font("Verdana", 25));
     }
+
+    //      Will be added later
+//    private void startUpDisplay(boolean status) {
+//        pokemonImage.setVisible(!status);
+//        type.setVisible(!status);
+//        stats.setVisible(!status);
+//        dropDownMenu.setVisible(!status);
+//        lowerPortion.setVisible(!status);
+//    }
 
     private Parent createMainWindow() {
         VBox mainWindow = new VBox();
@@ -96,10 +108,9 @@ public class MainWindow extends Application {
     }
 
     private Parent createDropDownMenu() {
-        ComboBox<String> dropDownMenu = new ComboBox<>();
         dropDownMenu.setPrefWidth(700);
         dropDownMenu.getItems().addAll(
-                "Moveset"
+                "Move Set"
         );
         dropDownMenu.getSelectionModel().selectFirst();
         return dropDownMenu;
@@ -134,11 +145,9 @@ public class MainWindow extends Application {
         }
     }
 
-    // Tim:
     // The image used will obviously not be in the final version.
     // This is merely for testing, so I know what size it needs to be.
     private ImageView createImageDisplay() {
-        ImageView pokemonImage = new ImageView();
         pokemonImage.setImage(new Image("Angry Kitty.jpg"));
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
