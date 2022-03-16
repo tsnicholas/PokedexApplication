@@ -30,8 +30,8 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         setUpWindowBasics(primaryStage);
+        setUpEventTriggers();
         setUpSizesAndFonts();
-        setUpHotKeys();
         primaryStage.show();
     }
 
@@ -39,6 +39,16 @@ public class MainWindow extends Application {
         primaryStage.setTitle("Pokedex");
         primaryStage.getIcons().add(new Image("pokeball.png"));
         primaryStage.setScene(new Scene(createMainWindow()));
+        primaryStage.setOnCloseRequest(X -> Platform.exit());
+    }
+
+    private void setUpEventTriggers() {
+        searchInput.setOnKeyPressed(keyPressed -> {
+            if(keyPressed.getCode() == KeyCode.ENTER) {
+                beginProcessing();
+            }
+        });
+        searchButton.setOnAction(clicked -> beginProcessing());
     }
 
     private void setUpSizesAndFonts() {
@@ -47,15 +57,6 @@ public class MainWindow extends Application {
         searchInput.setPrefWidth(400);
         type.setFont(Font.font("Verdana", 25));
         stats.setFont(Font.font("Verdana", 25));
-    }
-
-    private void setUpHotKeys() {
-        searchInput.setOnKeyPressed(keyPressed -> {
-            if(keyPressed.getCode() == KeyCode.ENTER) {
-                eventTriggered();
-            }
-        });
-        searchButton.setOnAction(clicked -> eventTriggered());
     }
 
     private Parent createMainWindow() {
@@ -113,7 +114,7 @@ public class MainWindow extends Application {
         gameSelection.getSelectionModel().selectFirst();
     }
 
-    private void eventTriggered() {
+    private void beginProcessing() {
         searchInput.setDisable(true);
         searchButton.setDisable(true);
         search();
@@ -133,6 +134,7 @@ public class MainWindow extends Application {
         }
     }
 
+    // Tim:
     // The image used will obviously not be in the final version.
     // This is merely for testing, so I know what size it needs to be.
     private ImageView createImageDisplay() {
