@@ -48,6 +48,7 @@ public class MainWindow extends Application {
 
     private Parent createMainWindow() {
         VBox mainWindow = new VBox();
+        mainWindow.setAlignment(Pos.CENTER);
         mainWindow.getChildren().addAll(
                 createSearchBar(),
                 createUpperPortion(),
@@ -60,6 +61,7 @@ public class MainWindow extends Application {
 
     private Parent createSearchBar() {
         HBox searchBar = new HBox();
+        searchBar.setAlignment(Pos.CENTER);
         setUpGameSelection();
         setUpButton();
         searchBar.getChildren().addAll(
@@ -72,6 +74,7 @@ public class MainWindow extends Application {
 
     private Parent createUpperPortion() {
         HBox upperPortion = new HBox();
+        upperPortion.setAlignment(Pos.CENTER_LEFT);
         upperPortion.getChildren().addAll(
                 createImageDisplay(),
                 createPokeFacts()
