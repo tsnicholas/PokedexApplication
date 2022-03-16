@@ -42,6 +42,8 @@ public class MainWindow extends Application {
         primaryStage.setTitle("Pokedex");
         primaryStage.getIcons().add(new Image("pokeball.png"));
         primaryStage.setScene(new Scene(createMainWindow()));
+        primaryStage.setHeight(700);
+        primaryStage.setWidth(800);
         primaryStage.setOnCloseRequest(X -> Platform.exit());
     }
 
@@ -74,6 +76,7 @@ public class MainWindow extends Application {
     private Parent createMainWindow() {
         VBox mainWindow = new VBox();
         mainWindow.setAlignment(Pos.CENTER);
+        mainWindow.setSpacing(5);
         mainWindow.getChildren().addAll(
                 createSearchBar(),
                 createUpperPortion(),
@@ -98,7 +101,8 @@ public class MainWindow extends Application {
 
     private Parent createUpperPortion() {
         HBox upperPortion = new HBox();
-        upperPortion.setAlignment(Pos.CENTER_LEFT);
+        upperPortion.setAlignment(Pos.CENTER);
+        upperPortion.setSpacing(20);
         upperPortion.getChildren().addAll(
                 createImageDisplay(),
                 createPokeFacts()
