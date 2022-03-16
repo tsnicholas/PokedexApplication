@@ -3,6 +3,7 @@ package edu.bsu.cs222.view;
 import edu.bsu.cs222.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -40,6 +41,7 @@ public class MainWindow extends Application {
     private void setUpSizesAndFonts() {
         lowerPortion.setPrefViewportHeight(300);
         lowerPortion.setPrefViewportWidth(700);
+        searchInput.setPrefWidth(400);
         type.setFont(Font.font("Verdana", 25));
         stats.setFont(Font.font("Verdana", 25));
     }
@@ -117,8 +119,11 @@ public class MainWindow extends Application {
         }
     }
 
+    // The image used will obviously not be in the final version.
+    // This is merely for testing, so I know what size it needs to be.
     private ImageView createImageDisplay() {
         ImageView pokemonImage = new ImageView();
+        pokemonImage.setImage(new Image("Angry Kitty.jpg"));
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         return pokemonImage;
