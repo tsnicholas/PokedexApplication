@@ -19,12 +19,12 @@ import javafx.stage.Stage;
 
 public class MainWindow extends Application {
     private final TextField searchInput = new TextField();
-    private final ComboBox<String> gameSelection = new ComboBox<>();
+    private final ChoiceBox<String> gameSelection = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
     private final Text type = new Text("Type: ");
     private final Text stats = new Text("Stats:\nHP 40  Atk 45  Def 80\nSp 90   Spd 120");
     private final ImageView pokemonImage = new ImageView();
-    private final ComboBox<String> dropDownMenu = new ComboBox<>();
+    private final ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
@@ -64,7 +64,7 @@ public class MainWindow extends Application {
         stats.setFont(Font.font("Verdana", 25));
     }
 
-    //      Will be added later
+    // Will be added later
 //    private void startUpDisplay(boolean status) {
 //        pokemonImage.setVisible(!status);
 //        type.setVisible(!status);
@@ -114,7 +114,8 @@ public class MainWindow extends Application {
     private Parent createDropDownMenu() {
         dropDownMenu.setPrefWidth(700);
         dropDownMenu.getItems().addAll(
-                "Move Set"
+                "Move Set",
+                "test dummy"
         );
         dropDownMenu.getSelectionModel().selectFirst();
         return dropDownMenu;
