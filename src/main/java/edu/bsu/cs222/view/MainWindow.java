@@ -1,24 +1,30 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.*;
+import edu.bsu.cs222.model.Pokemon;
+import edu.bsu.cs222.model.PokemonProcessor;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
     private final TextField searchInput = new TextField();
+    private final ChoiceBox<String> gameSelection = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
-    private final ComboBox<String> gameSelection = new ComboBox<>();
     private final Text type = new Text("Type: ");
-    private final Text abilities = new Text("Abilities: ");
-    private final Text stats = new Text("Stats: HP  Atk  Def  SpAtk  SpDef  Spd ");
+    private final Text stats = new Text("Stats:\nHP 40  Atk 45  Def 80\nSp 90   Spd 120");
+    private final ImageView pokemonImage = new ImageView();
+    private final ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
@@ -26,26 +32,51 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         setUpWindowBasics(primaryStage);
-        setUpExit(primaryStage);
+        setUpEventTriggers();
+        setUpSizesAndFonts();
+        // startUpDisplay(true);
         primaryStage.show();
     }
 
     private void setUpWindowBasics(Stage primaryStage) {
         primaryStage.setTitle("Pokedex");
-        primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.getIcons().add(new Image("pokeball.png"));
+        primaryStage.setScene(new Scene(createMainWindow()));
+        primaryStage.setHeight(700);
+        primaryStage.setWidth(800);
+        primaryStage.setOnCloseRequest(X -> Platform.exit());
     }
 
-    private void setUpExit(Stage primaryStage) {
-        primaryStage.setOnCloseRequest(X -> {
-            primaryStage.close();
-            Platform.exit();
-            System.exit(0);
+    private void setUpEventTriggers() {
+        searchInput.setOnKeyPressed(keyPressed -> {
+            if(keyPressed.getCode() == KeyCode.ENTER) {
+                beginProcessing();
+            }
         });
+        searchButton.setOnAction(clicked -> beginProcessing());
     }
+
+    private void setUpSizesAndFonts() {
+        lowerPortion.setPrefViewportHeight(300);
+        lowerPortion.setPrefViewportWidth(700);
+        searchInput.setPrefWidth(400);
+        type.setFont(Font.font("Verdana", 25));
+        stats.setFont(Font.font("Verdana", 25));
+    }
+
+    // Will be added later
+//    private void startUpDisplay(boolean status) {
+//        pokemonImage.setVisible(!status);
+//        type.setVisible(!status);
+//        stats.setVisible(!status);
+//        dropDownMenu.setVisible(!status);
+//        lowerPortion.setVisible(!status);
+//    }
 
     private Parent createMainWindow() {
         VBox mainWindow = new VBox();
+        mainWindow.setAlignment(Pos.CENTER);
+        mainWindow.setSpacing(5);
         mainWindow.getChildren().addAll(
                 createSearchBar(),
                 createUpperPortion(),
@@ -58,8 +89,8 @@ public class MainWindow extends Application {
 
     private Parent createSearchBar() {
         HBox searchBar = new HBox();
+        searchBar.setAlignment(Pos.CENTER);
         setUpGameSelection();
-        setUpButton();
         searchBar.getChildren().addAll(
                 searchInput,
                 gameSelection,
@@ -70,7 +101,10 @@ public class MainWindow extends Application {
 
     private Parent createUpperPortion() {
         HBox upperPortion = new HBox();
+        upperPortion.setAlignment(Pos.CENTER);
+        upperPortion.setSpacing(20);
         upperPortion.getChildren().addAll(
+                createImageDisplay(),
                 createPokeFacts()
         );
 
@@ -78,30 +112,32 @@ public class MainWindow extends Application {
     }
 
     private Parent createDropDownMenu() {
-        ComboBox<String> dropDownMenu = new ComboBox<>();
+        dropDownMenu.setPrefWidth(700);
         dropDownMenu.getItems().addAll(
-                "Moveset"
+                "Move Set",
+                "test dummy"
         );
         dropDownMenu.getSelectionModel().selectFirst();
+        setUpMenuSwitcher();
         return dropDownMenu;
     }
 
     private void setUpGameSelection() {
         gameSelection.getItems().addAll(
+                "red",
+                "blue",
                 "yellow"
         );
         gameSelection.getSelectionModel().selectFirst();
     }
 
-    private void setUpButton() {
-        searchButton.setOnAction(e -> {
-            searchInput.setDisable(true);
-            searchButton.setDisable(true);
-            search();
-            Platform.runLater(() -> {
-                searchInput.setDisable(false);
-                searchButton.setDisable(false);
-            });
+    private void beginProcessing() {
+        searchInput.setDisable(true);
+        searchButton.setDisable(true);
+        search();
+        Platform.runLater(() -> {
+            searchInput.setDisable(false);
+            searchButton.setDisable(false);
         });
     }
 
@@ -110,19 +146,39 @@ public class MainWindow extends Application {
             currentPokemon = pokemonProcessor.process(searchInput.getText(), gameSelection.getValue());
         }
         catch(RuntimeException doesNotExist) {
-            ErrorWindow noExistence = new ErrorWindow("This Pokemon doesn't exist");
+            ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());
             noExistence.display();
         }
+    }
+
+    // The image used will obviously not be in the final version.
+    // This is merely for testing, so I know what size it needs to be.
+    private ImageView createImageDisplay() {
+        pokemonImage.setImage(new Image("Angry Kitty.jpg"));
+        pokemonImage.setFitHeight(300);
+        pokemonImage.setFitWidth(300);
+        return pokemonImage;
     }
 
     private Parent createPokeFacts() {
         VBox pokeFacts = new VBox();
         pokeFacts.getChildren().addAll(
                 type,
-                abilities,
                 stats
         );
 
         return pokeFacts;
+    }
+
+    private void setUpMenuSwitcher() {
+        dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) -> {
+            if(currentPokemon != null) {
+                if (newValue.equals("Move Set")) {
+                    lowerPortion.setContent(new Text("Name  Type    Power   Accuracy    Obtained By"));
+                } else if (newValue.equals("test dummy")) {
+                    lowerPortion.setContent(new Text("I am dummy"));
+                }
+            }
+        });
     }
 }
