@@ -12,7 +12,7 @@ public class PokemonBuilder {
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
         Pokemon pokemon = new Pokemon(name, types);
         setDamageRelations(pokemon);
-        return pokemon; // Not finished, only returns w/ immunity
+        return pokemon;
     }
 
     private void setDamageRelations(Pokemon pokemon) {
@@ -22,11 +22,29 @@ public class PokemonBuilder {
             pokemon.setResistantTo(pokemon.getTypeList().get(0).getResistantTo());
             return;
         }
-        Set<String> immuneToSet = new HashSet<>();
+        List<String> immuneTo = new ArrayList<>();
+        List<String> weakTo = new ArrayList<>();
+        List<String> resistantTo = new ArrayList<>();
         for (Type type : pokemon.getTypeList()) {
-            immuneToSet.addAll(type.getImmuneTo());
+            immuneTo.addAll(type.getImmuneTo());
+            weakTo.addAll(type.getWeakTo());
+            resistantTo.addAll(type.getResistantTo());
         }
-        List<String> immuneTo = new ArrayList<>(immuneToSet);
+        weakTo.removeIf(resistantTo::remove);
+        immuneTo = eliminateDuplicates(immuneTo);
+        weakTo = eliminateDuplicates(weakTo);
+        resistantTo = eliminateDuplicates(resistantTo);
+        for (String immunity : immuneTo) {
+            weakTo.remove(immunity);
+            resistantTo.remove(immunity);
+        }
         pokemon.setImmuneTo(immuneTo);
+        pokemon.setWeakTo(weakTo);
+        pokemon.setResistantTo(resistantTo);
+    }
+
+    private List<String> eliminateDuplicates(List<String> stringList) {
+        Set<String> stringSet = new HashSet<>(stringList);
+        return new ArrayList<>(stringSet);
     }
 }
