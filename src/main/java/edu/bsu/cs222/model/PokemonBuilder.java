@@ -10,7 +10,13 @@ public class PokemonBuilder {
     public Pokemon createPokemon(String name, Object pokemonJsonObject) {
         PokemonParser pokemonParser = new PokemonParser();
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
-        Pokemon pokemon = new Pokemon(name, types);
+        int hp = pokemonParser.parseForHP(pokemonJsonObject);
+        int speed = pokemonParser.parseForSpeed(pokemonJsonObject);
+        int attack = pokemonParser.parseForAttack(pokemonJsonObject);
+        int defense = pokemonParser.parseForDefense(pokemonJsonObject);
+        int specialAttack = pokemonParser.parseForSpecialAttack(pokemonJsonObject);
+        int specialDefense = pokemonParser.parseForSpecialDefense(pokemonJsonObject);
+        Pokemon pokemon = new Pokemon(name, types, hp, speed, attack, defense, specialAttack, specialDefense);
         setDamageRelations(pokemon);
         return pokemon;
     }
@@ -41,6 +47,10 @@ public class PokemonBuilder {
         pokemon.setImmuneTo(immuneTo);
         pokemon.setWeakTo(weakTo);
         pokemon.setResistantTo(resistantTo);
+    }
+
+    private void setStats(Pokemon pokemon) {
+
     }
 
     private List<String> eliminateDuplicates(List<String> stringList) {

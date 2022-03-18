@@ -35,4 +35,10 @@ class PokemonBuilderTest {
         Assertions.assertEquals("fighting", pokemon.getResistantTo().get(3));
         Assertions.assertEquals("water", pokemon.getResistantTo().get(4));
     }
+
+    @Test
+    void testPokemonHP() {
+        Pokemon pokemon = pokemonBuilder.createPokemon("Zapdos", zapdosDocument);
+        Assertions.assertEquals(90, pokemon.getHp());
+    }
 }

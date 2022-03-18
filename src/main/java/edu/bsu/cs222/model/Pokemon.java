@@ -10,9 +10,21 @@ public class Pokemon {
     private List<String> weakTo = new ArrayList<>();
     private List<String> resistantTo = new ArrayList<>();
     private List<String> immuneTo = new ArrayList<>();
+    private int hp;
+    private int speed;
+    private int attack;
+    private int defense;
+    private int specialAttack;
+    private int specialDefense;
 
-    public Pokemon(String name, List<Type> types) {
+    public Pokemon(String name, List<Type> types, int hp, int speed, int attack, int defense, int specialAttack, int specialDefense) {
         this.typeList = types;
+        this.hp = hp;
+        this.speed = speed;
+        this.attack = attack;
+        this.defense = defense;
+        this.specialAttack = specialAttack;
+        this.specialDefense = specialDefense;
     }
 
     public List<Type> getTypeList() {
@@ -41,5 +53,53 @@ public class Pokemon {
 
     public void setImmuneTo(List<String> immuneTo) {
         this.immuneTo = immuneTo;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    public int getSpecialAttack() {
+        return specialAttack;
+    }
+
+    public void setSpecialAttack(int specialAttack) {
+        this.specialAttack = specialAttack;
+    }
+
+    public int getSpecialDefense() {
+        return specialDefense;
+    }
+
+    public void setSpecialDefense(int specialDefense) {
+        this.specialDefense = specialDefense;
     }
 }
