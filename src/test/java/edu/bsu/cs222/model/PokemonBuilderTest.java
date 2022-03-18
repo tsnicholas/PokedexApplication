@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 
 class PokemonBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object charizardDocument = resourceConverter.inputStreamToJsonObject("charizard");
+    private final Object zapdosDocument = resourceConverter.inputStreamToJsonObject("zapdos");
     private final Object parasectDocument = resourceConverter.inputStreamToJsonObject("parasect");
     private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
 
     @Test
     void testPokemonImmunity() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("charizard", charizardDocument);
+        Pokemon pokemon = pokemonBuilder.createPokemon("zapdos", zapdosDocument);
         Assertions.assertEquals("ground", pokemon.getImmuneTo().get(0));
     }
 
@@ -34,5 +34,11 @@ class PokemonBuilderTest {
         Assertions.assertEquals("ground", pokemon.getResistantTo().get(2));
         Assertions.assertEquals("fighting", pokemon.getResistantTo().get(3));
         Assertions.assertEquals("water", pokemon.getResistantTo().get(4));
+    }
+
+    @Test
+    void testPokemonHP() {
+        Pokemon pokemon = pokemonBuilder.createPokemon("Zapdos", zapdosDocument);
+        Assertions.assertEquals(90, pokemon.getHp());
     }
 }
