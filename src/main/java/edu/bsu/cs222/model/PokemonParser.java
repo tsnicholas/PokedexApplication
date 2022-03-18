@@ -26,4 +26,34 @@ public class PokemonParser {
         }
         return typeList;
     }
+
+    public int parseForHP(Object pokemonJsonDocument) {
+        JSONArray hp = JsonPath.read(pokemonJsonDocument, "$.stats[?(@..stat.name contains 'hp')].base_stat");
+        return (int) hp.get(0);
+    }
+
+    public int parseForAttack(Object pokemonJsonDocument) {
+        JSONArray attack = JsonPath.read(pokemonJsonDocument, "$.stats[?(@..stat.name contains 'attack')].base_stat");
+        return (int) attack.get(0);
+    }
+
+    public int parseForDefense(Object pokemonJsonDocument) {
+        JSONArray defense = JsonPath.read(pokemonJsonDocument, "$.stats[?(@..stat.name contains 'defense')].base_stat");
+        return (int) defense.get(0);
+    }
+
+    public int parseForSpecialAttack(Object pokemonJsonDocument) {
+        JSONArray specialAttack = JsonPath.read(pokemonJsonDocument, "$.stats[?(@..stat.name contains 'special-attack')].base_stat");
+        return (int) specialAttack.get(0);
+    }
+
+    public int parseForSpecialDefense(Object pokemonJsonDocument) {
+        JSONArray specialDefense = JsonPath.read(pokemonJsonDocument, "$.stats[?(@..stat.name contains 'special-defense')].base_stat");
+        return (int) specialDefense.get(0);
+    }
+
+    public int parseForSpeed(Object pokemonJsonDocument) {
+        JSONArray speed = JsonPath.read(pokemonJsonDocument, "$.stats[?(@..stat.name contains 'speed')].base_stat");
+        return (int) speed.get(0);
+    }
 }

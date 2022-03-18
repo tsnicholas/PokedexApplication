@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 
 class PokemonBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object charizardDocument = resourceConverter.inputStreamToJsonObject("charizard");
+    private final Object zapdosDocument = resourceConverter.inputStreamToJsonObject("zapdos");
     private final Object parasectDocument = resourceConverter.inputStreamToJsonObject("parasect");
     private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
 
     @Test
     void testPokemonImmunity() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("charizard", charizardDocument);
+        Pokemon pokemon = pokemonBuilder.createPokemon("zapdos", zapdosDocument);
         Assertions.assertEquals("ground", pokemon.getImmuneTo().get(0));
     }
 
