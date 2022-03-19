@@ -2,7 +2,7 @@ package edu.bsu.cs222.model;
 
 import java.util.ArrayList;
 
-public record Move(String name, String type, int PP, int power, int accuracy, ArrayList<String> learnMethods) {
+public record Move(String name, String type, int PP, int power, int accuracy, List<String> learnMethods) {
     public String name() {
         return name;
     }
@@ -25,5 +25,4 @@ public record Move(String name, String type, int PP, int power, int accuracy, Ar
 
     public ArrayList<String> learnMethods() {
         return learnMethods;
-    }
 }

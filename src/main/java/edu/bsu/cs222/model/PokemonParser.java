@@ -66,19 +66,21 @@ public class PokemonParser {
             String moveName = moveNameArray.get(0).toString();
             String moveURL = moveUrlArray.get(0).toString();
 
+            JSONArray yellowMoveVersionDetailsArray = JsonPath.read(moveObject, "$..version_group_details[?(@.version_group.name contains 'yellow')]");
+            List<String> learnMethods = new ArrayList<>();
+            for (Object occurrence : yellowMoveVersionDetailsArray) {
+                JSONArray method = JsonPath.read(occurrence, "$..move_learn_method.name");
+                if (method.get(0).toString().equals("level-up")) {
+                    JSONArray levelLearnedAt = JsonPath.read(occurrence, "$..level_learned_at");
+                    learnMethods.add("LV " + levelLearnedAt.get(0).toString());
+                } else {
+                    learnMethods.add("TM");
+                }
+            }
             Object moveJsonDocument = inputStreamConverter.inputStreamToJsonObject(moveName);
             // Object moveJsonDocument = inputStreamConverter.inputStreamToJsonObject(URLProcessor.getInputStream(moveURL)); // Final version
 
-            JSONArray yellowMoveVersionDetailsArray = JsonPath.read(moveObject, "$..version_group_details[?(@.version_group.name contains 'yellow')]");
-            List<String> methods = new ArrayList<>();
-            List<Integer> levelLearned = new ArrayList<>();
-            for (Object occurrence : yellowMoveVersionDetailsArray) {
-                JSONArray method = JsonPath.read(occurrence, "$..move_learn_method.name");
-                JSONArray levelLearnedAt = JsonPath.read(occurrence, "$..level_learned_at");
-                methods.add(method.get(0).toString());
-                levelLearned.add((Integer) levelLearnedAt.get(0));
-            }
-            Move move = moveBuilder.createMove(moveName, moveJsonDocument, methods, levelLearned);
+            Move move = moveBuilder.createMove(moveName, moveJsonDocument, learnMethods);
             moveList.add(move);
         }
         return moveList;
