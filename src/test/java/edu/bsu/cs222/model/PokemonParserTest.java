@@ -37,4 +37,10 @@ class PokemonParserTest {
         Assertions.assertEquals(85, stats.get("special-defense"));
         Assertions.assertEquals(100, stats.get("speed"));
     }
+
+    @Test
+    void testParseForMoves() {
+        List<Move> moves = pokemonParser.parseForMoves(charizardDocument);
+        // useful for debugging right now
+    }
 }
