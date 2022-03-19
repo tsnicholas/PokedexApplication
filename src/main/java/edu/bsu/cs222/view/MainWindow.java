@@ -155,7 +155,7 @@ public class MainWindow extends Application {
             currentPokemon = pokemonProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
 //            types.setText(pokemonProcessor.typesToString(currentPokemon));
 //            stats.setText(pokemonProcessor.statsToString(currentPokemon));
-//            pokemonImage.setImage(new Image(pokemonProcessor.getImageURL(currentPokemon)));
+            pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             setUpLowerContent(dropDownMenu.getSelectionModel().getSelectedItem());
         }
         catch(RuntimeException doesNotExist) {

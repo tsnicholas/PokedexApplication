@@ -1,5 +1,7 @@
 package edu.bsu.cs222.model;
 
+import javafx.scene.image.Image;
+
 import java.util.*;
 
 public class PokemonBuilder {
@@ -9,7 +11,8 @@ public class PokemonBuilder {
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
         Map<String, Integer> stats = pokemonParser.parseForStats(pokemonJsonObject);
         List<Move> moves = pokemonParser.parseForMoves(pokemonJsonObject);
-        Pokemon pokemon = new Pokemon(name, types, stats, moves);
+        String pokemonImageURL = pokemonParser.parseForImage(pokemonJsonObject);
+        Pokemon pokemon = new Pokemon(name, types, stats, moves, pokemonImageURL);
         setDamageRelations(pokemon);
         return pokemon;
     }
