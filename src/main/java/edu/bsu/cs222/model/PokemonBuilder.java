@@ -8,7 +8,8 @@ public class PokemonBuilder {
     public Pokemon createPokemon(String name, Object pokemonJsonObject) {
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
         Map<String, Integer> stats = pokemonParser.parseForStats(pokemonJsonObject);
-        Pokemon pokemon = new Pokemon(name, types, stats);
+        List<Move> moves = pokemonParser.parseForMoves(pokemonJsonObject);
+        Pokemon pokemon = new Pokemon(name, types, stats, moves);
         setDamageRelations(pokemon);
         return pokemon;
     }
