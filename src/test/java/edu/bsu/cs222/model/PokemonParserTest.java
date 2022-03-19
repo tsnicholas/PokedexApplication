@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class PokemonParserTest {
     private final PokemonParser pokemonParser = new PokemonParser();
@@ -27,39 +28,13 @@ class PokemonParserTest {
     }
 
     @Test
-    public void testParseForHP() {
-        int hp = pokemonParser.parseForHP(charizardDocument);
-        Assertions.assertEquals(78, hp);
+    public void testParseForStats() {
+        Map<String, Integer> stats = pokemonParser.parseForStats(charizardDocument);
+        Assertions.assertEquals(78, stats.get("hp"));
+        Assertions.assertEquals(84, stats.get("attack"));
+        Assertions.assertEquals(78, stats.get("defense"));
+        Assertions.assertEquals(109, stats.get("special-attack"));
+        Assertions.assertEquals(85, stats.get("special-defense"));
+        Assertions.assertEquals(100, stats.get("speed"));
     }
-
-    @Test
-    public void testParseForAttack() {
-        int attack = pokemonParser.parseForAttack(charizardDocument);
-        Assertions.assertEquals(84, attack);
-    }
-
-    @Test
-    public void testParseForDefense() {
-        int defense = pokemonParser.parseForDefense(charizardDocument);
-        Assertions.assertEquals(78, defense);
-    }
-
-    @Test
-    public void testParseForSpecialAttack() {
-        int specialAttack = pokemonParser.parseForSpecialAttack(charizardDocument);
-        Assertions.assertEquals(109, specialAttack);
-    }
-
-    @Test
-    public void testParseForSpecialDefense() {
-        int specialAttack = pokemonParser.parseForSpecialDefense(charizardDocument);
-        Assertions.assertEquals(85, specialAttack);
-    }
-
-    @Test
-    public void testParseForSpeed() {
-        int speed = pokemonParser.parseForSpeed(charizardDocument);
-        Assertions.assertEquals(100, speed);
-    }
-
 }

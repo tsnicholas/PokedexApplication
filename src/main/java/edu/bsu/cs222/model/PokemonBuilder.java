@@ -7,7 +7,7 @@ public class PokemonBuilder {
 
     public Pokemon createPokemon(String name, Object pokemonJsonObject) {
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
-        Map<String, Integer> stats = setStats(pokemonJsonObject);
+        Map<String, Integer> stats = pokemonParser.parseForStats(pokemonJsonObject);
         Pokemon pokemon = new Pokemon(name, types, stats);
         setDamageRelations(pokemon);
         return pokemon;
@@ -39,19 +39,6 @@ public class PokemonBuilder {
         pokemon.setImmuneTo(immuneTo);
         pokemon.setWeakTo(weakTo);
         pokemon.setResistantTo(resistantTo);
-    }
-
-    private Map<String, Integer> setStats(Object pokemonJsonObject) {
-        Map<String, Integer> statMap = new HashMap<>();
-
-        statMap.put("hp", pokemonParser.parseForHP(pokemonJsonObject));
-        statMap.put("speed", pokemonParser.parseForSpeed(pokemonJsonObject));
-        statMap.put("attack", pokemonParser.parseForAttack(pokemonJsonObject));
-        statMap.put("defense", pokemonParser.parseForDefense(pokemonJsonObject));
-        statMap.put("special-attack", pokemonParser.parseForSpecialAttack(pokemonJsonObject));
-        statMap.put("special-defense", pokemonParser.parseForSpecialDefense(pokemonJsonObject));
-
-        return statMap;
     }
 
     private List<String> eliminateDuplicates(List<String> stringList) {
