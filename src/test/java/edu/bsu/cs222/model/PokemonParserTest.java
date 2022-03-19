@@ -12,6 +12,7 @@ class PokemonParserTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
     private final Object clefableDocument = resourceConverter.inputStreamToJsonObject("clefable");
     private final Object charizardDocument = resourceConverter.inputStreamToJsonObject("charizard");
+    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject("ditto");
     private List<Type> types = new ArrayList<>();
 
     @Test
@@ -40,7 +41,8 @@ class PokemonParserTest {
 
     @Test
     void testParseForMoves() {
-        List<Move> moves = pokemonParser.parseForMoves(charizardDocument);
+        List<Move> moves = pokemonParser.parseForMoves(dittoDocument);
+        Assertions.assertNull(moves.get(0));
         // useful for debugging right now
     }
 }
