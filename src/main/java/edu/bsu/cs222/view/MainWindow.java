@@ -152,7 +152,7 @@ public class MainWindow extends Application {
 
     private void search() {
         try {
-            currentPokemon = pokemonProcessor.process(searchInput.getText(), gameSelection.getValue());
+            currentPokemon = pokemonProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
 //            types.setText(pokemonProcessor.typesToString(currentPokemon));
 //            stats.setText(pokemonProcessor.statsToString(currentPokemon));
 //            pokemonImage.setImage(new Image(pokemonProcessor.getImageURL(currentPokemon)));
