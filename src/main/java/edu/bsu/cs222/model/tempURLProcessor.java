@@ -14,22 +14,10 @@ public class tempURLProcessor {
 
     public tempURLProcessor() {}
 
-    public Object processPokemonURL(String pokemon) {
+    public Object process(String pokemon) {
         try {
             String encodedPokemon = URLEncoder.encode(pokemon, Charset.defaultCharset());
             String urlString = String.format("https://pokeapi.co/api/v2/Pokemon/%s", encodedPokemon);
-            URLConnection urlConnection = connectToURL(urlString);
-            return inputStreamConverter.inputStreamToJsonObject(urlConnection.getInputStream());
-        }
-        catch(IOException ioException) {
-            throw new IllegalStateException();
-        }
-    }
-
-    public Object processMoveURL(String move) {
-        try {
-            String encodedMove = URLEncoder.encode(move, Charset.defaultCharset());
-            String urlString = String.format("https://pokeapi.co/api/v2/Move/%s", encodedMove);
             URLConnection urlConnection = connectToURL(urlString);
             return inputStreamConverter.inputStreamToJsonObject(urlConnection.getInputStream());
         }
