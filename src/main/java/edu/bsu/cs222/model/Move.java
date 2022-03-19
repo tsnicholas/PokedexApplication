@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public record Move(String name, String type, int PP, int power, int accuracy, List<String> learnMethods) {
     public String name() {
@@ -23,6 +23,7 @@ public record Move(String name, String type, int PP, int power, int accuracy, Li
         return accuracy;
     }
 
-    public ArrayList<String> learnMethods() {
+    public List<String> learnMethods() {
         return learnMethods;
+    }
 }

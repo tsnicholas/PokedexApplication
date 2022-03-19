@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MoveBuilder {
     private final MoveParser moveParser = new MoveParser();
@@ -13,4 +13,5 @@ public class MoveBuilder {
                 moveParser.parseAccuracy(moveJsonDocument),
                 learnMethods
         );
+    }
 }
