@@ -3,9 +3,6 @@ package edu.bsu.cs222.model;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class MoveParser {
     private Object pokemonInputStream;
     private Object moveInputStream;
@@ -37,29 +34,52 @@ public class MoveParser {
 //       }
 //    }
 
-    // TODO: make sure this class is getting the stats from gen 1 (check out PastMoveStatValues)
     private String parseName() {
         JSONArray moveName = JsonPath.read(moveInputStream, "$.name");
         return moveName.toString();
     }
 
     private String parseType() {
-        JSONArray type = JsonPath.read(moveInputStream, "$.type.name");
+        JSONArray type;
+        if(pastValue("type")) {
+            type = JsonPath.read(moveInputStream, "$.past_values[0].type.name");
+        }
+        else {
+            type = JsonPath.read(moveInputStream, "$.type.name");
+        }
         return type.toString();
     }
 
     private String parsePP() {
-        JSONArray pp = JsonPath.read(moveInputStream, "$.pp");
+        JSONArray pp;
+        if(pastValue("PP")) {
+            pp = JsonPath.read(moveInputStream, "$.past_values[0].pp");
+        }
+        else {
+            pp = JsonPath.read(moveInputStream, "$.pp");
+        }
         return nullCheck(pp);
     }
 
     private String parsePower() {
-        JSONArray power = JsonPath.read(moveInputStream, "$.power");
+        JSONArray power;
+        if(pastValue("power")) {
+            power = JsonPath.read(moveInputStream, "$.past_values[0].power");
+        }
+        else {
+            power = JsonPath.read(moveInputStream, "$.power");
+        }
         return nullCheck(power);
     }
 
     private String parseAccuracy() {
-        JSONArray accuracy = JsonPath.read(moveInputStream, "$.accuracy");
+        JSONArray accuracy;
+        if(pastValue("accuracy")) {
+            accuracy = JsonPath.read(moveInputStream, "$.past_values[0].accuracy");
+        }
+        else {
+            accuracy = JsonPath.read(moveInputStream, "$.accuracy");
+        }
         return nullCheck(accuracy);
     }
 
@@ -70,6 +90,12 @@ public class MoveParser {
             return "LV " + learnLevel.toString();
         }
         return "TM";
+    }
+
+    // Since we're doing only Gen 1 for now, past values will always be in the first array. We'll have to change this method when
+    // we implement newer gens, possibly need some kind of map that tracks game order. Won't be too hard to change.
+    private boolean pastValue(String value) {
+        return JsonPath.read(moveInputStream, "$.past_values[0]." + value) != null;
     }
 
     private String nullCheck(JSONArray stat) {
