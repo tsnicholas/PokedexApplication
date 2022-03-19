@@ -11,31 +11,31 @@ public class MoveParser {
     private Object moveInputStream;
     private String nameOfGame;
 
-    public ArrayList<Move> parseMoves(Object pokemonInputStream, String nameOfGame) {
-        this.pokemonInputStream = pokemonInputStream;
-        this.nameOfGame = nameOfGame;
-        JSONArray moveURLs = JsonPath.read(pokemonInputStream,
-                "$..moves[?(@..version_group.name contains \"" + nameOfGame + "\")].move.url");
-        return createMoveList(moveURLs);
-    }
-
-    private ArrayList<Move> createMoveList(JSONArray moveURLs) {
-       try {
-           ArrayList<Move> moveList = new ArrayList<>();
-           URLProcessor urlProcessor = new URLProcessor();
-           for (Object moveURL : moveURLs) {
-               moveInputStream = urlProcessor.process(moveURL.toString().substring(26));
-               String moveName = parseName();
-               moveList.add(new Move(moveName, parseType(), parsePP(), parsePower(), parseAccuracy(),
-                       parseLearnMethod(pokemonInputStream, moveName)));
-           }
-
-           return moveList;
-       }
-       catch(IOException e) {
-           throw new IllegalStateException(e);
-       }
-    }
+//    public ArrayList<Move> parseMoves(Object pokemonInputStream, String nameOfGame) {
+//        this.pokemonInputStream = pokemonInputStream;
+//        this.nameOfGame = nameOfGame;
+//        JSONArray moveURLs = JsonPath.read(pokemonInputStream,
+//                "$..moves[?(@..version_group.name contains \"" + nameOfGame + "\")].move.url");
+//        return createMoveList(moveURLs);
+//    }
+//
+//    private ArrayList<Move> createMoveList(JSONArray moveURLs) {
+//       try {
+//           ArrayList<Move> moveList = new ArrayList<>();
+//           URLProcessor urlProcessor = new URLProcessor();
+//           for (Object moveURL : moveURLs) {
+//               moveInputStream = urlProcessor.process(moveURL.toString().substring(26));
+//               String moveName = parseName();
+//               moveList.add(new Move(moveName, parseType(), parsePP(), parsePower(), parseAccuracy(),
+//                       parseLearnMethod(pokemonInputStream, moveName)));
+//           }
+//
+//           return moveList;
+//       }
+//       catch(IOException e) {
+//           throw new IllegalStateException(e);
+//       }
+//    }
 
 
     private String parseName() {
