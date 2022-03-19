@@ -37,8 +37,13 @@ class PokemonBuilderTest {
     }
 
     @Test
-    void testPokemonHP() {
+    void testPokemonStats() {
         Pokemon pokemon = pokemonBuilder.createPokemon("Zapdos", zapdosDocument);
-        Assertions.assertEquals(90, pokemon.getHp());
+        Assertions.assertEquals(90, pokemon.getStats().get("hp"));
+        Assertions.assertEquals(90, pokemon.getStats().get("attack"));
+        Assertions.assertEquals(85, pokemon.getStats().get("defense"));
+        Assertions.assertEquals(125, pokemon.getStats().get("special-attack"));
+        Assertions.assertEquals(90, pokemon.getStats().get("special-defense"));
+        Assertions.assertEquals(100, pokemon.getStats().get("speed"));
     }
 }

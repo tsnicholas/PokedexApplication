@@ -1,22 +1,14 @@
 package edu.bsu.cs222.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PokemonBuilder {
+    private final PokemonParser pokemonParser = new PokemonParser();
 
     public Pokemon createPokemon(String name, Object pokemonJsonObject) {
-        PokemonParser pokemonParser = new PokemonParser();
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
-        int hp = pokemonParser.parseForHP(pokemonJsonObject);
-        int speed = pokemonParser.parseForSpeed(pokemonJsonObject);
-        int attack = pokemonParser.parseForAttack(pokemonJsonObject);
-        int defense = pokemonParser.parseForDefense(pokemonJsonObject);
-        int specialAttack = pokemonParser.parseForSpecialAttack(pokemonJsonObject);
-        int specialDefense = pokemonParser.parseForSpecialDefense(pokemonJsonObject);
-        Pokemon pokemon = new Pokemon(name, types, hp, speed, attack, defense, specialAttack, specialDefense);
+        Map<String, Integer> stats = setStats(pokemonJsonObject);
+        Pokemon pokemon = new Pokemon(name, types, stats);
         setDamageRelations(pokemon);
         return pokemon;
     }
@@ -49,8 +41,17 @@ public class PokemonBuilder {
         pokemon.setResistantTo(resistantTo);
     }
 
-    private void setStats(Pokemon pokemon) {
+    private Map<String, Integer> setStats(Object pokemonJsonObject) {
+        Map<String, Integer> statMap = new HashMap<>();
 
+        statMap.put("hp", pokemonParser.parseForHP(pokemonJsonObject));
+        statMap.put("speed", pokemonParser.parseForSpeed(pokemonJsonObject));
+        statMap.put("attack", pokemonParser.parseForAttack(pokemonJsonObject));
+        statMap.put("defense", pokemonParser.parseForDefense(pokemonJsonObject));
+        statMap.put("special-attack", pokemonParser.parseForSpecialAttack(pokemonJsonObject));
+        statMap.put("special-defense", pokemonParser.parseForSpecialDefense(pokemonJsonObject));
+
+        return statMap;
     }
 
     private List<String> eliminateDuplicates(List<String> stringList) {
