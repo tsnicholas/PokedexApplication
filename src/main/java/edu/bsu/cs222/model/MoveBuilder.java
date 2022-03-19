@@ -6,7 +6,12 @@ public class MoveBuilder {
     private final MoveParser moveParser = new MoveParser();
 
     public Move createMove(String name, Object moveJsonDocument, List<String> learnMethods) {
-        // TODO: finish!
-        return null;
+        return new Move(name,
+                moveParser.parseType(moveJsonDocument),
+                moveParser.parsePP(moveJsonDocument),
+                moveParser.parsePower(moveJsonDocument),
+                moveParser.parseAccuracy(moveJsonDocument),
+                learnMethods
+        );
     }
 }
