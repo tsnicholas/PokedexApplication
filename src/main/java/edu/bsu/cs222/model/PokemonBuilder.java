@@ -1,22 +1,14 @@
 package edu.bsu.cs222.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PokemonBuilder {
+    private final PokemonParser pokemonParser = new PokemonParser();
 
     public Pokemon createPokemon(String name, Object pokemonJsonObject) {
-        PokemonParser pokemonParser = new PokemonParser();
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
-        int hp = pokemonParser.parseForHP(pokemonJsonObject);
-        int speed = pokemonParser.parseForSpeed(pokemonJsonObject);
-        int attack = pokemonParser.parseForAttack(pokemonJsonObject);
-        int defense = pokemonParser.parseForDefense(pokemonJsonObject);
-        int specialAttack = pokemonParser.parseForSpecialAttack(pokemonJsonObject);
-        int specialDefense = pokemonParser.parseForSpecialDefense(pokemonJsonObject);
-        Pokemon pokemon = new Pokemon(name, types, hp, speed, attack, defense, specialAttack, specialDefense);
+        Map<String, Integer> stats = pokemonParser.parseForStats(pokemonJsonObject);
+        Pokemon pokemon = new Pokemon(name, types, stats);
         setDamageRelations(pokemon);
         return pokemon;
     }
@@ -47,10 +39,6 @@ public class PokemonBuilder {
         pokemon.setImmuneTo(immuneTo);
         pokemon.setWeakTo(weakTo);
         pokemon.setResistantTo(resistantTo);
-    }
-
-    private void setStats(Pokemon pokemon) {
-
     }
 
     private List<String> eliminateDuplicates(List<String> stringList) {

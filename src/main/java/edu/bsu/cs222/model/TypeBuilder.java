@@ -3,27 +3,31 @@ package edu.bsu.cs222.model;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class TypeBuilder {
 
     public Type createType(String name, Object typeJsonObject) {
         TypeParser typeParser = new TypeParser();
-        String jsonRootOfDamageRelations = createRootOfDamageRelations(typeJsonObject);
+        LinkedHashMap<Class<?>, Class<?>> damageRelationsMap = createRootOfDamageRelations(typeJsonObject);
 
-        List<String> weakToList = typeParser.parseWeakTo(typeJsonObject, jsonRootOfDamageRelations);
-        List<String> resistantToList = typeParser.parseResistantTo(typeJsonObject, jsonRootOfDamageRelations);
-        List<String> immuneToList = typeParser.parseImmuneTo(typeJsonObject, jsonRootOfDamageRelations);
+        List<String> weakToList = typeParser.parseWeakTo(damageRelationsMap);
+        List<String> resistantToList = typeParser.parseResistantTo(damageRelationsMap);
+        List<String> immuneToList = typeParser.parseImmuneTo(damageRelationsMap);
 
         return new Type(name, weakToList, resistantToList, immuneToList);
     }
 
-    private String createRootOfDamageRelations(Object typeJsonDocument) {
-        JSONArray genOneDamageRelationsArray = JsonPath.read(typeJsonDocument,"$.past_damage_relations");
-        String jsonPathRoot = "$.damage_relations";
-        if (genOneDamageRelationsArray.size() != 0) {
-            jsonPathRoot = "$.past_damage_relations[0].damage_relations"; // This solution only works for gen 1
+    private LinkedHashMap<Class<?>, Class<?>> createRootOfDamageRelations(Object typeJsonDocument) {
+        JSONArray pastDamageRelationsArray = JsonPath.read(typeJsonDocument,"$.past_damage_relations");
+        LinkedHashMap<Class<?>, Class<?>> yellowDamageRelationsMap;
+        if (pastDamageRelationsArray.size() != 0) {
+            // This solution only works for gen 1
+            yellowDamageRelationsMap = JsonPath.read(typeJsonDocument, "$.past_damage_relations[0].damage_relations");
+        } else {
+            yellowDamageRelationsMap = JsonPath.read(typeJsonDocument, "$.damage_relations");
         }
-        return jsonPathRoot;
+        return yellowDamageRelationsMap;
     }
 }

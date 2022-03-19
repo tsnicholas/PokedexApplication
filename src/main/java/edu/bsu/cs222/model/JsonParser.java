@@ -16,6 +16,14 @@ public class JsonParser {
         return stringList;
     }
 
+    public List<Integer> jsonArrayToIntegerList(JSONArray array) {
+        List<Integer> integerList = new ArrayList<>();
+        for (Object o : array) {
+            integerList.add((int) o);
+        }
+        return integerList;
+    }
+
     public Object parseJson(String json) {
         return Configuration.defaultConfiguration().jsonProvider().parse(json);
     }

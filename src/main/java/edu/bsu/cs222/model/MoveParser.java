@@ -37,7 +37,7 @@ public class MoveParser {
 //       }
 //    }
 
-
+    // TODO: make sure this class is getting the stats from gen 1 (check out PastMoveStatValues)
     private String parseName() {
         JSONArray moveName = JsonPath.read(moveInputStream, "$.name");
         return moveName.toString();
