@@ -41,8 +41,12 @@ class PokemonParserTest {
 
     @Test
     void testParseForMoves() {
-        List<Move> moves = pokemonParser.parseForMoves(dittoDocument);
-        Assertions.assertNull(moves.get(0));
-        // useful for debugging right now
+        List<Move> expected = new ArrayList<>();
+        List<String> expectedLearnMethods = new ArrayList<>();
+        expectedLearnMethods.add("LV 1");
+        expected.add(new Move("transform", "normal", 10, 0, 0, expectedLearnMethods));
+
+        List<Move> actual = pokemonParser.parseForMoves(dittoDocument);
+        Assertions.assertArrayEquals(expected.toArray(), actual.toArray());
     }
 }
