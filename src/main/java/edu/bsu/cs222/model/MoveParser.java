@@ -12,7 +12,7 @@ public class MoveParser {
         else {
             type = JsonPath.read(moveInputStream, "$.type.name");
         }
-        return type;
+        return nullCheck(type);
     }
 
     public int parsePP(Object moveInputStream) {
