@@ -34,6 +34,7 @@ public class URLProcessor {
         }
     }
 
+    // There's a couple pokemon later on that will have spaces in their name, so it's important to use URLEncoder
     private String getURLString(String url, String name) {
         String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
         return String.format(url, nameEncoded);
