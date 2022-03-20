@@ -28,7 +28,6 @@ public class MainWindow extends Application {
     private final ImageView pokemonImage = new ImageView();
     private final ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
-    private final Text moveLabels = new Text("Name                  Type        PP      Power   Accuracy    Learn by");
     private final Text moveList = new Text();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
@@ -69,7 +68,6 @@ public class MainWindow extends Application {
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         types.setFont(Font.font("Verdana", 25));
         stats.setFont(Font.font("Verdana", 25));
-        moveLabels.setFont(Font.font("Times New Roman", FontWeight.BOLD, 25));
         moveList.setFont(Font.font("Times New Roman", 14));
     }
 
@@ -192,7 +190,6 @@ public class MainWindow extends Application {
         VBox moveDisplay = new VBox();
 //        moveList.setText(pokemonProcessor.moveListToString(currentPokemon));
         moveDisplay.getChildren().addAll(
-                moveLabels,
                 moveList
         );
         return moveDisplay;
