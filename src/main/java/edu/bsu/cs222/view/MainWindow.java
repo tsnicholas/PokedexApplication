@@ -38,7 +38,7 @@ public class MainWindow extends Application {
         setUpWindowBasics(primaryStage);
         setUpEventTriggers();
         setUpSizesAndFonts();
-        // startUpDisplay(true);
+        startUpDisplay(true);
         primaryStage.show();
     }
 
@@ -73,14 +73,13 @@ public class MainWindow extends Application {
         moveList.setFont(Font.font("Times New Roman", 14));
     }
 
-    // Will be added later
-//    private void startUpDisplay(boolean status) {
-//        pokemonImage.setVisible(!status);
-//        type.setVisible(!status);
-//        stats.setVisible(!status);
-//        dropDownMenu.setVisible(!status);
-//        lowerPortion.setVisible(!status);
-//    }
+    private void startUpDisplay(boolean status) {
+        pokemonImage.setVisible(!status);
+        types.setVisible(!status);
+        stats.setVisible(!status);
+        dropDownMenu.setVisible(!status);
+        lowerPortion.setVisible(!status);
+    }
 
     private Parent createMainWindow() {
         VBox mainWindow = new VBox();
@@ -143,7 +142,6 @@ public class MainWindow extends Application {
         searchInput.setDisable(true);
         searchButton.setDisable(true);
         search();
-        //startUpDisplay(false);
         Platform.runLater(() -> {
             searchInput.setDisable(false);
             searchButton.setDisable(false);
@@ -155,8 +153,9 @@ public class MainWindow extends Application {
             currentPokemon = pokemonProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
 //            types.setText(pokemonProcessor.typesToString(currentPokemon));
 //            stats.setText(pokemonProcessor.statsToString(currentPokemon));
-//            pokemonImage.setImage(new Image(pokemonProcessor.getImageURL(currentPokemon)));
+            pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             setUpLowerContent(dropDownMenu.getSelectionModel().getSelectedItem());
+            startUpDisplay(false);
         }
         catch(RuntimeException doesNotExist) {
             ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());

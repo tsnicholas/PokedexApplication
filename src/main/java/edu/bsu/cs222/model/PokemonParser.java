@@ -1,8 +1,10 @@
 package edu.bsu.cs222.model;
 
 import com.jayway.jsonpath.JsonPath;
+import javafx.scene.image.Image;
 import net.minidev.json.JSONArray;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,5 +86,10 @@ public class PokemonParser {
             moveList.add(move);
         }
         return moveList;
+    }
+
+    // This will definitely have to change when add later gens. We'll discuss it when the time comes, I have some ideas.
+    public String parseForImage(Object pokemonJsonDocument) {
+        return JsonPath.read(pokemonJsonDocument, "$.sprites.versions.generation-i.yellow.front_default");
     }
 }

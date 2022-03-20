@@ -5,17 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 public class Pokemon {
-    // TODO: This will be the main class that stores data on a Pokemon. As discussed, this includes the stats, types,
-    //  and moves as well as possibly strengths, weaknesses, and an image to display.
     private final List<Type> typeList;
+    private final List<Move> moveList;
     private final Map<String, Integer> statsMap;
+    private final String imageURL;
     private List<String> weakTo = new ArrayList<>();
     private List<String> resistantTo = new ArrayList<>();
     private List<String> immuneTo = new ArrayList<>();
 
-    public Pokemon(String name, List<Type> types, Map<String, Integer> stats) {
-        this.typeList = types;
-        this.statsMap = stats;
+    public Pokemon(String name, List<Type> types, Map<String, Integer> stats, List<Move> moves, String pokemonImageURL) {
+        typeList = types;
+        statsMap = stats;
+        moveList = moves;
+        imageURL = pokemonImageURL;
     }
 
     public List<Type> getTypeList() {
@@ -36,6 +38,14 @@ public class Pokemon {
 
     public List<String> getImmuneTo() {
         return immuneTo;
+    }
+
+    public List<Move> getMoveList() {
+        return moveList;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     public void setWeakTo(List<String> weakTo) {
