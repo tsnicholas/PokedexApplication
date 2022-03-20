@@ -16,8 +16,7 @@ public class URLProcessor {
 
     public URL getPokemonURL(String pokemon) {
         try {
-            String encodedPokemon = URLEncoder.encode(pokemon, Charset.defaultCharset());
-            String urlString = String.format("https://pokeapi.co/api/v2/Pokemon/%s", encodedPokemon);
+            String urlString = getURLString("https://pokeapi.co/api/v2/pokemon/%s", pokemon);
             return new URL(urlString);
         }
         catch(MalformedURLException malformedURLException) {
@@ -27,13 +26,17 @@ public class URLProcessor {
 
     public URL getGameURL(String game) {
         try {
-            String encodedGame = URLEncoder.encode(game, Charset.defaultCharset());
-            String urlString = String.format("https://pokeapi.co/api/v2/version-group/%s", encodedGame);
+            String urlString = getURLString("https://pokeapi.co/api/v2/version-group/%s", game);
             return new URL(urlString);
         }
         catch(MalformedURLException malformedURLException) {
             throw new IllegalStateException(malformedURLException);
         }
+    }
+
+    private String getURLString(String url, String name) {
+        String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
+        return String.format(url, nameEncoded);
     }
 
     public InputStream getInputStream(URL url) {
