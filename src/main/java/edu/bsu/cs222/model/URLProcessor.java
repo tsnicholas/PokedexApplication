@@ -15,29 +15,28 @@ public class URLProcessor {
     public URLProcessor() {}
 
     public URL getPokemonURL(String pokemon) {
-        try {
-            String urlString = getURLString("https://pokeapi.co/api/v2/pokemon/%s", pokemon);
-            return new URL(urlString);
-        }
-        catch(MalformedURLException malformedURLException) {
-            throw new IllegalStateException(malformedURLException);
-        }
+        String urlString = getURLString("https://pokeapi.co/api/v2/pokemon/%s", pokemon);
+        return verifyURL(urlString);
     }
 
     public URL getGameURL(String game) {
-        try {
-            String urlString = getURLString("https://pokeapi.co/api/v2/version-group/%s", game);
-            return new URL(urlString);
-        }
-        catch(MalformedURLException malformedURLException) {
-            throw new IllegalStateException(malformedURLException);
-        }
+        String urlString = getURLString("https://pokeapi.co/api/v2/version-group/%s", game);
+        return verifyURL(urlString);
     }
 
     // There's a couple pokemon later on that will have spaces in their name, so it's important to use URLEncoder
     private String getURLString(String url, String name) {
         String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
         return String.format(url, nameEncoded);
+    }
+
+    public URL verifyURL(String urlString) {
+        try {
+            return new URL(urlString);
+        }
+        catch(MalformedURLException malformedURLException) {
+            throw new IllegalStateException(malformedURLException);
+        }
     }
 
     public InputStream getInputStream(URL url) {
