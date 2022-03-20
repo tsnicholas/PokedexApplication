@@ -3,6 +3,8 @@ package edu.bsu.cs222.model;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 
@@ -12,9 +14,13 @@ public class GameParser {
 
     public List<String> parseForPokedex(Object gameJsonDocument) {
         JSONArray pokedexURL = JsonPath.read(gameJsonDocument, "$.pokedexes..url");
-        JSONArray pokedexName = JsonPath.read(gameJsonDocument, "$.pokedexes..name");
-//        Object pokedexJsonObject = inputStreamConverter.inputStreamToJsonObject(URLProcessor.getInputStream(pokedexURL.get(0).toString()); // final version
-        Object pokdexJsonObject = inputStreamConverter.inputStreamToJsonObject(pokedexName.get(0).toString());
-        return pokedexParser.getPokemonNames(pokdexJsonObject);
+        Object pokedexJsonObject = convertToObject(pokedexURL);
+        return pokedexParser.getPokemonNames(pokedexJsonObject);
+    }
+
+    private Object convertToObject(JSONArray pokedexURL) {
+        URLProcessor urlProcessor = new URLProcessor();
+        URL url = urlProcessor.verifyURL(pokedexURL.get(0).toString());
+        return inputStreamConverter.inputStreamToJsonObject(urlProcessor.getInputStream(url));
     }
 }
