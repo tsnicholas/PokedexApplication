@@ -13,7 +13,7 @@ public class GameParser {
     public List<String> parseForPokedex(Object gameJsonDocument) {
         JSONArray pokedexURL = JsonPath.read(gameJsonDocument, "$.pokedexes..url");
         JSONArray pokedexName = JsonPath.read(gameJsonDocument, "$.pokedexes..name");
-//        Object pokedexJsonObject = inputStreamConverter.inputStreamToJsonObject(pokedexURL.get(0).toString()); // final version
+//        Object pokedexJsonObject = inputStreamConverter.inputStreamToJsonObject(URLProcessor.getInputStream(pokedexURL.get(0).toString()); // final version
         Object pokdexJsonObject = inputStreamConverter.inputStreamToJsonObject(pokedexName.get(0).toString());
         return pokedexParser.getPokemonNames(pokdexJsonObject);
     }
