@@ -28,7 +28,7 @@ public class MainWindow extends Application {
     private final ImageView pokemonImage = new ImageView();
     private final ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
-    private final Text moveLabels = new Text("Name                  Type        PP      Power   Accuracy    Learn by");
+    private final Text moveLabels = new Text();
     private final Text moveList = new Text();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
@@ -157,7 +157,7 @@ public class MainWindow extends Application {
             setUpLowerContent(dropDownMenu.getSelectionModel().getSelectedItem());
             startUpDisplay(false);
         }
-        catch(RuntimeException doesNotExist) {
+        catch(Exception doesNotExist) {
             ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());
             noExistence.display();
         }

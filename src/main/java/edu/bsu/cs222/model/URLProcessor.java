@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 public class URLProcessor {
+    private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
 
     public URLProcessor() {}
 
@@ -30,22 +31,32 @@ public class URLProcessor {
         return String.format(url, nameEncoded);
     }
 
-    public URL verifyURL(String urlString) {
-        try {
-            return new URL(urlString);
-        }
-        catch(MalformedURLException malformedURLException) {
-            throw new IllegalStateException(malformedURLException);
-        }
+    public Object stringToObject(String urlString) {
+        URL url = verifyURL(urlString);
+        return urlToObject(url);
     }
 
-    public InputStream getInputStream(URL url) {
+    public Object urlToObject(URL url) {
+        InputStream inputStream = getInputStream(url);
+        return inputStreamConverter.inputStreamToJsonObject(inputStream);
+    }
+
+    private InputStream getInputStream(URL url) {
         try {
             URLConnection urlConnection = openURLConnection(url);
             return urlConnection.getInputStream();
         }
         catch(IOException ioException) {
             throw new IllegalStateException(ioException);
+        }
+    }
+
+    private URL verifyURL(String urlString) {
+        try {
+            return new URL(urlString);
+        }
+        catch(MalformedURLException malformedURLException) {
+            throw new IllegalStateException(malformedURLException);
         }
     }
 

@@ -1,7 +1,5 @@
 package edu.bsu.cs222.model;
 
-import javafx.scene.image.Image;
-
 import java.util.*;
 
 public class PokemonBuilder {
