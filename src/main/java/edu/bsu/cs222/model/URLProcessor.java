@@ -25,6 +25,17 @@ public class URLProcessor {
         }
     }
 
+    public URL getGameURL(String game) {
+        try {
+            String encodedGame = URLEncoder.encode(game, Charset.defaultCharset());
+            String urlString = String.format("https://pokeapi.co/api/v2/version-group/%s", encodedGame);
+            return new URL(urlString);
+        }
+        catch(MalformedURLException malformedURLException) {
+            throw new IllegalStateException(malformedURLException);
+        }
+    }
+
     public InputStream getInputStream(URL url) {
         try {
             URLConnection urlConnection = openURLConnection(url);
