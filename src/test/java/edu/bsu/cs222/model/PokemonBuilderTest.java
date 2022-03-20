@@ -5,45 +5,35 @@ import org.junit.jupiter.api.Test;
 
 class PokemonBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object zapdosDocument = resourceConverter.inputStreamToJsonObject("zapdos");
-    private final Object parasectDocument = resourceConverter.inputStreamToJsonObject("parasect");
+    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject("ditto");
     private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
 
     @Test
     void testPokemonImmunity() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("zapdos", zapdosDocument);
-        Assertions.assertEquals("ground", pokemon.getImmuneTo().get(0));
+        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
+        Assertions.assertEquals("ghost", pokemon.getImmuneTo().get(0));
     }
 
     @Test
     void testPokemonWeakness() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("Parasect", parasectDocument);
-        Assertions.assertEquals("rock", pokemon.getWeakTo().get(0));
-        Assertions.assertEquals("poison", pokemon.getWeakTo().get(1));
-        Assertions.assertEquals("bug", pokemon.getWeakTo().get(2));
-        Assertions.assertEquals("flying", pokemon.getWeakTo().get(3));
-        Assertions.assertEquals("fire", pokemon.getWeakTo().get(4));
-        Assertions.assertEquals("ice", pokemon.getWeakTo().get(5));
+        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
+        Assertions.assertEquals("fighting", pokemon.getWeakTo().get(0));
     }
 
     @Test
     void testPokemonResistance() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("Parasect", parasectDocument);
-        Assertions.assertEquals("grass", pokemon.getResistantTo().get(0));
-        Assertions.assertEquals("electric", pokemon.getResistantTo().get(1));
-        Assertions.assertEquals("ground", pokemon.getResistantTo().get(2));
-        Assertions.assertEquals("fighting", pokemon.getResistantTo().get(3));
-        Assertions.assertEquals("water", pokemon.getResistantTo().get(4));
+        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
+        Assertions.assertEquals(0, pokemon.getResistantTo().size());
     }
 
     @Test
     void testPokemonStats() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("Zapdos", zapdosDocument);
-        Assertions.assertEquals(90, pokemon.getStats().get("hp"));
-        Assertions.assertEquals(90, pokemon.getStats().get("attack"));
-        Assertions.assertEquals(85, pokemon.getStats().get("defense"));
-        Assertions.assertEquals(125, pokemon.getStats().get("special-attack"));
-        Assertions.assertEquals(90, pokemon.getStats().get("special-defense"));
-        Assertions.assertEquals(100, pokemon.getStats().get("speed"));
+        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
+        Assertions.assertEquals(48, pokemon.getStats().get("hp"));
+        Assertions.assertEquals(48, pokemon.getStats().get("attack"));
+        Assertions.assertEquals(48, pokemon.getStats().get("defense"));
+        Assertions.assertEquals(48, pokemon.getStats().get("special-attack"));
+        Assertions.assertEquals(48, pokemon.getStats().get("special-defense"));
+        Assertions.assertEquals(48, pokemon.getStats().get("speed"));
     }
 }
