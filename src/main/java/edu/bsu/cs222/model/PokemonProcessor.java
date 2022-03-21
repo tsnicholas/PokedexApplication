@@ -3,12 +3,9 @@ package edu.bsu.cs222.model;
 import java.net.URL;
 
 public class PokemonProcessor {
-    private GameBuilder gameBuilder = new GameBuilder();
-    private PokemonBuilder pokemonBuilder = new PokemonBuilder();
-    private URLProcessor urlProcessor = new URLProcessor();
-    private InputStreamConverter inputStreamConverter = new InputStreamConverter();
-
-    public PokemonProcessor() {}
+    private final GameBuilder gameBuilder = new GameBuilder();
+    private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
+    private final URLProcessor urlProcessor = new URLProcessor();
 
     public Pokemon process(String nameOfPokemon, String nameOfGame) throws RuntimeException {
         Game game = getGame(nameOfGame);
@@ -22,7 +19,7 @@ public class PokemonProcessor {
 
     private Game getGame(String nameOfGame) {
         URL gameURL = urlProcessor.getGameURL(nameOfGame);
-        Object gameFile = inputStreamConverter.inputStreamToJsonObject(urlProcessor.getInputStream(gameURL));
+        Object gameFile = urlProcessor.urlToObject(gameURL);
         return gameBuilder.createGame(nameOfGame, gameFile);
     }
 
@@ -31,6 +28,8 @@ public class PokemonProcessor {
     }
 
     private Pokemon processPokemon(String nameOfPokemon) {
-        return null;
+        URL pokemonUrl = urlProcessor.getPokemonURL(nameOfPokemon);
+        Object pokemonJsonFile = urlProcessor.urlToObject(pokemonUrl);
+        return pokemonBuilder.createPokemon(nameOfPokemon, pokemonJsonFile);
     }
 }
