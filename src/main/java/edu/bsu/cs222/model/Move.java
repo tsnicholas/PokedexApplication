@@ -3,27 +3,23 @@ package edu.bsu.cs222.model;
 import java.util.List;
 
 public record Move(String name, String type, int PP, int power, int accuracy, List<String> learnMethods) {
-    public String name() {
-        return name;
-    }
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for(String learnMethod: learnMethods) {
+            output.append(name);
+            output.append(" ");
+            output.append(type);
+            output.append(" ");
+            output.append(PP);
+            output.append(" ");
+            output.append(power);
+            output.append(" ");
+            output.append(accuracy);
+            output.append(" ");
+            output.append(learnMethod);
+            output.append("\n");
+        }
 
-    public String type() {
-        return type;
-    }
-
-    public int PP() {
-        return PP;
-    }
-
-    public int power() {
-        return power;
-    }
-
-    public int accuracy() {
-        return accuracy;
-    }
-
-    public List<String> learnMethods() {
-        return learnMethods;
+        return output.toString();
     }
 }

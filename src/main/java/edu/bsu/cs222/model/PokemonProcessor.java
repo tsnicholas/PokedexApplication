@@ -1,6 +1,8 @@
 package edu.bsu.cs222.model;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 public class PokemonProcessor {
     private final GameBuilder gameBuilder = new GameBuilder();
@@ -31,5 +33,51 @@ public class PokemonProcessor {
         URL pokemonUrl = urlProcessor.getPokemonURL(nameOfPokemon);
         Object pokemonJsonFile = urlProcessor.urlToObject(pokemonUrl);
         return pokemonBuilder.createPokemon(nameOfPokemon, pokemonJsonFile);
+    }
+
+    public String typesToString(Pokemon pokemon) {
+        StringBuilder output = new StringBuilder();
+        List<Type> types = pokemon.getTypeList();
+        for(Type type: types) {
+            output.append(type.getName());
+            output.append(" ");
+        }
+        return output.toString();
+    }
+
+    public String statsToString(Pokemon pokemon) {
+        StringBuilder output = new StringBuilder();
+        Map<String, Integer> stats = pokemon.getStats();
+        for(Map.Entry<String, Integer> stat: stats.entrySet()) {
+            output.append(stat.getKey());
+            output.append(" ");
+            output.append(stat.getValue());
+            output.append(" ");
+        }
+        return output.toString();
+    }
+
+    public String movesToString(Pokemon pokemon) {
+        StringBuilder output = new StringBuilder();
+        List<Move> moves = pokemon.getMoveList();
+        for(Move move: moves) {
+            output.append(move.toString());
+        }
+        return output.toString();
+    }
+
+    public String damageRelationsToString(Pokemon pokemon) {
+        return  "Weaknesses: " + convertStringListToString(pokemon.getWeakTo()) + "\n" +
+                "Resistances: " + convertStringListToString(pokemon.getResistantTo()) + "\n" +
+                "Immunities: " + convertStringListToString(pokemon.getImmuneTo()) + "\n";
+    }
+
+    private String convertStringListToString(List<String> list) {
+        StringBuilder output = new StringBuilder();
+        for(String listValue: list) {
+            output.append(listValue);
+            output.append(" ");
+        }
+        return output.toString();
     }
 }
