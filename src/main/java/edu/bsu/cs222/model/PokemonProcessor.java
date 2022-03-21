@@ -52,7 +52,7 @@ public class PokemonProcessor {
             output.append(stat.getKey());
             output.append(" ");
             output.append(stat.getValue());
-            output.append(" ");
+            output.append("\n");
         }
         return output.toString();
     }

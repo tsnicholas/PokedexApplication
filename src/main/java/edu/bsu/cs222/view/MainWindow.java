@@ -48,7 +48,10 @@ public class MainWindow extends Application {
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(700);
         primaryStage.setWidth(800);
-        primaryStage.setOnCloseRequest(X -> Platform.exit());
+        primaryStage.setOnCloseRequest(X -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     private void setUpEventTriggers() {
@@ -188,7 +191,6 @@ public class MainWindow extends Application {
             if (selectedValue.equals("Move Set")) {
                 lowerPortion.setContent(moveList);
             } else if (selectedValue.equals("Damage Relations")) {
-
                 lowerPortion.setContent(damageRelations);
             }
         }
