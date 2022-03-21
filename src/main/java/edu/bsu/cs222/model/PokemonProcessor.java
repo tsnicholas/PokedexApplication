@@ -18,13 +18,13 @@ public class PokemonProcessor {
             throw new RuntimeException();
         }
     }
-
+  
     private Game getGame(String nameOfGame) {
         URL gameURL = urlProcessor.getGameURL(nameOfGame);
         Object gameFile = urlProcessor.urlToObject(gameURL);
         return gameBuilder.createGame(nameOfGame, gameFile);
     }
-
+  
     private boolean pokemonExistsInGame(String pokemon, Game game) {
         return game.getPokedex().contains(pokemon);
     }
