@@ -29,6 +29,7 @@ public class MainWindow extends Application {
     private final ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
     private final Text moveList = new Text();
+    private final Text damageRelations = new Text();
     private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
     private Pokemon currentPokemon;
 
@@ -47,7 +48,10 @@ public class MainWindow extends Application {
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(700);
         primaryStage.setWidth(800);
-        primaryStage.setOnCloseRequest(X -> Platform.exit());
+        primaryStage.setOnCloseRequest(X -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     private void setUpEventTriggers() {
@@ -68,7 +72,8 @@ public class MainWindow extends Application {
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         types.setFont(Font.font("Verdana", 25));
         stats.setFont(Font.font("Verdana", 25));
-        moveList.setFont(Font.font("Times New Roman", 14));
+        moveList.setFont(Font.font("Times New Roman", 18));
+        damageRelations.setFont(Font.font("Times New Roman", 18));
     }
 
     private void startUpDisplay(boolean status) {
@@ -149,16 +154,22 @@ public class MainWindow extends Application {
     private void search() {
         try {
             currentPokemon = pokemonProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
-//            types.setText(pokemonProcessor.typesToString(currentPokemon));
-//            stats.setText(pokemonProcessor.statsToString(currentPokemon));
-            pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
-            setUpLowerContent(dropDownMenu.getSelectionModel().getSelectedItem());
+            update();
             startUpDisplay(false);
         }
-        catch(RuntimeException doesNotExist) {
+        catch(Exception doesNotExist) {
             ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());
             noExistence.display();
         }
+    }
+
+    private void update() {
+        types.setText(pokemonProcessor.typesToString(currentPokemon));
+        stats.setText(pokemonProcessor.statsToString(currentPokemon));
+        moveList.setText(pokemonProcessor.movesToString(currentPokemon));
+        damageRelations.setText(pokemonProcessor.damageRelationsToString(currentPokemon));
+        pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
+        setUpLowerContent(dropDownMenu.getSelectionModel().getSelectedItem());
     }
 
     private Parent createPokeFacts() {
@@ -178,20 +189,10 @@ public class MainWindow extends Application {
     private void setUpLowerContent(String selectedValue) {
         if(currentPokemon != null) {
             if (selectedValue.equals("Move Set")) {
-                lowerPortion.setContent(obtainMoveList());
+                lowerPortion.setContent(moveList);
             } else if (selectedValue.equals("Damage Relations")) {
-//                lowerPortion.setContent(pokemonProcessor.DamageRelationsToString(currentPokemon));
-                lowerPortion.setContent(new Text("I am dummy"));
+                lowerPortion.setContent(damageRelations);
             }
         }
-    }
-
-    private Parent obtainMoveList() {
-        VBox moveDisplay = new VBox();
-//        moveList.setText(pokemonProcessor.moveListToString(currentPokemon));
-        moveDisplay.getChildren().addAll(
-                moveList
-        );
-        return moveDisplay;
     }
 }

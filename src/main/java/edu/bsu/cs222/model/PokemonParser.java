@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class PokemonParser {
     private final JsonParser jsonParser = new JsonParser();
-    private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
+    private final URLProcessor urlProcessor = new URLProcessor();
 
     public List<Type> parseForTypes(Object pokemonJsonDocument) {
         List<Type> typeList = new ArrayList<>();
@@ -31,10 +31,7 @@ public class PokemonParser {
         List<String> typeURLs = jsonParser.jsonArrayToStringList(yellowTypeURLArray);
 
         for (int i = 0; i < typeNames.size(); i++) {
-            String name = typeNames.get(i);
-            String url = typeURLs.get(i);
-            Object typeJsonObject = inputStreamConverter.inputStreamToJsonObject(name);
-            // Object typeJsonObject = inputStreamConverter.inputStreamToJsonObject(URLProcessor.getInputStream(url)); // Final version
+            Object typeJsonObject = urlProcessor.stringToObject(typeURLs.get(i));
             Type type = typeBuilder.createType(typeNames.get(i), typeJsonObject);
             typeList.add(type);
         }
@@ -79,8 +76,8 @@ public class PokemonParser {
                     learnMethods.add("TM");
                 }
             }
-            Object moveJsonDocument = inputStreamConverter.inputStreamToJsonObject(moveName);
-            // Object moveJsonDocument = inputStreamConverter.inputStreamToJsonObject(URLProcessor.getInputStream(moveURL)); // Final version
+
+            Object moveJsonDocument = urlProcessor.stringToObject(moveURL);
 
             Move move = moveBuilder.createMove(moveName, moveJsonDocument, learnMethods);
             moveList.add(move);
