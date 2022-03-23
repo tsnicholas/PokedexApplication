@@ -26,7 +26,7 @@ public class PokedexProcessor {
     }
   
     private boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
-        return pokedex.getPokemonList().contains(pokemon);
+        return pokedex.getPokemonNames().contains(pokemon);
     }
 
     private Pokemon processPokemon(String nameOfPokemon) {

@@ -9,7 +9,7 @@ public class Pokedex {
         this.pokemonList = pokemonList;
     }
 
-    public List<String> getPokemonList() {
+    public List<String> getPokemonNames() {
         return pokemonList;
     }
 }
