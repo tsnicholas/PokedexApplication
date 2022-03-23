@@ -11,19 +11,19 @@ class PokemonBuilderTest {
     @Test
     void testPokemonImmunity() {
         Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
-        Assertions.assertEquals("ghost", pokemon.getImmuneTo().get(0));
+        Assertions.assertEquals("ghost", pokemon.getImmunities().get(0));
     }
 
     @Test
     void testPokemonWeakness() {
         Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
-        Assertions.assertEquals("fighting", pokemon.getWeakTo().get(0));
+        Assertions.assertEquals("fighting", pokemon.getWeaknesses().get(0));
     }
 
     @Test
     void testPokemonResistance() {
         Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
-        Assertions.assertEquals(0, pokemon.getResistantTo().size());
+        Assertions.assertEquals(0, pokemon.getResistances().size());
     }
 
     @Test
