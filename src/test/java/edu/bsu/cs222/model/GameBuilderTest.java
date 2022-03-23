@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class GameBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
     private final GameBuilder gameBuilder = new GameBuilder();
-    private final Object yellowJsonDocument = resourceConverter.inputStreamToJsonObject("yellow");
+    private final Object yellowJsonDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("yellow.json"));
 
     @Test
     public void testCreateGame() {
