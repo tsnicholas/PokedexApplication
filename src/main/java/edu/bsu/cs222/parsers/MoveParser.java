@@ -15,7 +15,7 @@ public class MoveParser {
         return nullCheck(type);
     }
 
-    public int parsePP(Object moveInputStream) {
+    public String parsePP(Object moveInputStream) {
         Integer pp;
         if(pastValue(moveInputStream, "pp")) {
             pp = JsonPath.read(moveInputStream, "$.past_values[0].pp");
@@ -23,10 +23,10 @@ public class MoveParser {
         else {
             pp = JsonPath.read(moveInputStream, "$.pp");
         }
-        return nullCheck(pp);
+        return nullCheck(String.valueOf(pp));
     }
 
-    public int parsePower(Object moveInputStream) {
+    public String parsePower(Object moveInputStream) {
         Integer power;
         if(pastValue(moveInputStream, "power")) {
             power = JsonPath.read(moveInputStream, "$.past_values[0].power");
@@ -34,10 +34,10 @@ public class MoveParser {
         else {
             power = JsonPath.read(moveInputStream, "$.power");
         }
-        return nullCheck(power);
+        return nullCheck(String.valueOf(power));
     }
 
-    public int parseAccuracy(Object moveInputStream) {
+    public String parseAccuracy(Object moveInputStream) {
         Integer accuracy;
         if(pastValue(moveInputStream, "accuracy")) {
             accuracy = JsonPath.read(moveInputStream, "$.past_values[0].accuracy");
@@ -46,7 +46,7 @@ public class MoveParser {
             accuracy = JsonPath.read(moveInputStream, "$.accuracy");
         }
 
-        return nullCheck(accuracy);
+        return nullCheck(String.valueOf(accuracy));
     }
 
     private boolean pastValue(Object moveInputStream, String value) {
@@ -55,14 +55,6 @@ public class MoveParser {
             return JsonPath.read(moveInputStream, "$.past_values[0]." + value) != null;
         }
         return false;
-    }
-
-    private int nullCheck(Integer stat) {
-        if(stat == null) {
-            return 0;
-        }
-
-        return stat;
     }
 
     private String nullCheck(String type) {

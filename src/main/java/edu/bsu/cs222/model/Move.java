@@ -5,12 +5,12 @@ import java.util.List;
 public class Move {
     private final String name;
     private final String type;
-    private final int PP;
-    private final int power;
-    private final int accuracy;
+    private final String PP;
+    private final String power;
+    private final String accuracy;
     private final List<String> learnMethods;
 
-    public Move(String name, String type, int PP, int power, int accuracy, List<String> learnMethods) {
+    public Move(String name, String type, String PP, String power, String accuracy, List<String> learnMethods) {
         this.name = name;
         this.type = type;
         this.PP = PP;
