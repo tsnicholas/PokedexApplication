@@ -21,7 +21,7 @@ class TypeParserTest {
         expected.add("fire");
         expected.add("poison");
         type = typeBuilder.createType("bug", bugDocument);
-        Assertions.assertArrayEquals(expected.toArray(), type.getWeakTo().toArray());
+        Assertions.assertEquals(expected, type.getWeakTo());
     }
 
     @Test
@@ -31,7 +31,7 @@ class TypeParserTest {
         expected.add("steel");
         expected.add("electric");
         type = typeBuilder.createType("electric", electricDocument);
-        Assertions.assertArrayEquals(expected.toArray(), type.getResistantTo().toArray());
+        Assertions.assertEquals(expected, type.getResistantTo());
     }
 
     @Test
@@ -40,6 +40,6 @@ class TypeParserTest {
         expected.add("normal");
         expected.add("fighting");
         type = typeBuilder.createType("ghost", ghostDocument);
-        Assertions.assertArrayEquals(expected.toArray(), type.getImmuneTo().toArray());
+        Assertions.assertEquals(expected, type.getImmuneTo());
     }
 }
