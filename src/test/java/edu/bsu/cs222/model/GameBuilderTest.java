@@ -10,7 +10,7 @@ public class GameBuilderTest {
     private final Object yellowJsonDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("yellow.json"));
 
     @Test
-    public void testCreateGame() {
+    public void createGameTest() {
         Game game = gameBuilder.createGame("yellow", yellowJsonDocument);
         Assertions.assertEquals("bulbasaur", game.getPokedex().get(0));
         Assertions.assertEquals("mew", game.getPokedex().get(150));

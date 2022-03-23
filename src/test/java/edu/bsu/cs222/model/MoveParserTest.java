@@ -18,22 +18,22 @@ public class MoveParserTest {
 
     @Test
     public void parsePPTest() {
-        int expectedTackle = 35;
-        int actualTackle = moveParser.parsePP(tackle);
+        String expectedTackle = "35";
+        String actualTackle = moveParser.parsePP(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
     }
 
     @Test
     public void parsePowerTest() {
-        int expectedTackle = 35;
-        int actualTackle = moveParser.parsePower(tackle);
+        String expectedTackle = "35";
+        String actualTackle = moveParser.parsePower(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
     }
 
     @Test
     public void parseAccuracyTest() {
-        int expectedTackle = 95;
-        int actualTackle = moveParser.parseAccuracy(tackle);
+        String expectedTackle = "95";
+        String actualTackle = moveParser.parseAccuracy(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
     }
 }

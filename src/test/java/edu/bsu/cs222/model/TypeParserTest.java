@@ -14,7 +14,7 @@ class TypeParserTest {
     private Type type;
 
     @Test
-    public void testParseWeakTo() {
+    public void parseWeakToTest() {
         ArrayList<String> expected = new ArrayList<>();
         expected.add("flying");
         expected.add("rock");
@@ -25,7 +25,7 @@ class TypeParserTest {
     }
 
     @Test
-    public void testParseResistantTo() {
+    public void parseResistantToTest() {
         ArrayList<String> expected = new ArrayList<>();
         expected.add("flying");
         expected.add("steel");
@@ -35,7 +35,7 @@ class TypeParserTest {
     }
 
     @Test
-    public void testParseImmuneTo() {
+    public void parseImmuneToTest() {
         ArrayList<String> expected = new ArrayList<>();
         expected.add("normal");
         expected.add("fighting");

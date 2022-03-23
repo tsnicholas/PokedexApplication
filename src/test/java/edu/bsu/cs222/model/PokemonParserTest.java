@@ -18,20 +18,20 @@ class PokemonParserTest {
     private List<Type> types = new ArrayList<>();
 
     @Test
-    public void testParseForPastType() {
+    public void parseForPastTypeTest() {
         types = pokemonParser.parseForTypes(clefableDocument);
         Assertions.assertEquals("normal", types.get(0).getName());
     }
 
     @Test
-    public void testParseForTypes() {
+    public void parseForTypesTest() {
         types = pokemonParser.parseForTypes(charizardDocument);
         Assertions.assertEquals("fire", types.get(0).getName());
         Assertions.assertEquals("flying", types.get(1).getName());
     }
 
     @Test
-    public void testParseForStats() {
+    public void parseForStatsTest() {
         Map<String, Integer> expected  = new HashMap<>();
         expected.put("hp", 78);
         expected.put("attack", 84);
@@ -44,11 +44,11 @@ class PokemonParserTest {
     }
 
     @Test
-    void testParseForMoves() {
+    void parseForMovesTest() {
         List<Move> expected = new ArrayList<>();
         List<String> expectedLearnMethods = new ArrayList<>();
         expectedLearnMethods.add("LV 1");
-        expected.add(new Move("transform", "normal", 10, 0, 0, expectedLearnMethods));
+        expected.add(new Move("transform", "normal", "10", "0", "0", expectedLearnMethods));
 
         List<Move> actual = pokemonParser.parseForMoves(dittoDocument);
         Assertions.assertEquals(expected.toString(), actual.toString());
