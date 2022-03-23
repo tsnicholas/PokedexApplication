@@ -67,9 +67,9 @@ public class PokemonProcessor {
     }
 
     public String damageRelationsToString(Pokemon pokemon) {
-        return  "Weaknesses: " + convertStringListToString(pokemon.getWeakTo()) + "\n" +
-                "Resistances: " + convertStringListToString(pokemon.getResistantTo()) + "\n" +
-                "Immunities: " + convertStringListToString(pokemon.getImmuneTo()) + "\n";
+        return  "Weaknesses: " + convertStringListToString(pokemon.getWeaknesses()) + "\n" +
+                "Resistances: " + convertStringListToString(pokemon.getResistances()) + "\n" +
+                "Immunities: " + convertStringListToString(pokemon.getImmunities()) + "\n";
     }
 
     private String convertStringListToString(List<String> list) {
