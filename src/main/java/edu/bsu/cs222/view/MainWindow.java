@@ -1,7 +1,7 @@
 package edu.bsu.cs222.view;
 
 import edu.bsu.cs222.model.Pokemon;
-import edu.bsu.cs222.model.PokemonProcessor;
+import edu.bsu.cs222.model.PokedexProcessor;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -30,7 +30,7 @@ public class MainWindow extends Application {
     private final ScrollPane lowerPortion = new ScrollPane();
     private final Text moveList = new Text();
     private final Text damageRelations = new Text();
-    private final PokemonProcessor pokemonProcessor = new PokemonProcessor();
+    private final PokedexProcessor pokemonProcessor = new PokedexProcessor();
     private Pokemon currentPokemon;
 
     @Override

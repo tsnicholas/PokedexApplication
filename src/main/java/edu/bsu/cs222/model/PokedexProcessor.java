@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class PokemonProcessor {
+public class PokedexProcessor {
     private final PokedexBuilder gameBuilder = new PokedexBuilder();
     private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
     private final URLProcessor urlProcessor = new URLProcessor();
