@@ -5,30 +5,30 @@ import org.junit.jupiter.api.Test;
 
 class PokemonBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject("ditto");
+    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ditto.json"));
     private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
 
     @Test
-    void testPokemonImmunity() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
-        Assertions.assertEquals("ghost", pokemon.getImmuneTo().get(0));
+    void pokemonImmunityTest() {
+        Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
+        Assertions.assertEquals("ghost", pokemon.getImmunities().get(0));
     }
 
     @Test
-    void testPokemonWeakness() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
-        Assertions.assertEquals("fighting", pokemon.getWeakTo().get(0));
+    void pokemonWeaknessTest() {
+        Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
+        Assertions.assertEquals("fighting", pokemon.getWeaknesses().get(0));
     }
 
     @Test
-    void testPokemonResistance() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
-        Assertions.assertEquals(0, pokemon.getResistantTo().size());
+    void pokemonResistanceTest() {
+        Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
+        Assertions.assertEquals(0, pokemon.getResistances().size());
     }
 
     @Test
-    void testPokemonStats() {
-        Pokemon pokemon = pokemonBuilder.createPokemon("ditto", dittoDocument);
+    void pokemonStatsTest() {
+        Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
         Assertions.assertEquals(48, pokemon.getStats().get("hp"));
         Assertions.assertEquals(48, pokemon.getStats().get("attack"));
         Assertions.assertEquals(48, pokemon.getStats().get("defense"));

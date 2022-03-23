@@ -1,25 +1,42 @@
 package edu.bsu.cs222.model;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
-public record Move(String name, String type, int PP, int power, int accuracy, List<String> learnMethods) {
-    public String toString() {
-        StringBuilder output = new StringBuilder();
-        for(String learnMethod: learnMethods) {
-            output.append(name);
-            output.append(" ");
-            output.append(type);
-            output.append(" ");
-            output.append(PP);
-            output.append(" ");
-            output.append(power);
-            output.append(" ");
-            output.append(accuracy);
-            output.append(" ");
-            output.append(learnMethod);
-            output.append("\n");
-        }
+public class Move {
+    private final LinkedHashMap<String, String> moveData;
+    private final List<String> learnMethods;
 
-        return output.toString();
+    public Move(LinkedHashMap<String, String> moveData, List<String> learnMethods) {
+        this.moveData = moveData;
+        this.learnMethods = learnMethods;
+    }
+
+    public LinkedHashMap<String, String> getMoveData() {
+        return moveData;
+    }
+
+    public String getName() {
+        return moveData.get("Name");
+    }
+
+    public String getType() {
+        return moveData.get("Type");
+    }
+
+    public String getPP() {
+        return moveData.get("PP");
+    }
+
+    public String getPower() {
+        return moveData.get("Power");
+    }
+
+    public String getAccuracy() {
+        return moveData.get("Accuracy");
+    }
+
+    public List<String> getLearnMethods() {
+        return learnMethods;
     }
 }

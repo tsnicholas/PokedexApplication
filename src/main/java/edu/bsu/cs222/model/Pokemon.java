@@ -1,23 +1,22 @@
 package edu.bsu.cs222.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Pokemon {
     private final List<Type> typeList;
     private final List<Move> moveList;
     private final Map<String, Integer> statsMap;
     private final String imageURL;
-    private List<String> weakTo = new ArrayList<>();
-    private List<String> resistantTo = new ArrayList<>();
-    private List<String> immuneTo = new ArrayList<>();
+    private List<String> weaknesses = new ArrayList<>();
+    private List<String> resistances = new ArrayList<>();
+    private List<String> immunities = new ArrayList<>();
 
-    public Pokemon(String name, List<Type> types, Map<String, Integer> stats, List<Move> moves, String pokemonImageURL) {
+    public Pokemon(List<Type> types, Map<String, Integer> stats, List<Move> moves, String pokemonImageURL) {
         typeList = types;
         statsMap = stats;
         moveList = moves;
         imageURL = pokemonImageURL;
+        setDamageRelations();
     }
 
     public List<Type> getTypeList() {
@@ -28,16 +27,16 @@ public class Pokemon {
         return statsMap;
     }
 
-    public List<String> getWeakTo() {
-        return weakTo;
+    public List<String> getWeaknesses() {
+        return weaknesses;
     }
 
-    public List<String> getResistantTo() {
-        return resistantTo;
+    public List<String> getResistances() {
+        return resistances;
     }
 
-    public List<String> getImmuneTo() {
-        return immuneTo;
+    public List<String> getImmunities() {
+        return immunities;
     }
 
     public List<Move> getMoveList() {
@@ -48,16 +47,37 @@ public class Pokemon {
         return imageURL;
     }
 
-    public void setWeakTo(List<String> weakTo) {
-        this.weakTo = weakTo;
+    private void setDamageRelations() {
+        if (typeList.size() == 1) {
+            immunities = typeList.get(0).getImmuneTo();
+            weaknesses = typeList.get(0).getWeakTo();
+            resistances = typeList.get(0).getResistantTo();
+            return;
+        }
+        List<String> immuneTo = new ArrayList<>();
+        List<String> weakTo = new ArrayList<>();
+        List<String> resistantTo = new ArrayList<>();
+        for (Type type : typeList) {
+            immuneTo.addAll(type.getImmuneTo());
+            weakTo.addAll(type.getWeakTo());
+            resistantTo.addAll(type.getResistantTo());
+        }
+        weakTo.removeIf(resistantTo::remove);
+        immuneTo = eliminateDuplicates(immuneTo);
+        weakTo = eliminateDuplicates(weakTo);
+        resistantTo = eliminateDuplicates(resistantTo);
+        for (String immunity : immuneTo) {
+            weakTo.remove(immunity);
+            resistantTo.remove(immunity);
+        }
+
+        immunities = immuneTo;
+        weaknesses = weakTo;
+        resistances = resistantTo;
     }
 
-    public void setResistantTo(List<String> resistantTo) {
-        this.resistantTo = resistantTo;
+    private List<String> eliminateDuplicates(List<String> stringList) {
+        Set<String> stringSet = new HashSet<>(stringList);
+        return new ArrayList<>(stringSet);
     }
-
-    public void setImmuneTo(List<String> immuneTo) {
-        this.immuneTo = immuneTo;
-    }
-
 }

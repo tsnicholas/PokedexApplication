@@ -1,4 +1,4 @@
-package edu.bsu.cs222.model;
+package edu.bsu.cs222.parsers;
 
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
@@ -15,7 +15,7 @@ public class MoveParser {
         return nullCheck(type);
     }
 
-    public int parsePP(Object moveInputStream) {
+    public String parsePP(Object moveInputStream) {
         Integer pp;
         if(pastValue(moveInputStream, "pp")) {
             pp = JsonPath.read(moveInputStream, "$.past_values[0].pp");
@@ -23,10 +23,10 @@ public class MoveParser {
         else {
             pp = JsonPath.read(moveInputStream, "$.pp");
         }
-        return nullCheck(pp);
+        return nullCheck(String.valueOf(pp));
     }
 
-    public int parsePower(Object moveInputStream) {
+    public String parsePower(Object moveInputStream) {
         Integer power;
         if(pastValue(moveInputStream, "power")) {
             power = JsonPath.read(moveInputStream, "$.past_values[0].power");
@@ -34,10 +34,10 @@ public class MoveParser {
         else {
             power = JsonPath.read(moveInputStream, "$.power");
         }
-        return nullCheck(power);
+        return nullCheck(String.valueOf(power));
     }
 
-    public int parseAccuracy(Object moveInputStream) {
+    public String parseAccuracy(Object moveInputStream) {
         Integer accuracy;
         if(pastValue(moveInputStream, "accuracy")) {
             accuracy = JsonPath.read(moveInputStream, "$.past_values[0].accuracy");
@@ -46,11 +46,9 @@ public class MoveParser {
             accuracy = JsonPath.read(moveInputStream, "$.accuracy");
         }
 
-        return nullCheck(accuracy);
+        return nullCheck(String.valueOf(accuracy));
     }
 
-    // Since we're doing only Gen 1 for now, past values will always be in the first array. We'll have to change this method when
-    // we implement newer gens, possibly need some kind of map that tracks game order. Won't be too hard to change.
     private boolean pastValue(Object moveInputStream, String value) {
         JSONArray pastValues = JsonPath.read(moveInputStream, "$.past_values");
         if(pastValues.size() > 0) {
@@ -59,16 +57,8 @@ public class MoveParser {
         return false;
     }
 
-    private int nullCheck(Integer stat) {
-        if(stat == null) {
-            return 0;
-        }
-
-        return stat;
-    }
-
     private String nullCheck(String type) {
-        if(type == null) {
+        if(type.equals("null")) {
             return "--";
         }
 

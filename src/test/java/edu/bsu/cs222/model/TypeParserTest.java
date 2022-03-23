@@ -3,36 +3,43 @@ package edu.bsu.cs222.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 class TypeParserTest {
     private final TypeBuilder typeBuilder = new TypeBuilder();
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object electricDocument = resourceConverter.inputStreamToJsonObject("electric");
-    private final Object bugDocument = resourceConverter.inputStreamToJsonObject("bug");
-    private final Object ghostDocument = resourceConverter.inputStreamToJsonObject("ghost");
+    private final Object electricDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("electric.json"));
+    private final Object bugDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("bug.json"));
+    private final Object ghostDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ghost.json"));
     private Type type;
 
     @Test
-    public void testParseWeakTo() {
+    public void parseWeakToTest() {
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("flying");
+        expected.add("rock");
+        expected.add("fire");
+        expected.add("poison");
         type = typeBuilder.createType("bug", bugDocument);
-        Assertions.assertEquals("flying", type.getWeakTo().get(0));
-        Assertions.assertEquals("rock", type.getWeakTo().get(1));
-        Assertions.assertEquals("fire", type.getWeakTo().get(2));
-        Assertions.assertEquals("poison", type.getWeakTo().get(3));
+        Assertions.assertEquals(expected, type.getWeakTo());
     }
 
     @Test
-    public void testParseResistantTo() {
+    public void parseResistantToTest() {
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("flying");
+        expected.add("steel");
+        expected.add("electric");
         type = typeBuilder.createType("electric", electricDocument);
-        Assertions.assertEquals("flying", type.getResistantTo().get(0));
-        Assertions.assertEquals("steel", type.getResistantTo().get(1));
-        Assertions.assertEquals("electric", type.getResistantTo().get(2));
+        Assertions.assertEquals(expected, type.getResistantTo());
     }
 
     @Test
-    public void testParseImmuneTo() {
+    public void parseImmuneToTest() {
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("normal");
+        expected.add("fighting");
         type = typeBuilder.createType("ghost", ghostDocument);
-        Assertions.assertEquals("normal", type.getImmuneTo().get(0));
-        Assertions.assertEquals("fighting", type.getImmuneTo().get(1));
+        Assertions.assertEquals(expected, type.getImmuneTo());
     }
-
 }
