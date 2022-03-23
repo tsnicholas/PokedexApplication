@@ -78,6 +78,7 @@ public class PokedexProcessor {
             output.append(move.getPower());
             output.append(move.getAccuracy());
             output.append(learnMethod);
+            output.append("\n");
         }
         return output.toString();
     }
