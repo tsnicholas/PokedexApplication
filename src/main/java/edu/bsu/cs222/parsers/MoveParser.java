@@ -49,8 +49,6 @@ public class MoveParser {
         return nullCheck(accuracy);
     }
 
-    // Since we're doing only Gen 1 for now, past values will always be in the first array. We'll have to change this method when
-    // we implement newer gens, possibly need some kind of map that tracks game order. Won't be too hard to change.
     private boolean pastValue(Object moveInputStream, String value) {
         JSONArray pastValues = JsonPath.read(moveInputStream, "$.past_values");
         if(pastValues.size() > 0) {

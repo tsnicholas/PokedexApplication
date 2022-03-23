@@ -24,7 +24,6 @@ public class TypeBuilder {
         JSONArray pastDamageRelationsArray = JsonPath.read(typeJsonDocument,"$.past_damage_relations");
         LinkedHashMap<Class<?>, Class<?>> yellowDamageRelationsMap;
         if (pastDamageRelationsArray.size() != 0) {
-            // This solution only works for gen 1
             yellowDamageRelationsMap = JsonPath.read(typeJsonDocument, "$.past_damage_relations[0].damage_relations");
         } else {
             yellowDamageRelationsMap = JsonPath.read(typeJsonDocument, "$.damage_relations");

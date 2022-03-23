@@ -18,7 +18,6 @@ public class PokemonParser {
         List<Type> typeList = new ArrayList<>();
         TypeBuilder typeBuilder = new TypeBuilder();
 
-        // the following line only works for gen 1
         JSONArray yellowTypeNameArray = JsonPath.read(pokemonJsonDocument, "$.past_types[0].types..name");
         JSONArray yellowTypeURLArray = JsonPath.read(pokemonJsonDocument, "$.past_types[0].types..url");
 
@@ -85,7 +84,6 @@ public class PokemonParser {
         return moveList;
     }
 
-    // This will definitely have to change when add later gens. We'll discuss it when the time comes, I have some ideas.
     public String parseForImage(Object pokemonJsonDocument) {
         return JsonPath.read(pokemonJsonDocument, "$.sprites.versions.generation-i.yellow.front_default");
     }
