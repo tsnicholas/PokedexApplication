@@ -58,7 +58,7 @@ public class MoveParser {
     }
 
     private String nullCheck(String type) {
-        if(type == null) {
+        if(type.equals("null")) {
             return "--";
         }
 
