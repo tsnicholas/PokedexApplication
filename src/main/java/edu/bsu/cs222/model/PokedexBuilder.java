@@ -4,11 +4,11 @@ import edu.bsu.cs222.parsers.GameParser;
 
 import java.util.List;
 
-public class GameBuilder {
+public class PokedexBuilder {
     private final GameParser gameParser = new GameParser();
 
-    public Game createGame(String gameName, Object gameJsonDocument) {
+    public Pokedex createPokedex(Object gameJsonDocument) {
         List<String> pokedex = gameParser.parseForPokedex(gameJsonDocument);
-        return new Game(gameName, pokedex);
+        return new Pokedex(pokedex);
     }
 }
