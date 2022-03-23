@@ -32,7 +32,7 @@ public class PokemonProcessor {
     private Pokemon processPokemon(String nameOfPokemon) {
         URL pokemonUrl = urlProcessor.getPokemonURL(nameOfPokemon);
         Object pokemonJsonFile = urlProcessor.urlToObject(pokemonUrl);
-        return pokemonBuilder.createPokemon(nameOfPokemon, pokemonJsonFile);
+        return pokemonBuilder.createPokemon(pokemonJsonFile);
     }
 
     public String typesToString(Pokemon pokemon) {

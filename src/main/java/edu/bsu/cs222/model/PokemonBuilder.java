@@ -7,12 +7,12 @@ import java.util.*;
 public class PokemonBuilder {
     private final PokemonParser pokemonParser = new PokemonParser();
 
-    public Pokemon createPokemon(String name, Object pokemonJsonObject) {
+    public Pokemon createPokemon(Object pokemonJsonObject) {
         List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
         Map<String, Integer> stats = pokemonParser.parseForStats(pokemonJsonObject);
         List<Move> moves = pokemonParser.parseForMoves(pokemonJsonObject);
         String pokemonImageURL = pokemonParser.parseForImage(pokemonJsonObject);
-        Pokemon pokemon = new Pokemon(name, types, stats, moves, pokemonImageURL);
+        Pokemon pokemon = new Pokemon(types, stats, moves, pokemonImageURL);
         setDamageRelations(pokemon);
         return pokemon;
     }

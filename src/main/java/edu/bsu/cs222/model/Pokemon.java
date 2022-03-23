@@ -13,7 +13,7 @@ public class Pokemon {
     private List<String> resistantTo = new ArrayList<>();
     private List<String> immuneTo = new ArrayList<>();
 
-    public Pokemon(String name, List<Type> types, Map<String, Integer> stats, List<Move> moves, String pokemonImageURL) {
+    public Pokemon(List<Type> types, Map<String, Integer> stats, List<Move> moves, String pokemonImageURL) {
         typeList = types;
         statsMap = stats;
         moveList = moves;
@@ -59,5 +59,4 @@ public class Pokemon {
     public void setImmuneTo(List<String> immuneTo) {
         this.immuneTo = immuneTo;
     }
-
 }
