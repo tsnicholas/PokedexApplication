@@ -5,20 +5,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MoveParserTest {
-    private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
+    private final InputStreamConverter resourceConverter = new InputStreamConverter();
     private final MoveParser moveParser = new MoveParser();
-    private final Object tackle = inputStreamConverter.inputStreamToJsonObject("tackle");
-    private final Object bite = inputStreamConverter.inputStreamToJsonObject("bite");
+    private final Object tackle = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("tackle.json"));
 
     @Test
     public void parseTypeTest() {
         String expectedTackle = "normal";
         String actualTackle = moveParser.parseType(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
-
-        String expectedBite = "normal";
-        String actualBite = moveParser.parseType(bite);
-        Assertions.assertEquals(expectedBite, actualBite);
     }
 
     @Test
@@ -26,10 +21,6 @@ public class MoveParserTest {
         int expectedTackle = 35;
         int actualTackle = moveParser.parsePP(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
-
-        int expectedBite = 25;
-        int actualBite = moveParser.parsePP(bite);
-        Assertions.assertEquals(expectedBite, actualBite);
     }
 
     @Test
@@ -37,10 +28,6 @@ public class MoveParserTest {
         int expectedTackle = 35;
         int actualTackle = moveParser.parsePower(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
-
-        int expectedBite = 60;
-        int actualBite = moveParser.parsePower(bite);
-        Assertions.assertEquals(expectedBite, actualBite);
     }
 
     @Test
@@ -48,9 +35,5 @@ public class MoveParserTest {
         int expectedTackle = 95;
         int actualTackle = moveParser.parseAccuracy(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
-
-        int expectedBite = 100;
-        int actualBite = moveParser.parseAccuracy(bite);
-        Assertions.assertEquals(expectedBite, actualBite);
     }
 }
