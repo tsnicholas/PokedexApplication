@@ -8,8 +8,8 @@ import java.util.List;
 public class PokedexParser {
     private final JsonParser jsonParser = new JsonParser();
 
-    public List<String> getPokemonNames(Object pokdexJsonObject) {
-        JSONArray pokemonNamesArray = JsonPath.read(pokdexJsonObject, "$.pokemon_entries..pokemon_species.name");
+    public List<String> getPokemonNames(Object pokedexJsonObject) {
+        JSONArray pokemonNamesArray = JsonPath.read(pokedexJsonObject, "$.pokemon_entries..pokemon_species.name");
         return jsonParser.jsonArrayToStringList(pokemonNamesArray);
     }
 }

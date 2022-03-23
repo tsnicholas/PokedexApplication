@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 public class PokedexProcessor {
-    private final PokedexBuilder gameBuilder = new PokedexBuilder();
+    private final PokedexBuilder pokedexBuilder = new PokedexBuilder();
     private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
     private final URLProcessor urlProcessor = new URLProcessor();
 
     public Pokemon process(String nameOfPokemon, String nameOfGame) throws RuntimeException {
-        Pokedex game = getGame(nameOfGame);
-        if(pokemonExistsInGame(nameOfPokemon, game)) {
+        Pokedex pokedex = getPokedex(nameOfGame);
+        if(pokemonExistsWithinPokedex(nameOfPokemon, pokedex)) {
             return processPokemon(nameOfPokemon);
         }
         else {
@@ -19,14 +19,14 @@ public class PokedexProcessor {
         }
     }
   
-    private Pokedex getGame(String nameOfGame) {
+    private Pokedex getPokedex(String nameOfGame) {
         URL gameURL = urlProcessor.getGameURL(nameOfGame);
         Object gameFile = urlProcessor.urlToObject(gameURL);
-        return gameBuilder.createPokedex(gameFile);
+        return pokedexBuilder.createPokedex(gameFile);
     }
   
-    private boolean pokemonExistsInGame(String pokemon, Pokedex game) {
-        return game.getPokedex().contains(pokemon);
+    private boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
+        return pokedex.getPokemonList().contains(pokemon);
     }
 
     private Pokemon processPokemon(String nameOfPokemon) {
