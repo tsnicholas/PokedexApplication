@@ -1,7 +1,6 @@
 package edu.bsu.cs222.parsers;
 
 import com.jayway.jsonpath.JsonPath;
-import edu.bsu.cs222.model.PokedexParser;
 import edu.bsu.cs222.model.URLProcessor;
 import net.minidev.json.JSONArray;
 
