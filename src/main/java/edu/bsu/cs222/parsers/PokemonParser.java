@@ -1,10 +1,10 @@
-package edu.bsu.cs222.model;
+package edu.bsu.cs222.parsers;
 
 import com.jayway.jsonpath.JsonPath;
-import javafx.scene.image.Image;
+import edu.bsu.cs222.model.*;
+import edu.bsu.cs222.parsers.JsonParser;
 import net.minidev.json.JSONArray;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

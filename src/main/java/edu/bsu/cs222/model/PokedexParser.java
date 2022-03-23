@@ -1,6 +1,7 @@
 package edu.bsu.cs222.model;
 
 import com.jayway.jsonpath.JsonPath;
+import edu.bsu.cs222.parsers.JsonParser;
 import net.minidev.json.JSONArray;
 
 import java.util.List;

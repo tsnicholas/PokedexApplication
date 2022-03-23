@@ -1,5 +1,7 @@
 package edu.bsu.cs222.model;
 
+import edu.bsu.cs222.parsers.GameParser;
+
 import java.util.List;
 
 public class GameBuilder {

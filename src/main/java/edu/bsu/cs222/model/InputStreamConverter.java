@@ -1,5 +1,7 @@
 package edu.bsu.cs222.model;
 
+import edu.bsu.cs222.parsers.JsonParser;
+
 import java.io.InputStream;
 import java.util.Scanner;
 

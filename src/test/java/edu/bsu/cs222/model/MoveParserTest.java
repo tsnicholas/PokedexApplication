@@ -1,5 +1,6 @@
 package edu.bsu.cs222.model;
 
+import edu.bsu.cs222.parsers.MoveParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

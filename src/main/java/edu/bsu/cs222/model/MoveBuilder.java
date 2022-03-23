@@ -1,5 +1,7 @@
 package edu.bsu.cs222.model;
 
+import edu.bsu.cs222.parsers.MoveParser;
+
 import java.util.List;
 
 public class MoveBuilder {
