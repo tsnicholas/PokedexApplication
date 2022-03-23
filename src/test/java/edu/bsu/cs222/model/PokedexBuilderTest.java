@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
-public class GameBuilderTest {
+public class PokedexBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
     private final PokedexBuilder gameBuilder = new PokedexBuilder();
     private final Object yellowJsonDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("yellow.json"));
@@ -12,8 +12,8 @@ public class GameBuilderTest {
     @Test
     public void createGameTest() {
         Pokedex game = gameBuilder.createPokedex(yellowJsonDocument);
-        Assertions.assertEquals("bulbasaur", game.getPokemonList().get(0));
-        Assertions.assertEquals("mew", game.getPokemonList().get(150));
+        Assertions.assertEquals("bulbasaur", game.getPokemonNames().get(0));
+        Assertions.assertEquals("mew", game.getPokemonNames().get(150));
     }
 
 }
