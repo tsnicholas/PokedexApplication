@@ -57,11 +57,27 @@ public class PokedexProcessor {
         return output.toString();
     }
 
+    // Temporary until we add the grid pane
     public String movesToString(Pokemon pokemon) {
         StringBuilder output = new StringBuilder();
         List<Move> moves = pokemon.getMoveList();
         for(Move move: moves) {
-            output.append(move.toString());
+            output.append(moveToString(move));
+        }
+        return output.toString();
+    }
+
+    // Temporary until we add the grid pane
+    // Will be phased out for a better suited method
+    public String moveToString(Move move) {
+        StringBuilder output = new StringBuilder();
+        for(String learnMethod: move.getLearnMethods()) {
+            output.append(move.getName());
+            output.append(move.getType());
+            output.append(move.getPP());
+            output.append(move.getPower());
+            output.append(move.getAccuracy());
+            output.append(learnMethod);
         }
         return output.toString();
     }
