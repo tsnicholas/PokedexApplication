@@ -5,15 +5,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 class PokemonParserTest {
     private final PokemonParser pokemonParser = new PokemonParser();
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object clefableDocument = resourceConverter.inputStreamToJsonObject("clefable");
-    private final Object charizardDocument = resourceConverter.inputStreamToJsonObject("charizard");
-    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject("ditto");
+    private final Object clefableDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("clefable.json"));
+    private final Object charizardDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("charizard.json"));
+    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ditto.json"));
     private List<Type> types = new ArrayList<>();
 
     @Test
@@ -31,13 +32,15 @@ class PokemonParserTest {
 
     @Test
     public void testParseForStats() {
+        Map<String, Integer> expected  = new HashMap<>();
+        expected.put("hp", 78);
+        expected.put("attack", 84);
+        expected.put("defense", 78);
+        expected.put("special-attack", 109);
+        expected.put("special-defense", 85);
+        expected.put("speed", 100);
         Map<String, Integer> stats = pokemonParser.parseForStats(charizardDocument);
-        Assertions.assertEquals(78, stats.get("hp"));
-        Assertions.assertEquals(84, stats.get("attack"));
-        Assertions.assertEquals(78, stats.get("defense"));
-        Assertions.assertEquals(109, stats.get("special-attack"));
-        Assertions.assertEquals(85, stats.get("special-defense"));
-        Assertions.assertEquals(100, stats.get("speed"));
+        Assertions.assertEquals(expected, stats);
     }
 
     @Test
@@ -48,6 +51,6 @@ class PokemonParserTest {
         expected.add(new Move("transform", "normal", 10, 0, 0, expectedLearnMethods));
 
         List<Move> actual = pokemonParser.parseForMoves(dittoDocument);
-        Assertions.assertArrayEquals(expected.toArray(), actual.toArray());
+        Assertions.assertEquals(expected.toString(), actual.toString());
     }
 }
