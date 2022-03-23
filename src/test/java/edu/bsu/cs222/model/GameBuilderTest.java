@@ -12,8 +12,8 @@ public class GameBuilderTest {
     @Test
     public void createGameTest() {
         Pokedex game = gameBuilder.createPokedex(yellowJsonDocument);
-        Assertions.assertEquals("bulbasaur", game.getPokedex().get(0));
-        Assertions.assertEquals("mew", game.getPokedex().get(150));
+        Assertions.assertEquals("bulbasaur", game.getPokemonList().get(0));
+        Assertions.assertEquals("mew", game.getPokemonList().get(150));
     }
 
 }
