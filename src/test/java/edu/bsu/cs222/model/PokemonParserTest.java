@@ -4,10 +4,7 @@ import edu.bsu.cs222.parsers.PokemonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class PokemonParserTest {
     private final PokemonParser pokemonParser = new PokemonParser();
@@ -44,13 +41,19 @@ class PokemonParserTest {
     }
 
     @Test
-    void parseForMovesTest() {
+    public void parseForMovesTest() {
         List<Move> expected = new ArrayList<>();
         List<String> expectedLearnMethods = new ArrayList<>();
         expectedLearnMethods.add("LV 1");
-        expected.add(new Move("transform", "normal", "10", "0", "0", expectedLearnMethods));
+        LinkedHashMap<String, String> expectedMoveData = new LinkedHashMap<>();
+        expectedMoveData.put("Name", "transform");
+        expectedMoveData.put("Type", "normal");
+        expectedMoveData.put("PP", "10");
+        expectedMoveData.put("Power", "--");
+        expectedMoveData.put("Accuracy", "--");
+        expected.add(new Move(expectedMoveData, expectedLearnMethods));
 
         List<Move> actual = pokemonParser.parseForMoves(dittoDocument);
-        Assertions.assertEquals(expected.toString(), actual.toString());
+        Assertions.assertEquals(expected.get(0).getMoveData(), actual.get(0).getMoveData());
     }
 }
