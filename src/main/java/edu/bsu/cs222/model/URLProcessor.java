@@ -13,7 +13,8 @@ import java.nio.charset.Charset;
 public class URLProcessor {
     private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
 
-    public URLProcessor() {}
+    public URLProcessor() {
+    }
 
     public URL getPokemonURL(String pokemon) {
         String urlString = getURLString("https://pokeapi.co/api/v2/pokemon/%s", pokemon);
@@ -43,33 +44,22 @@ public class URLProcessor {
 
     private InputStream getInputStream(URL url) {
         try {
-            URLConnection urlConnection = openURLConnection(url);
+            URLConnection urlConnection = url.openConnection();
             return urlConnection.getInputStream();
-        }
-        catch(IOException ioException) {
-            throw new IllegalStateException(ioException);
-        }
-    }
-
-    private URL verifyURL(String urlString) {
-        try {
-            return new URL(urlString);
-        }
-        catch(MalformedURLException malformedURLException) {
-            throw new IllegalStateException(malformedURLException);
-        }
-    }
-
-    private URLConnection openURLConnection(URL url) {
-        try {
-            return url.openConnection();
-        }
-        catch(IOException networkError) {
+        } catch (IOException networkError) {
             ErrorWindow networkErrorWindow = new ErrorWindow("A network error has occurred");
             networkErrorWindow.display();
             System.exit(1);
         }
 
         return null;
+    }
+
+    private URL verifyURL(String urlString) {
+        try {
+            return new URL(urlString);
+        } catch (MalformedURLException malformedURLException) {
+            throw new IllegalStateException(malformedURLException);
+        }
     }
 }
