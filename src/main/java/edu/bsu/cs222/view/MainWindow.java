@@ -48,10 +48,7 @@ public class MainWindow extends Application {
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(700);
         primaryStage.setWidth(800);
-        primaryStage.setOnCloseRequest(X -> {
-            Platform.exit();
-            System.exit(0);
-        });
+        primaryStage.setOnCloseRequest(X -> Platform.exit());
     }
 
     private void setUpEventTriggers() {
@@ -157,7 +154,7 @@ public class MainWindow extends Application {
             update();
             startUpDisplay(false);
         }
-        catch(Exception doesNotExist) {
+        catch(RuntimeException doesNotExist) {
             ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());
             noExistence.display();
         }
