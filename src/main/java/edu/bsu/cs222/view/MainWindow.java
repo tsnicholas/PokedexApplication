@@ -76,12 +76,12 @@ public class MainWindow extends Application {
         damageRelations.setFont(Font.font("Times New Roman", 18));
     }
 
-    private void startUpDisplay(boolean status) {
-        pokemonImage.setVisible(!status);
-        types.setVisible(!status);
-        stats.setVisible(!status);
-        dropDownMenu.setVisible(!status);
-        lowerPortion.setVisible(!status);
+    private void startUpDisplay(boolean startUp) {
+        pokemonImage.setVisible(!startUp);
+        types.setVisible(!startUp);
+        stats.setVisible(!startUp);
+        dropDownMenu.setVisible(!startUp);
+        lowerPortion.setVisible(!startUp);
     }
 
     private Parent createMainWindow() {
