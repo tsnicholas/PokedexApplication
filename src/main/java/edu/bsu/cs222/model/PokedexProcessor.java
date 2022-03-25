@@ -35,7 +35,7 @@ public class PokedexProcessor {
         return pokemonBuilder.createPokemon(pokemonJsonFile);
     }
 
-    public String typesToString(Pokemon pokemon) {
+    public String convertTypesToString(Pokemon pokemon) {
         StringBuilder output = new StringBuilder();
         List<Type> types = pokemon.getTypeList();
         for(Type type: types) {
@@ -45,7 +45,7 @@ public class PokedexProcessor {
         return output.toString();
     }
 
-    public String statsToString(Pokemon pokemon) {
+    public String convertStatsToString(Pokemon pokemon) {
         StringBuilder output = new StringBuilder();
         Map<String, Integer> stats = pokemon.getStats();
         for(Map.Entry<String, Integer> stat: stats.entrySet()) {
@@ -58,18 +58,18 @@ public class PokedexProcessor {
     }
 
     // Temporary until we add the grid pane
-    public String movesToString(Pokemon pokemon) {
+    public String convertMovesToString(Pokemon pokemon) {
         StringBuilder output = new StringBuilder();
         List<Move> moves = pokemon.getMoveList();
         for(Move move: moves) {
-            output.append(moveToString(move));
+            output.append(convertMoveToString(move));
         }
         return output.toString();
     }
 
     // Temporary until we add the grid pane
     // Will be phased out for a better suited method
-    public String moveToString(Move move) {
+    public String convertMoveToString(Move move) {
         StringBuilder output = new StringBuilder();
         for(String learnMethod: move.getLearnMethods()) {
             output.append(move.getName());
@@ -83,7 +83,7 @@ public class PokedexProcessor {
         return output.toString();
     }
 
-    public String damageRelationsToString(Pokemon pokemon) {
+    public String convertDamageRelationsToString(Pokemon pokemon) {
         return  "Weaknesses: " + convertStringListToString(pokemon.getWeaknesses()) + "\n" +
                 "Resistances: " + convertStringListToString(pokemon.getResistances()) + "\n" +
                 "Immunities: " + convertStringListToString(pokemon.getImmunities()) + "\n";
