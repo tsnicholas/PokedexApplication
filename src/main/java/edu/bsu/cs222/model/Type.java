@@ -7,7 +7,7 @@ public class Type {
     private final List<String> weakTo;
     private final List<String> resistantTo;
     private final List<String> immuneTo;
-
+    // public Type(String name, HashMap<String, List<String>> damageRelations)
     public Type(String name, List<String> weakToList, List<String> resistantToList, List<String> immuneToList) {
         this.name = name;
         this.weakTo = weakToList;
