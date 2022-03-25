@@ -13,9 +13,6 @@ import java.nio.charset.Charset;
 public class URLProcessor {
     private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
 
-    public URLProcessor() {
-    }
-
     public URL getPokemonURL(String pokemon) {
         String urlString = getURLString("https://pokeapi.co/api/v2/pokemon/%s", pokemon);
         return verifyURL(urlString);
