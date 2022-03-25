@@ -4,17 +4,14 @@ import com.jayway.jsonpath.JsonPath;
 import edu.bsu.cs222.model.*;
 import net.minidev.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PokemonParser {
     private final JsonParser jsonParser = new JsonParser();
     private final URLProcessor urlProcessor = new URLProcessor();
 
     public List<Type> parseForTypes(Object pokemonJsonDocument) {
-        List<Type> typeList = new ArrayList<>();
+        List<Type> typeList = new LinkedList<>();
         TypeBuilder typeBuilder = new TypeBuilder();
 
         JSONArray yellowTypeNameArray = JsonPath.read(pokemonJsonDocument, "$.past_types[0].types..name");
@@ -37,7 +34,7 @@ public class PokemonParser {
     }
 
     public Map<String, Integer> parseForStats(Object pokemonJsonDocument) {
-        Map<String, Integer> statMap = new HashMap<>();
+        Map<String, Integer> statMap = new LinkedHashMap<>();
 
         JSONArray stats = JsonPath.read(pokemonJsonDocument, "$.stats");
         JSONArray statNameArray = JsonPath.read(stats, "$..stat.name");
@@ -53,7 +50,7 @@ public class PokemonParser {
     }
 
     public List<Move> parseForMoves(Object pokemonJsonDocument) {
-        List<Move> moveList = new ArrayList<>();
+        List<Move> moveList = new LinkedList<>();
         MoveBuilder moveBuilder = new MoveBuilder();
 
         JSONArray yellowMoveArray = JsonPath.read(pokemonJsonDocument, "$..moves[?(@..version_group.name contains 'yellow')]");
