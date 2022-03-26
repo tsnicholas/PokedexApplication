@@ -16,24 +16,8 @@ public class Move {
         return moveData;
     }
 
-    public String getName() {
-        return moveData.get("Name");
-    }
-
-    public String getType() {
-        return moveData.get("Type");
-    }
-
-    public String getPP() {
-        return moveData.get("PP");
-    }
-
-    public String getPower() {
-        return moveData.get("Power");
-    }
-
-    public String getAccuracy() {
-        return moveData.get("Accuracy");
+    public String access(String dataType) {
+        return moveData.get(dataType);
     }
 
     public List<String> getLearnMethods() {
