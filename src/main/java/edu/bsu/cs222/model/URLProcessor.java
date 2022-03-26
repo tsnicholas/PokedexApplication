@@ -46,7 +46,6 @@ public class URLProcessor {
         } catch (IOException networkError) {
             ErrorWindow networkErrorWindow = new ErrorWindow("A network error has occurred");
             networkErrorWindow.display();
-            System.exit(1);
         }
 
         return null;
