@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PokedexProcessor {
-    private final PokedexBuilder pokedexBuilder = new PokedexBuilder();
+    private final PokedexFactory pokedexBuilder = new PokedexFactory();
     private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
     private final URLProcessor urlProcessor = new URLProcessor();
 
@@ -35,7 +35,7 @@ public class PokedexProcessor {
         return pokemonBuilder.createPokemon(pokemonJsonFile);
     }
 
-    public String typesToString(Pokemon pokemon) {
+    public String convertTypesToString(Pokemon pokemon) {
         StringBuilder output = new StringBuilder();
         List<Type> types = pokemon.getTypeList();
         for(Type type: types) {
@@ -45,7 +45,7 @@ public class PokedexProcessor {
         return output.toString();
     }
 
-    public String statsToString(Pokemon pokemon) {
+    public String convertStatsToString(Pokemon pokemon) {
         StringBuilder output = new StringBuilder();
         Map<String, Integer> stats = pokemon.getStats();
         for(Map.Entry<String, Integer> stat: stats.entrySet()) {
@@ -57,33 +57,7 @@ public class PokedexProcessor {
         return output.toString();
     }
 
-    // Temporary until we add the grid pane
-    public String movesToString(Pokemon pokemon) {
-        StringBuilder output = new StringBuilder();
-        List<Move> moves = pokemon.getMoveList();
-        for(Move move: moves) {
-            output.append(moveToString(move));
-        }
-        return output.toString();
-    }
-
-    // Temporary until we add the grid pane
-    // Will be phased out for a better suited method
-    public String moveToString(Move move) {
-        StringBuilder output = new StringBuilder();
-        for(String learnMethod: move.getLearnMethods()) {
-            output.append(move.getName());
-            output.append(move.getType());
-            output.append(move.getPP());
-            output.append(move.getPower());
-            output.append(move.getAccuracy());
-            output.append(learnMethod);
-            output.append("\n");
-        }
-        return output.toString();
-    }
-
-    public String damageRelationsToString(Pokemon pokemon) {
+    public String convertDamageRelationsToString(Pokemon pokemon) {
         return  "Weaknesses: " + convertStringListToString(pokemon.getWeaknesses()) + "\n" +
                 "Resistances: " + convertStringListToString(pokemon.getResistances()) + "\n" +
                 "Immunities: " + convertStringListToString(pokemon.getImmunities()) + "\n";
@@ -94,6 +68,28 @@ public class PokedexProcessor {
         for(String listValue: list) {
             output.append(listValue);
             output.append(" ");
+        }
+        return output.toString();
+    }
+
+    public String convertMoveDataToString(Pokemon pokemon, String moveData) {
+        StringBuilder output = new StringBuilder();
+        for(Move move: pokemon.getMoveList()) {
+            for(int i = 0; i < move.getLearnMethods().size(); i++) {
+                output.append(move.access(moveData));
+                output.append("\n");
+            }
+        }
+        return output.toString();
+    }
+
+    public String convertLearnMethodsToString(Pokemon currentPokemon) {
+        StringBuilder output = new StringBuilder();
+        for(Move move: currentPokemon.getMoveList()) {
+            for(String learnMethod: move.getLearnMethods()) {
+                output.append(learnMethod);
+                output.append("\n");
+            }
         }
         return output.toString();
     }

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class PokedexBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final PokedexBuilder gameBuilder = new PokedexBuilder();
+    private final PokedexFactory gameBuilder = new PokedexFactory();
     private final Object yellowJsonDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("yellow.json"));
 
     @Test
