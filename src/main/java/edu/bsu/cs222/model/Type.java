@@ -1,18 +1,15 @@
 package edu.bsu.cs222.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Type {
     private final String name;
-    private final List<String> weakTo;
-    private final List<String> resistantTo;
-    private final List<String> immuneTo;
-    // public Type(String name, HashMap<String, List<String>> damageRelations)
-    public Type(String name, List<String> weakToList, List<String> resistantToList, List<String> immuneToList) {
+    private final HashMap<String, List<String>> damageRelations;
+
+    public Type(String name, HashMap<String, List<String>> damageRelations) {
         this.name = name;
-        this.weakTo = weakToList;
-        this.resistantTo = resistantToList;
-        this.immuneTo = immuneToList;
+        this.damageRelations = damageRelations;
     }
 
     public String getName() {
@@ -20,14 +17,14 @@ public class Type {
     }
 
     public List<String> getWeakTo() {
-        return weakTo;
+        return damageRelations.get("Weaknesses");
     }
 
     public List<String> getResistantTo() {
-        return resistantTo;
+        return damageRelations.get("Resistances");
     }
 
     public List<String> getImmuneTo() {
-        return immuneTo;
+        return damageRelations.get("Immunities");
     }
 }
