@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.parsers.MoveParser;
+import edu.bsu.cs222.model.parsers.MoveParser;
 
 import java.util.LinkedHashMap;
 import java.util.List;
