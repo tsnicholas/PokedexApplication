@@ -3,6 +3,8 @@ package edu.bsu.cs222.model;
 import edu.bsu.cs222.model.parsers.PokemonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.*;
 
@@ -20,11 +22,11 @@ class PokemonParserTest {
         Assertions.assertEquals("normal", types.get(0).getName());
     }
 
-    @Test
-    public void parseForTypesTest() {
+    @ParameterizedTest
+    @CsvSource({"fire, 0", "flying, 1"})
+    public void parseForTypesTest(String typeName, int typeIndex) {
         types = pokemonParser.parseForTypes(charizardDocument);
-        Assertions.assertEquals("fire", types.get(0).getName());
-        Assertions.assertEquals("flying", types.get(1).getName());
+        Assertions.assertEquals(typeName, types.get(typeIndex).getName());
     }
 
     @Test

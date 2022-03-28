@@ -2,6 +2,8 @@ package edu.bsu.cs222.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class PokemonBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
@@ -26,14 +28,10 @@ class PokemonBuilderTest {
         Assertions.assertEquals(0, pokemon.getResistances().size());
     }
 
-    @Test
-    void pokemonStatsTest() {
+    @ParameterizedTest
+    @CsvSource({"48, hp", "48, attack", "48, defense", "48, special-attack", "48, special-defense", "48, speed"})
+    void pokemonStatsTest(int stat, String statName) {
         Pokemon pokemon = pokemonBuilder.createPokemon(dittoDocument);
-        Assertions.assertEquals(48, pokemon.getStats().get("hp"));
-        Assertions.assertEquals(48, pokemon.getStats().get("attack"));
-        Assertions.assertEquals(48, pokemon.getStats().get("defense"));
-        Assertions.assertEquals(48, pokemon.getStats().get("special-attack"));
-        Assertions.assertEquals(48, pokemon.getStats().get("special-defense"));
-        Assertions.assertEquals(48, pokemon.getStats().get("speed"));
+        Assertions.assertEquals(stat, pokemon.getStats().get(statName));
     }
 }
