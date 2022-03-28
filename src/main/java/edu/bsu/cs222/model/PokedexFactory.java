@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.parsers.PokedexParser;
+import edu.bsu.cs222.model.parsers.PokedexParser;
 import java.util.List;
 
 public class PokedexFactory {

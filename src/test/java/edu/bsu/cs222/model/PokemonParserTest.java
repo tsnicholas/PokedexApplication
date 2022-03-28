@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.parsers.PokemonParser;
+import edu.bsu.cs222.model.parsers.PokemonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

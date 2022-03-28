@@ -1,4 +1,4 @@
-package edu.bsu.cs222.parsers;
+package edu.bsu.cs222.model.parsers;
 
 import com.jayway.jsonpath.Configuration;
 import net.minidev.json.JSONArray;
