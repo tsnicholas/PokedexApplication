@@ -4,6 +4,7 @@ import edu.bsu.cs222.model.PokedexProcessor;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class DamageRelationsDisplay implements MenuDisplay {
@@ -17,6 +18,7 @@ public class DamageRelationsDisplay implements MenuDisplay {
     }
 
     private void setText() {
+        results.setFont(Font.font("Times New Roman", 18));
         results.setText(pokemonProcessor.convertDamageRelationsToString(currentPokemon));
     }
 
