@@ -27,4 +27,10 @@ public class DamageRelationsDisplay implements MenuDisplay {
         display.getChildren().add(results);
         return display;
     }
+
+    // Without this, the names displayed in the drop-down menu are meaningless
+    @Override
+    public String toString() {
+        return "Damage Relations";
+    }
 }

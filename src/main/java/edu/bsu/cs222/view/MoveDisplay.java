@@ -59,4 +59,10 @@ public class MoveDisplay implements MenuDisplay {
     public Parent display() {
         return layout;
     }
+
+    // Without this, the names displayed in the drop-down menu are meaningless
+    @Override
+    public String toString() {
+        return "Move Set";
+    }
 }
