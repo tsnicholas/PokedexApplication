@@ -32,9 +32,9 @@ public class MainWindow extends Application {
     private final ImageView pokemonImage = new ImageView();
     private final ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
-    private final Text damageRelations = new Text();
     private final PokedexProcessor pokemonProcessor = new PokedexProcessor();
     private MoveDisplay moveDisplay;
+    private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
 
     @Override
@@ -74,15 +74,10 @@ public class MainWindow extends Application {
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         types.setFont(getPokeFactsFont());
         stats.setFont(getPokeFactsFont());
-        damageRelations.setFont(getLowerPortionFont());
     }
 
     private Font getPokeFactsFont() {
         return Font.font("Verdana", 25);
-    }
-
-    private Font getLowerPortionFont() {
-        return Font.font("Times New Roman", 18);
     }
 
     private void startUpDisplay(boolean startUp) {
@@ -177,9 +172,9 @@ public class MainWindow extends Application {
     private void update() {
         types.setText(pokemonProcessor.convertTypesToString(currentPokemon));
         stats.setText(pokemonProcessor.convertStatsToString(currentPokemon));
-        damageRelations.setText(pokemonProcessor.convertDamageRelationsToString(currentPokemon));
         pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
         moveDisplay = new MoveDisplay(currentPokemon);
+        damageRelationsDisplay = new DamageRelationsDisplay(currentPokemon);
         setUpLowerContent(dropDownMenu.getSelectionModel().getSelectedItem());
     }
 
@@ -198,7 +193,7 @@ public class MainWindow extends Application {
             if (selectedValue.equals("Move Set")) {
                 lowerPortion.setContent(moveDisplay.display());
             } else if (selectedValue.equals("Damage Relations")) {
-                lowerPortion.setContent(damageRelations);
+                lowerPortion.setContent(damageRelationsDisplay.display());
             }
         }
     }
