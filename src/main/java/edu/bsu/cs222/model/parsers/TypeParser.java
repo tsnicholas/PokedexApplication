@@ -6,6 +6,7 @@ import net.minidev.json.JSONArray;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+// Dragons behave differently, blame the PokeAPI for not having past damage relations for dragons
 public class TypeParser {
     private final JsonParser jsonParser = new JsonParser();
 
@@ -23,5 +24,4 @@ public class TypeParser {
         JSONArray immuneToArray = JsonPath.read(damageRelationsArray,"$.no_damage_from..name");
         return jsonParser.jsonArrayToStringList(immuneToArray);
     }
-
 }

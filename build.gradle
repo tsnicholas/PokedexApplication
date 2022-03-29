@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.github.PokeAPI:pokekotlin:2.3.1'
     implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.7.0'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
 }
 
 test {
