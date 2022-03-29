@@ -1,5 +1,8 @@
-package edu.bsu.cs222.model;
+package edu.bsu.cs222.model.parsers;
 
+import edu.bsu.cs222.model.InputStreamConverter;
+import edu.bsu.cs222.model.Move;
+import edu.bsu.cs222.model.Type;
 import edu.bsu.cs222.model.parsers.PokemonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

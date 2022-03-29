@@ -9,9 +9,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 
 public class URLProcessor {
     private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
+//    private final HashMap<URL, Object> cache = new HashMap<>();
+//    Could be worth looking into this, makes the application run faster the more queries it does, takes up memory
 
     public URL getPokemonURL(String pokemon) {
         String urlString = getURLString("https://pokeapi.co/api/v2/pokemon/%s", pokemon);
@@ -35,8 +38,13 @@ public class URLProcessor {
     }
 
     public Object urlToObject(URL url) {
+//        if (cache.containsKey(url)) {
+//            return cache.get(url);
+//        }
         InputStream inputStream = getInputStream(url);
-        return inputStreamConverter.inputStreamToJsonObject(inputStream);
+        Object jsonDocument = inputStreamConverter.inputStreamToJsonObject(inputStream);
+//        cache.put(url, jsonDocument);
+        return jsonDocument;
     }
 
     private InputStream getInputStream(URL url) {
