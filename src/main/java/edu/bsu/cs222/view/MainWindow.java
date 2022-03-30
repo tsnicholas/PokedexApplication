@@ -4,6 +4,7 @@ import edu.bsu.cs222.model.Pokemon;
 import edu.bsu.cs222.model.PokedexProcessor;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,11 +31,11 @@ public class MainWindow extends Application {
     private final Text types = new Text();
     private final Text stats = new Text();
     private final ImageView pokemonImage = new ImageView();
-    private final ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
+    private final ChoiceBox<MenuDisplay> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
-    private final Text damageRelations = new Text();
     private final PokedexProcessor pokemonProcessor = new PokedexProcessor();
     private MoveDisplay moveDisplay;
+    private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
 
     @Override
@@ -68,29 +69,25 @@ public class MainWindow extends Application {
     private void setUpSizesAndFonts() {
         lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
         lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
-        searchInput.setPrefWidth(WIDTH_OF_WINDOW - 300);
+        searchInput.setPrefWidth(500);
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         types.setFont(getPokeFactsFont());
         stats.setFont(getPokeFactsFont());
-        damageRelations.setFont(getLowerPortionFont());
+        dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
     }
 
     private Font getPokeFactsFont() {
         return Font.font("Verdana", 25);
     }
 
-    private Font getLowerPortionFont() {
-        return Font.font("Times New Roman", 18);
-    }
-
-    private void startUpDisplay(boolean startUp) {
-        pokemonImage.setVisible(!startUp);
-        types.setVisible(!startUp);
-        stats.setVisible(!startUp);
-        dropDownMenu.setVisible(!startUp);
-        lowerPortion.setVisible(!startUp);
+    private void startUpDisplay(boolean firstStartedUp) {
+        pokemonImage.setVisible(!firstStartedUp);
+        types.setVisible(!firstStartedUp);
+        stats.setVisible(!firstStartedUp);
+        dropDownMenu.setVisible(!firstStartedUp);
+        lowerPortion.setVisible(!firstStartedUp);
     }
 
     private Parent createMainWindow() {
@@ -101,7 +98,7 @@ public class MainWindow extends Application {
                 instruction,
                 createSearchBar(),
                 createUpperPortion(),
-                createDropDownMenu(),
+                dropDownMenu,
                 lowerPortion
         );
         return mainWindow;
@@ -129,17 +126,6 @@ public class MainWindow extends Application {
         );
 
         return upperPortion;
-    }
-
-    private Parent createDropDownMenu() {
-        dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
-        dropDownMenu.getItems().addAll(
-                "Move Set",
-                "Damage Relations"
-        );
-        dropDownMenu.getSelectionModel().selectFirst();
-        dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> setUpLowerContent(newValue));
-        return dropDownMenu;
     }
 
     private void setUpGameSelection() {
@@ -177,10 +163,17 @@ public class MainWindow extends Application {
     private void update() {
         types.setText(pokemonProcessor.convertTypesToString(currentPokemon));
         stats.setText(pokemonProcessor.convertStatsToString(currentPokemon));
-        damageRelations.setText(pokemonProcessor.convertDamageRelationsToString(currentPokemon));
         pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
         moveDisplay = new MoveDisplay(currentPokemon);
-        setUpLowerContent(dropDownMenu.getSelectionModel().getSelectedItem());
+        damageRelationsDisplay = new DamageRelationsDisplay(currentPokemon);
+        updateDropDownMenu();
+        setUpLowerContent();
+    }
+
+    private void updateDropDownMenu() {
+        dropDownMenu.setItems(FXCollections.observableArrayList(moveDisplay, damageRelationsDisplay));
+        dropDownMenu.getSelectionModel().selectFirst();
+        dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> setUpLowerContent());
     }
 
     private Parent createPokeFacts() {
@@ -193,13 +186,8 @@ public class MainWindow extends Application {
         return pokeFacts;
     }
 
-    private void setUpLowerContent(String selectedValue) {
-        if (currentPokemon != null) {
-            if (selectedValue.equals("Move Set")) {
-                lowerPortion.setContent(moveDisplay.display());
-            } else if (selectedValue.equals("Damage Relations")) {
-                lowerPortion.setContent(damageRelations);
-            }
-        }
+    private void setUpLowerContent() {
+        MenuDisplay currentLayout = dropDownMenu.getSelectionModel().getSelectedItem();
+        lowerPortion.setContent(currentLayout.display());
     }
 }

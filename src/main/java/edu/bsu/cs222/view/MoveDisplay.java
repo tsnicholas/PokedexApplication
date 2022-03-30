@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class MoveDisplay {
+public class MoveDisplay implements MenuDisplay {
     private final String[] MOVE_DATA_KEYS = {"Name", "Type", "PP", "Power", "Accuracy"};
 
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
@@ -58,5 +58,11 @@ public class MoveDisplay {
 
     public Parent display() {
         return layout;
+    }
+
+    // Without this, the names displayed in the drop-down menu are meaningless
+    @Override
+    public String toString() {
+        return "Move Set";
     }
 }
