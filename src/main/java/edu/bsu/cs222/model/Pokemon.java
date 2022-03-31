@@ -11,11 +11,9 @@ public class Pokemon implements PokemonPlan {
     private List<String> resistances = new ArrayList<>();
     private List<String> immunities = new ArrayList<>();
 
-    public Pokemon(List<Type> types, Map<String, Integer> stats, List<Move> moves, String pokemonImageURL) {
-        setDamageRelations();
-    }
+    public Pokemon() {}
 
-    public void setTypeList() {
+    public void setTypeList(List<Type> typeList) {
         this.typeList = typeList;
     }
 
@@ -23,7 +21,7 @@ public class Pokemon implements PokemonPlan {
         return typeList;
     }
 
-    public void setStatsMap() {
+    public void setStatsMap(Map<String, Integer> statsMap) {
         this.statsMap = statsMap;
     }
 
@@ -31,7 +29,7 @@ public class Pokemon implements PokemonPlan {
         return statsMap;
     }
 
-    public void setMoveList() {
+    public void setMoveList(List<Move> moveList) {
         this.moveList = moveList;
     }
 
@@ -39,7 +37,7 @@ public class Pokemon implements PokemonPlan {
         return moveList;
     }
 
-    public void setImageURL() {
+    public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
 
@@ -47,49 +45,27 @@ public class Pokemon implements PokemonPlan {
         return imageURL;
     }
 
+    public void setWeaknesses(List<String> weaknesses) {
+        this.weaknesses = weaknesses;
+    }
+
     public List<String> getWeaknesses() {
         return weaknesses;
+    }
+
+    public void setResistances(List<String> resistances) {
+        this.resistances = resistances;
     }
 
     public List<String> getResistances() {
         return resistances;
     }
 
+    public void setImmunities(List<String> immunities) {
+        this.immunities = immunities;
+    }
+
     public List<String> getImmunities() {
         return immunities;
-    }
-
-    private void setDamageRelations() {
-        if (typeList.size() == 1) {
-            immunities = typeList.get(0).getImmuneTo();
-            weaknesses = typeList.get(0).getWeakTo();
-            resistances = typeList.get(0).getResistantTo();
-            return;
-        }
-        List<String> immuneTo = new ArrayList<>();
-        List<String> weakTo = new ArrayList<>();
-        List<String> resistantTo = new ArrayList<>();
-        for (Type type : typeList) {
-            immuneTo.addAll(type.getImmuneTo());
-            weakTo.addAll(type.getWeakTo());
-            resistantTo.addAll(type.getResistantTo());
-        }
-        weakTo.removeIf(resistantTo::remove);
-        immuneTo = eliminateDuplicates(immuneTo);
-        weakTo = eliminateDuplicates(weakTo);
-        resistantTo = eliminateDuplicates(resistantTo);
-        for (String immunity : immuneTo) {
-            weakTo.remove(immunity);
-            resistantTo.remove(immunity);
-        }
-
-        immunities = immuneTo;
-        weaknesses = weakTo;
-        resistances = resistantTo;
-    }
-
-    private List<String> eliminateDuplicates(List<String> stringList) {
-        Set<String> stringSet = new HashSet<>(stringList);
-        return new ArrayList<>(stringSet);
     }
 }

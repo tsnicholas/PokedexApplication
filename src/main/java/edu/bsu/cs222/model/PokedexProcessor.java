@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PokedexProcessor {
-    private final PokedexFactory pokedexBuilder = new PokedexFactory();
-    private final PokemonEngineer pokemonBuilder = new PokemonEngineer();
+    private final PokedexFactory pokedexFactory = new PokedexFactory();
     private final URLProcessor urlProcessor = new URLProcessor();
 
     public Pokemon process(String nameOfPokemon, String nameOfGame) throws RuntimeException {
@@ -22,7 +21,7 @@ public class PokedexProcessor {
     private Pokedex getPokedex(String nameOfGame) {
         URL gameURL = urlProcessor.getGameURL(nameOfGame);
         Object gameFile = urlProcessor.urlToObject(gameURL);
-        return pokedexBuilder.createPokedex(gameFile);
+        return pokedexFactory.createPokedex(gameFile);
     }
   
     private boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
@@ -31,8 +30,10 @@ public class PokedexProcessor {
 
     private Pokemon processPokemon(String nameOfPokemon) {
         URL pokemonUrl = urlProcessor.getPokemonURL(nameOfPokemon);
-        Object pokemonJsonFile = urlProcessor.urlToObject(pokemonUrl);
-        return pokemonBuilder.createPokemon(pokemonJsonFile);
+        CurrentPokemonBuilder oldPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
+        PokemonEngineer pokemonEngineer = new PokemonEngineer(oldPokemonBuilder);
+        pokemonEngineer.constructPokemon();
+        return pokemonEngineer.getPokemon();
     }
 
     public String convertTypesToString(Pokemon pokemon) {
