@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class PokemonBuilderTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
     private final Object dittoDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ditto.json"));
-    private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
+    private final PokemonEngineer pokemonBuilder = new PokemonEngineer();
 
     @Test
     void pokemonImmunityTest() {
