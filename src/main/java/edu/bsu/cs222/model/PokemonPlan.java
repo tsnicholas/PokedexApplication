@@ -7,5 +7,5 @@ public interface PokemonPlan {
 
     void setStatsMap();
 
-    void setPokemonImage();
+    void setImageURL();
 }

@@ -2,29 +2,49 @@ package edu.bsu.cs222.model;
 
 import java.util.*;
 
-public class Pokemon {
-    private final List<Type> typeList;
-    private final List<Move> moveList;
-    private final Map<String, Integer> statsMap;
-    private final String imageURL;
+public class Pokemon implements PokemonPlan {
+    private List<Type> typeList;
+    private List<Move> moveList;
+    private Map<String, Integer> statsMap;
+    private String imageURL;
     private List<String> weaknesses = new ArrayList<>();
     private List<String> resistances = new ArrayList<>();
     private List<String> immunities = new ArrayList<>();
 
     public Pokemon(List<Type> types, Map<String, Integer> stats, List<Move> moves, String pokemonImageURL) {
-        typeList = types;
-        statsMap = stats;
-        moveList = moves;
-        imageURL = pokemonImageURL;
         setDamageRelations();
+    }
+
+    public void setTypeList() {
+        this.typeList = typeList;
     }
 
     public List<Type> getTypeList() {
         return typeList;
     }
 
+    public void setStatsMap() {
+        this.statsMap = statsMap;
+    }
+
     public Map<String, Integer> getStats() {
         return statsMap;
+    }
+
+    public void setMoveList() {
+        this.moveList = moveList;
+    }
+
+    public List<Move> getMoveList() {
+        return moveList;
+    }
+
+    public void setImageURL() {
+        this.imageURL = imageURL;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     public List<String> getWeaknesses() {
@@ -37,14 +57,6 @@ public class Pokemon {
 
     public List<String> getImmunities() {
         return immunities;
-    }
-
-    public List<Move> getMoveList() {
-        return moveList;
-    }
-
-    public String getImageURL() {
-        return imageURL;
     }
 
     private void setDamageRelations() {
