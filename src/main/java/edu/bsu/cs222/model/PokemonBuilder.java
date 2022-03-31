@@ -7,5 +7,9 @@ public interface PokemonBuilder {
 
     void buildMoveList();
 
-    void buildPokemonImage();
+    void buildDamageRelations();
+
+    void buildImageURL();
+
+    Pokemon getPokemon();
 }

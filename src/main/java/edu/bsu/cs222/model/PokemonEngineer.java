@@ -1,17 +1,21 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.model.parsers.PokemonParser;
-
-import java.util.*;
-
 public class PokemonEngineer {
-    private final PokemonParser pokemonParser = new PokemonParser();
+    private final PokemonBuilder pokemonBuilder;
 
-    public Pokemon createPokemon(Object pokemonJsonObject) {
-        List<Type> types = pokemonParser.parseForTypes(pokemonJsonObject);
-        Map<String, Integer> stats = pokemonParser.parseForStats(pokemonJsonObject);
-        List<Move> moves = pokemonParser.parseForMoves(pokemonJsonObject);
-        String pokemonImageURL = pokemonParser.parseForImage(pokemonJsonObject);
-        return new Pokemon(types, stats, moves, pokemonImageURL);
+    public PokemonEngineer(PokemonBuilder pokemonBuilder) {
+        this.pokemonBuilder = pokemonBuilder;
+    }
+
+    public void constructPokemon() {
+        pokemonBuilder.buildTypeList();
+        pokemonBuilder.buildStatsMap();
+        pokemonBuilder.buildMoveList();
+        pokemonBuilder.buildDamageRelations();
+        pokemonBuilder.buildImageURL();
+    }
+
+    public Pokemon getPokemon() {
+        return pokemonBuilder.getPokemon();
     }
 }
