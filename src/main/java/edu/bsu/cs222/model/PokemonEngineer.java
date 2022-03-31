@@ -4,7 +4,7 @@ import edu.bsu.cs222.model.parsers.PokemonParser;
 
 import java.util.*;
 
-public class PokemonBuilder {
+public class PokemonEngineer {
     private final PokemonParser pokemonParser = new PokemonParser();
 
     public Pokemon createPokemon(Object pokemonJsonObject) {

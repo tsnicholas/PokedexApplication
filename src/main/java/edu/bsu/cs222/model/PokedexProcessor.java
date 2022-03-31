@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class PokedexProcessor {
     private final PokedexFactory pokedexBuilder = new PokedexFactory();
-    private final PokemonBuilder pokemonBuilder = new PokemonBuilder();
+    private final PokemonEngineer pokemonBuilder = new PokemonEngineer();
     private final URLProcessor urlProcessor = new URLProcessor();
 
     public Pokemon process(String nameOfPokemon, String nameOfGame) throws RuntimeException {
