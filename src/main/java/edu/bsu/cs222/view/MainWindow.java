@@ -34,7 +34,7 @@ public class MainWindow extends Application {
     private final ImageView pokemonImage = new ImageView();
     private final ChoiceBox<MenuDisplay> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
-    private final PokedexProcessor pokemonProcessor = new PokedexProcessor();
+    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private MoveDisplay moveDisplay;
     private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
@@ -161,18 +161,24 @@ public class MainWindow extends Application {
 
     private void search() {
         try {
-            currentPokemon = pokemonProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
+            currentPokemon = pokedexProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
             update();
             startUpDisplay(false);
-        } catch (RuntimeException doesNotExist) {
+        }
+        catch(NullPointerException nullPointerException) {
+            ErrorWindow genericError = new ErrorWindow("An error has occurred!!!!");
+            genericError.display();
+            System.err.println("Error: " + nullPointerException);
+        }
+        catch (RuntimeException doesNotExist) {
             ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue().getName());
             noExistence.display();
         }
     }
 
     private void update() {
-        types.setText(pokemonProcessor.convertTypesToString(currentPokemon));
-        stats.setText(pokemonProcessor.convertStatsToString(currentPokemon));
+        types.setText(pokedexProcessor.convertTypesToString(currentPokemon));
+        stats.setText(pokedexProcessor.convertStatsToString(currentPokemon));
         pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
         moveDisplay = new MoveDisplay(currentPokemon);
         damageRelationsDisplay = new DamageRelationsDisplay(currentPokemon);
