@@ -21,7 +21,7 @@ public class PokedexProcessor {
     }
 
     private Pokemon processPokemon(String nameOfPokemon) {
-        URL pokemonUrl = urlProcessor.getPokemonURL(nameOfPokemon);
+        URL pokemonUrl = urlProcessor.getURL(nameOfPokemon);
         CurrentPokemonBuilder currentPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
         PokemonEngineer pokemonEngineer = new PokemonEngineer(currentPokemonBuilder);
         pokemonEngineer.constructPokemon();
