@@ -81,6 +81,6 @@ public class PokemonParser {
     }
 
     public String parseForImage(Object pokemonJsonDocument) {
-        return JsonPath.read(pokemonJsonDocument, "$.sprites.versions.generation-i.yellow.front_default");
+        return JsonPath.read(pokemonJsonDocument, "$.sprites.front_default");
     }
 }
