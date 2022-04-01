@@ -5,23 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 public class PokedexProcessor {
-    private final PokedexFactory pokedexFactory = new PokedexFactory();
     private final URLProcessor urlProcessor = new URLProcessor();
 
-    public Pokemon process(String nameOfPokemon, String nameOfGame) throws RuntimeException {
-        Pokedex pokedex = getPokedex(nameOfGame);
-        if(pokemonExistsWithinPokedex(nameOfPokemon, pokedex)) {
+    public Pokemon process(String nameOfPokemon, VersionGroup versionGroup) throws RuntimeException {
+        if(pokemonExistsWithinPokedex(nameOfPokemon, versionGroup.getPokedex())) {
             return processPokemon(nameOfPokemon);
         }
         else {
             throw new RuntimeException();
         }
-    }
-  
-    private Pokedex getPokedex(String nameOfGame) {
-        URL gameURL = urlProcessor.getGameURL(nameOfGame);
-        Object gameFile = urlProcessor.urlToObject(gameURL);
-        return pokedexFactory.createPokedex(gameFile);
     }
   
     private boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
@@ -30,8 +22,8 @@ public class PokedexProcessor {
 
     private Pokemon processPokemon(String nameOfPokemon) {
         URL pokemonUrl = urlProcessor.getPokemonURL(nameOfPokemon);
-        CurrentPokemonBuilder oldPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
-        PokemonEngineer pokemonEngineer = new PokemonEngineer(oldPokemonBuilder);
+        CurrentPokemonBuilder currentPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
+        PokemonEngineer pokemonEngineer = new PokemonEngineer(currentPokemonBuilder);
         pokemonEngineer.constructPokemon();
         return pokemonEngineer.getPokemon();
     }

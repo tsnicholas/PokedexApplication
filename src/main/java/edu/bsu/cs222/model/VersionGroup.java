@@ -16,4 +16,9 @@ public class VersionGroup {
     public Pokedex getPokedex() {
         return pokedex;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

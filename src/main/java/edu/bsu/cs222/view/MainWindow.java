@@ -1,7 +1,6 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.Pokemon;
-import edu.bsu.cs222.model.PokedexProcessor;
+import edu.bsu.cs222.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,6 +18,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class MainWindow extends Application {
     private final int WIDTH_OF_WINDOW = 700;
     private final int HEIGHT_OF_WINDOW = 800;
@@ -26,7 +27,7 @@ public class MainWindow extends Application {
 
     private final Text instruction = new Text("Enter a name of a Pokemon");
     private final TextField searchInput = new TextField();
-    private final ChoiceBox<String> gameSelection = new ChoiceBox<>();
+    private final ChoiceBox<VersionGroup> gameSelection = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
     private final Text types = new Text();
     private final Text stats = new Text();
@@ -37,6 +38,13 @@ public class MainWindow extends Application {
     private MoveDisplay moveDisplay;
     private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
+    private static List<Generation> generations;
+
+    public static void main(String[] args) {
+        GenerationProcessor generationProcessor = new GenerationProcessor();
+        generations = generationProcessor.createGenerationList();
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -129,9 +137,11 @@ public class MainWindow extends Application {
     }
 
     private void setUpGameSelection() {
-        gameSelection.getItems().addAll(
-                "yellow"
-        );
+        for(Generation generation: generations) {
+            gameSelection.getItems().addAll(
+                    generation.getVersionGroups()
+            );
+        }
         gameSelection.getSelectionModel().selectFirst();
     }
 
@@ -155,7 +165,7 @@ public class MainWindow extends Application {
             update();
             startUpDisplay(false);
         } catch (RuntimeException doesNotExist) {
-            ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());
+            ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue().getName());
             noExistence.display();
         }
     }

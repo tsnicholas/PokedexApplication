@@ -14,10 +14,10 @@ public class GenerationParser {
     private final URLProcessor urlProcessor = new URLProcessor();
     private final VersionGroupBuilder versionGroupBuilder = new VersionGroupBuilder();
 
-    public List<Generation> parseForGenerations(Object allGenerationsJsonDocument) {
+    public List<Generation> parseForGenerations() {
         List<Generation> generations = new ArrayList<>();
 
-        allGenerationsJsonDocument = getAllGenerations(allGenerationsJsonDocument);
+        Object allGenerationsJsonDocument = getAllGenerations();
         JSONArray generationURLs = JsonPath.read(allGenerationsJsonDocument, "$.results..url");
         for (Object url : generationURLs) {
             Object generationJsonDocument = urlProcessor.stringToObject(url.toString());
@@ -27,18 +27,18 @@ public class GenerationParser {
         return generations;
     }
 
-    private Object getAllGenerations(Object allGenerationsJsonDocument) {
-        if (containsAllGenerations(allGenerationsJsonDocument)) {
-            return allGenerationsJsonDocument;
+    private Object getAllGenerations() {
+        Object generationJsonDocument = urlProcessor.stringToObject("https://pokeapi.co/api/v2/generation");
+        if (containsAllGenerations(generationJsonDocument)) {
+            return generationJsonDocument;
         }
-        int count = JsonPath.read(allGenerationsJsonDocument, "$.count");
-        allGenerationsJsonDocument = urlProcessor.stringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
-        return allGenerationsJsonDocument;
+        int count = JsonPath.read(generationJsonDocument, "$.count");
+        return urlProcessor.stringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
     }
 
     private boolean containsAllGenerations(Object allGenerationsJsonDocument) {
         Object next = JsonPath.read(allGenerationsJsonDocument, "$.next");
-        return next != null;
+        return next == null;
     }
 
     private Generation parseGeneration(Object generationJsonDocument) {

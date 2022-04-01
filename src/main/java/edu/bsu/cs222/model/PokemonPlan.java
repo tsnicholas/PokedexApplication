@@ -5,6 +5,7 @@ import java.util.Map;
 
 public interface PokemonPlan {
     void setTypeList(List<Type> typeList);
+
     void setImmunities(List<String> immunities);
 
     void setWeaknesses(List<String> weaknesses);
