@@ -24,8 +24,8 @@ public class JsonParser {
         return integerList;
     }
 
-    public Object parseJson(String json) {
-        return Configuration.defaultConfiguration().jsonProvider().parse(json);
+    public Object parseJson(StringBuilder json) {
+        return Configuration.defaultConfiguration().jsonProvider().parse(String.valueOf(json));
     }
 
 }
