@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import edu.bsu.cs222.model.URLProcessor;
 import net.minidev.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PokedexParser {
@@ -12,11 +13,15 @@ public class PokedexParser {
 
     public List<String> parseForPokedex(Object gameJsonDocument) {
         if (!doesPokedexExist(gameJsonDocument)) {
-            return null;
+            return List.of(new String[]{""});
         }
-        JSONArray pokedexURL = JsonPath.read(gameJsonDocument, "$.pokedexes..url");
-        Object pokedexJsonObject = urlProcessor.stringToObject(pokedexURL.get(0).toString());
-        return getPokemonNames(pokedexJsonObject);
+        List<String> allPokemonNames = new ArrayList<>();
+        JSONArray pokedexURLs = JsonPath.read(gameJsonDocument, "$.pokedexes..url");
+        for (Object pokedexURL : pokedexURLs) {
+            Object pokedexJsonObject = urlProcessor.stringToObject(pokedexURL.toString());
+            allPokemonNames.addAll(getPokemonNames(pokedexJsonObject));
+        }
+        return allPokemonNames;
     }
 
     private List<String> getPokemonNames(Object pokedexJsonObject) {
@@ -25,7 +30,7 @@ public class PokedexParser {
     }
 
     private boolean doesPokedexExist(Object versionGroupJsonDocument) {
-        JSONArray pokedex = JsonPath.read(versionGroupJsonDocument, "$.pokedexes");
-        return pokedex.size() != 0;
+        int pokedexArraySize = JsonPath.read(versionGroupJsonDocument, "$.pokedexes.length()");
+        return pokedexArraySize != 0;
     }
 }
