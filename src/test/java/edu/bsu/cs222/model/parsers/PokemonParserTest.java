@@ -3,7 +3,6 @@ package edu.bsu.cs222.model.parsers;
 import edu.bsu.cs222.model.InputStreamConverter;
 import edu.bsu.cs222.model.Move;
 import edu.bsu.cs222.model.Type;
-import edu.bsu.cs222.model.parsers.PokemonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,10 +13,14 @@ import java.util.*;
 class PokemonParserTest {
     private final PokemonParser pokemonParser = new PokemonParser();
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object clefableDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("clefable.json"));
-    private final Object charizardDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("charizard.json"));
-    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ditto.json"));
+    private final Object clefableDocument = getJsonDocument("clefable.json");
+    private final Object charizardDocument = getJsonDocument("charizard.json");
+    private final Object dittoDocument = getJsonDocument("ditto.json");
     private List<Type> types = new ArrayList<>();
+
+    private Object getJsonDocument(String fileName) {
+        return resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
+    }
 
     @Test
     public void parseForPastTypeTest() {
@@ -34,7 +37,7 @@ class PokemonParserTest {
 
     @Test
     public void parseForStatsTest() {
-        Map<String, Integer> expected  = new HashMap<>();
+        Map<String, Integer> expected = new HashMap<>();
         expected.put("hp", 78);
         expected.put("attack", 84);
         expected.put("defense", 78);
