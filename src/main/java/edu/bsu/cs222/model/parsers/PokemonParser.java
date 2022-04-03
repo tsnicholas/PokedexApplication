@@ -14,13 +14,11 @@ public class PokemonParser {
         List<Type> typeList = new LinkedList<>();
         TypeBuilder typeBuilder = new TypeBuilder();
 
-        JSONArray yellowTypeNameArray = JsonPath.read(pokemonJsonDocument, "$.past_types[0].types..name");
-        JSONArray yellowTypeURLArray = JsonPath.read(pokemonJsonDocument, "$.past_types[0].types..url");
-
-        if (yellowTypeNameArray.size() == 0) {
-            yellowTypeNameArray = JsonPath.read(pokemonJsonDocument, "$.types..name");
-            yellowTypeURLArray = JsonPath.read(pokemonJsonDocument, "$.types..url");
+        if (checkForPastTypes(pokemonJsonDocument)) {
+            pokemonJsonDocument = JsonPath.read(pokemonJsonDocument, "$.past_types[0]");
         }
+        JSONArray yellowTypeNameArray = JsonPath.read(pokemonJsonDocument, "$.types..name");
+        JSONArray yellowTypeURLArray = JsonPath.read(pokemonJsonDocument, "$.types..url");
 
         List<String> typeNames = jsonParser.jsonArrayToStringList(yellowTypeNameArray);
         List<String> typeURLs = jsonParser.jsonArrayToStringList(yellowTypeURLArray);
@@ -31,6 +29,11 @@ public class PokemonParser {
             typeList.add(type);
         }
         return typeList;
+    }
+
+    private boolean checkForPastTypes(Object pokemonJsonDocument) {
+        int sizeOfPastTypesArray = JsonPath.read(pokemonJsonDocument, "$.past_types.length()");
+        return sizeOfPastTypesArray != 0;
     }
 
     public Map<String, Integer> parseForStats(Object pokemonJsonDocument) {
@@ -55,18 +58,16 @@ public class PokemonParser {
 
         JSONArray yellowMoveArray = JsonPath.read(pokemonJsonDocument, "$..moves[?(@..version_group.name contains 'yellow')]");
         for (Object moveObject : yellowMoveArray) {
-            JSONArray moveNameArray = JsonPath.read(moveObject, "$..move.name");
-            JSONArray moveUrlArray = JsonPath.read(moveObject, "$..move.url");
-            String moveName = moveNameArray.get(0).toString();
-            String moveURL = moveUrlArray.get(0).toString();
+            String moveName = JsonPath.read(moveObject, "$.move.name");
+            String moveURL = JsonPath.read(moveObject, "$.move.url");
 
-            JSONArray yellowMoveVersionDetailsArray = JsonPath.read(moveObject, "$..version_group_details[?(@.version_group.name contains 'yellow')]");
+            JSONArray yellowMoveVersionDetailsArray = JsonPath.read(moveObject, "$.version_group_details[?(@.version_group.name contains 'yellow')]");
             List<String> learnMethods = new ArrayList<>();
             for (Object occurrence : yellowMoveVersionDetailsArray) {
-                JSONArray method = JsonPath.read(occurrence, "$..move_learn_method.name");
-                if (method.get(0).toString().equals("level-up")) {
-                    JSONArray levelLearnedAt = JsonPath.read(occurrence, "$..level_learned_at");
-                    learnMethods.add("LV " + levelLearnedAt.get(0).toString());
+                String method = JsonPath.read(occurrence, "$.move_learn_method.name");
+                if (method.equals("level-up")) {
+                    Integer levelLearnedAt = JsonPath.read(occurrence, "$.level_learned_at");
+                    learnMethods.add("LV " + levelLearnedAt.toString());
                 } else {
                     learnMethods.add("TM");
                 }
