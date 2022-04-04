@@ -1,20 +1,18 @@
 package edu.bsu.cs222.model;
 
+import java.util.List;
+
 public class VersionGroup {
     private final String name;
-    private final Pokedex pokedex;
+    private final List<Version> versions;
 
-    public VersionGroup(String name, Pokedex pokedex) {
+    public VersionGroup(String name, List<Version> versions) {
         this.name = name;
-        this.pokedex = pokedex;
+        this.versions = versions;
     }
 
     public String getName() {
         return name;
-    }
-
-    public Pokedex getPokedex() {
-        return pokedex;
     }
 
     @Override

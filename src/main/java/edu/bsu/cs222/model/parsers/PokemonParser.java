@@ -10,6 +10,11 @@ public class PokemonParser {
     private final JsonParser jsonParser = new JsonParser();
     private final URLProcessor urlProcessor = new URLProcessor();
 
+    public boolean assertPokemonExistsInGame(Object pokemonJsonDocument, String game) {
+        int value = JsonPath.read(pokemonJsonDocument, "$.game_indices[?(@.version.name == " + game + ")].length()");
+        return 0 != value;
+    }
+
     public List<Type> parseForTypes(Object pokemonJsonDocument) {
         List<Type> typeList = new LinkedList<>();
         TypeBuilder typeBuilder = new TypeBuilder();
@@ -21,7 +26,7 @@ public class PokemonParser {
         JSONArray yellowTypeURLArray = JsonPath.read(pokemonJsonDocument, "$.types..url");
 
         List<String> typeNames = jsonParser.jsonArrayToStringList(yellowTypeNameArray);
-        List<String> typeURLs = jsonParser.jsonArrayToStringList(yellowTypeURLArray);
+           List<String> typeURLs = jsonParser.jsonArrayToStringList(yellowTypeURLArray);
 
         for (int i = 0; i < typeNames.size(); i++) {
             Object typeJsonObject = urlProcessor.stringToObject(typeURLs.get(i));

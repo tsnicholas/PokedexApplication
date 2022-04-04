@@ -77,7 +77,7 @@ public class MainWindow extends Application {
     private void setUpSizesAndFonts() {
         lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
         lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
-        searchInput.setPrefWidth(500);
+        searchInput.setPrefWidth(400);
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));

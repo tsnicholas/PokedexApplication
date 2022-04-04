@@ -58,7 +58,6 @@ public class GenerationParser {
 
     private List<VersionGroup> parseForVersionGroups(Object generationJsonDocument) {
         List<VersionGroup> versionGroups = new ArrayList<>();
-
         JSONArray versionGroupURLs = JsonPath.read(generationJsonDocument, "$.version_groups..url");
         for (Object url : versionGroupURLs) {
             Object versionGroupJsonDocument = urlProcessor.stringToObject(url.toString());

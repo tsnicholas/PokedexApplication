@@ -18,8 +18,4 @@ public class GenerationProcessor {
         }
         return generationIDMap;
     }
-
-    public List<VersionGroup> getVersionGroups(Generation generation) {
-        return generation.getVersionGroups();
-    }
 }
