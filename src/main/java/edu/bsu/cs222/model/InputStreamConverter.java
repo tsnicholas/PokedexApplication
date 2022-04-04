@@ -11,6 +11,11 @@ public class InputStreamConverter {
     public Object inputStreamToJsonObject(InputStream stream) {
         assert stream != null;
         Scanner scanner = new Scanner(stream);
-        return jsonParser.parseJson(scanner.nextLine());
+        StringBuilder stringBuilder = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            stringBuilder.append(scanner.nextLine());
+        }
+        scanner.close();
+        return jsonParser.parseJson(stringBuilder);
     }
 }

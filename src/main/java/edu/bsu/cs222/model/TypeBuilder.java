@@ -8,15 +8,12 @@ import java.util.List;
 
 public class TypeBuilder {
 
-    public Type createType(String name, Object typeJsonObject) {
-        TypeParser typeParser = new TypeParser();
-        HashMap<String, List<String>> damageRelationsMap = new HashMap<>();
+    //TODO: convert into damage relations parser, typeBuilder to be replaced by Type.Builder
 
+    public Type createType(String name, Object typeJsonObject) {
         Object damageRelationsJsonDocument = makeDamageRelationsJsonDocument(typeJsonObject);
-        damageRelationsMap.put("Weaknesses", typeParser.parseWeakTo(damageRelationsJsonDocument));
-        damageRelationsMap.put("Resistances", typeParser.parseResistantTo(damageRelationsJsonDocument));
-        damageRelationsMap.put("Immunities", typeParser.parseImmuneTo(damageRelationsJsonDocument));
-        return new Type(name, damageRelationsMap);
+        HashMap<String, List<String>> damageRelationsMap = makeDamageRelationsMap(damageRelationsJsonDocument);
+        return Type.withName(name).andDamageRelations(damageRelationsMap);
     }
 
     private Object makeDamageRelationsJsonDocument(Object typeJsonDocument) {
@@ -25,5 +22,16 @@ public class TypeBuilder {
             typeJsonDocument = JsonPath.read(typeJsonDocument, "$.past_damage_relations[0]");
         }
         return JsonPath.read(typeJsonDocument, "$.damage_relations");
+    }
+
+    private HashMap<String, List<String>> makeDamageRelationsMap(Object damageRelationsJsonDocument) {
+        TypeParser typeParser = new TypeParser();
+        HashMap<String, List<String>> damageRelationsMap = new HashMap<>();
+
+        damageRelationsMap.put("Weaknesses", typeParser.parseWeakTo(damageRelationsJsonDocument));
+        damageRelationsMap.put("Resistances", typeParser.parseResistantTo(damageRelationsJsonDocument));
+        damageRelationsMap.put("Immunities", typeParser.parseImmuneTo(damageRelationsJsonDocument));
+
+        return damageRelationsMap;
     }
 }
