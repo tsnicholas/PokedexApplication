@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -35,19 +36,20 @@ public class MainWindow extends Application {
     private MoveDisplay moveDisplay;
     private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
-    private static List<Generation> generations;
 
-    public static void main(String[] args) {
+    @Override
+    public void init() throws Exception {
+        super.init();
         GenerationProcessor generationProcessor = new GenerationProcessor();
-        generations = generationProcessor.createGenerationList();
-        launch(args);
+        List<Generation> generations = generationProcessor.createGenerationList();
+        searchBar.setUpGameSelection(generations);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        searchBar.setUpGameSelection(generations);
         setUpWindowBasics(primaryStage);
         setUpSizesAndFonts();
+        setUpEventTriggers();
         startUpDisplay(true);
         primaryStage.show();
     }
@@ -70,6 +72,15 @@ public class MainWindow extends Application {
         types.setFont(getPokeFactsFont());
         stats.setFont(getPokeFactsFont());
         dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
+    }
+
+    private void setUpEventTriggers() {
+        searchBar.getTextField().setOnKeyPressed(keyPressed -> {
+            if (keyPressed.getCode() == KeyCode.ENTER) {
+                beginProcessing();
+            }
+        });
+        searchBar.getButton().setOnAction(clicked -> beginProcessing());
     }
 
     private Font getPokeFactsFont() {
@@ -111,13 +122,19 @@ public class MainWindow extends Application {
     }
 
     public void beginProcessing() {
-        searchBar.setDisable(true);
-        dropDownMenu.setDisable(true);
-        search();
-        Platform.runLater(() -> {
-            searchBar.setDisable(false);
-            dropDownMenu.setDisable(false);
-        });
+        if(pokedexProcessor.pokemonExistsWithinPokedex(searchBar.getInput())) {
+            searchBar.setDisable(true);
+            dropDownMenu.setDisable(true);
+            search();
+            Platform.runLater(() -> {
+                searchBar.setDisable(false);
+                dropDownMenu.setDisable(false);
+            });
+        }
+        else {
+            ErrorWindow doesNotExist = new ErrorWindow(searchBar.getInput() + " does not exist!");
+            doesNotExist.display();
+        }
     }
 
     private void search() {
@@ -132,7 +149,7 @@ public class MainWindow extends Application {
             System.err.println("Error: " + nullPointerException);
         }
         catch (RuntimeException doesNotExist) {
-            ErrorWindow noExistence = new ErrorWindow(searchBar.getInput() + " doesn't exist in Pokemon " + searchBar.getSelectedVersion().getName());
+            ErrorWindow noExistence = new ErrorWindow(searchBar.getInput() + " doesn't exist in Pokemon " + searchBar.getSelectedVersion());
             noExistence.display();
         }
     }

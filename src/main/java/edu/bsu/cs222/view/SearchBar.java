@@ -8,28 +8,17 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
 
-public class SearchBar extends MainWindow {
+public class SearchBar {
     private final TextField searchInput = new TextField();
     private final ChoiceBox<Version> gameSelection = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
 
     public SearchBar() {
         searchInput.setPrefWidth(400);
-        setUpEventTriggers();
-    }
-
-    private void setUpEventTriggers() {
-        searchInput.setOnKeyPressed(keyPressed -> {
-            if (keyPressed.getCode() == KeyCode.ENTER) {
-                beginProcessing();
-            }
-        });
-        searchButton.setOnAction(clicked -> beginProcessing());
     }
 
     public void setUpGameSelection(List<Generation> generations) {
@@ -43,6 +32,14 @@ public class SearchBar extends MainWindow {
         for(VersionGroup versionGroup: versionGroups) {
             gameSelection.getItems().addAll(versionGroup.getVersions());
         }
+    }
+
+    public TextField getTextField() {
+        return searchInput;
+    }
+
+    public Button getButton() {
+        return searchButton;
     }
 
     public Parent getDisplay() {
