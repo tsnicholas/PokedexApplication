@@ -1,7 +1,6 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.Pokemon;
-import edu.bsu.cs222.model.PokedexProcessor;
+import edu.bsu.cs222.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,6 +18,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class MainWindow extends Application {
     private final int WIDTH_OF_WINDOW = 700;
     private final int HEIGHT_OF_WINDOW = 800;
@@ -26,17 +27,24 @@ public class MainWindow extends Application {
 
     private final Text instruction = new Text("Enter a name of a Pokemon");
     private final TextField searchInput = new TextField();
-    private final ChoiceBox<String> gameSelection = new ChoiceBox<>();
+    private final ChoiceBox<VersionGroup> gameSelection = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
     private final Text types = new Text();
     private final Text stats = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final ChoiceBox<MenuDisplay> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
-    private final PokedexProcessor pokemonProcessor = new PokedexProcessor();
+    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private MoveDisplay moveDisplay;
     private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
+    private static List<Generation> generations;
+
+    public static void main(String[] args) {
+        GenerationProcessor generationProcessor = new GenerationProcessor();
+        generations = generationProcessor.createGenerationList();
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -69,7 +77,7 @@ public class MainWindow extends Application {
     private void setUpSizesAndFonts() {
         lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
         lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
-        searchInput.setPrefWidth(500);
+        searchInput.setPrefWidth(400);
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
@@ -129,9 +137,11 @@ public class MainWindow extends Application {
     }
 
     private void setUpGameSelection() {
-        gameSelection.getItems().addAll(
-                "yellow"
-        );
+        for(Generation generation: generations) {
+            gameSelection.getItems().addAll(
+                    generation.getVersionGroups()
+            );
+        }
         gameSelection.getSelectionModel().selectFirst();
     }
 
@@ -151,18 +161,24 @@ public class MainWindow extends Application {
 
     private void search() {
         try {
-            currentPokemon = pokemonProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
+            currentPokemon = pokedexProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
             update();
             startUpDisplay(false);
-        } catch (RuntimeException doesNotExist) {
-            ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue());
+        }
+        catch(NullPointerException nullPointerException) {
+            ErrorWindow genericError = new ErrorWindow("An error has occurred!!!!");
+            genericError.display();
+            System.err.println("Error: " + nullPointerException);
+        }
+        catch (RuntimeException doesNotExist) {
+            ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue().getName());
             noExistence.display();
         }
     }
 
     private void update() {
-        types.setText(pokemonProcessor.convertTypesToString(currentPokemon));
-        stats.setText(pokemonProcessor.convertStatsToString(currentPokemon));
+        types.setText(pokedexProcessor.convertTypesToString(currentPokemon));
+        stats.setText(pokedexProcessor.convertStatsToString(currentPokemon));
         pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
         moveDisplay = new MoveDisplay(currentPokemon);
         damageRelationsDisplay = new DamageRelationsDisplay(currentPokemon);

@@ -12,7 +12,7 @@ public class CurrentPokemonBuilder implements PokemonBuilder {
     private final Object pokemonJsonObject;
     private final Pokemon pokemon;
 
-    public CurrentPokemonBuilder(Object pokemonJsonObject) {
+    public CurrentPokemonBuilder(Object pokemonJsonObject) throws RuntimeException {
         this.pokemonJsonObject = pokemonJsonObject;
         this.pokemon = new Pokemon();
     }

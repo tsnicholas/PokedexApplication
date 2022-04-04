@@ -1,37 +1,40 @@
 package edu.bsu.cs222.model;
 
+import edu.bsu.cs222.model.parsers.PokedexParser;
+import edu.bsu.cs222.model.parsers.PokemonParser;
+
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 public class PokedexProcessor {
-    private final PokedexFactory pokedexFactory = new PokedexFactory();
     private final URLProcessor urlProcessor = new URLProcessor();
+    private final Pokedex nationalPokedex;
 
-    public Pokemon process(String nameOfPokemon, String nameOfGame) throws RuntimeException {
-        Pokedex pokedex = getPokedex(nameOfGame);
-        if(pokemonExistsWithinPokedex(nameOfPokemon, pokedex)) {
-            return processPokemon(nameOfPokemon);
-        }
-        else {
-            throw new RuntimeException();
-        }
+    public PokedexProcessor() {
+        URLProcessor urlProcessor = new URLProcessor();
+        PokedexParser pokedexParser = new PokedexParser();
+        Object nationalDexDocument = urlProcessor.stringToObject("https://pokeapi.co/api/v2/pokedex/1");
+        nationalPokedex = pokedexParser.parsePokemonNames(nationalDexDocument);
     }
-  
-    private Pokedex getPokedex(String nameOfGame) {
-        URL gameURL = urlProcessor.getGameURL(nameOfGame);
-        Object gameFile = urlProcessor.urlToObject(gameURL);
-        return pokedexFactory.createPokedex(gameFile);
-    }
-  
-    private boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
+
+    public boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
         return pokedex.getPokemonNames().contains(pokemon);
     }
 
-    private Pokemon processPokemon(String nameOfPokemon) {
-        URL pokemonUrl = urlProcessor.getPokemonURL(nameOfPokemon);
-        CurrentPokemonBuilder oldPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
-        PokemonEngineer pokemonEngineer = new PokemonEngineer(oldPokemonBuilder);
+    public Pokemon process(String nameOfPokemon, VersionGroup games) throws RuntimeException {
+        try {
+            return processPokemon(nameOfPokemon, games);
+        }
+        catch(RuntimeException runtimeException) {
+            throw new RuntimeException();
+        }
+    }
+
+    private Pokemon processPokemon(String nameOfPokemon, VersionGroup versionGroup) throws RuntimeException {
+        URL pokemonUrl = urlProcessor.getURL(nameOfPokemon);
+        CurrentPokemonBuilder currentPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
+        PokemonEngineer pokemonEngineer = new PokemonEngineer(currentPokemonBuilder);
         pokemonEngineer.constructPokemon();
         return pokemonEngineer.getPokemon();
     }

@@ -9,27 +9,21 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 
 public class URLProcessor {
     private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
 //    private final HashMap<URL, Object> cache = new HashMap<>();
 //    Could be worth looking into this, makes the application run faster the more queries it does, takes up memory
 
-    public URL getPokemonURL(String pokemon) {
-        String urlString = getURLString("https://pokeapi.co/api/v2/pokemon/%s", pokemon);
-        return verifyURL(urlString);
-    }
-
-    public URL getGameURL(String game) {
-        String urlString = getURLString("https://pokeapi.co/api/v2/version-group/%s", game);
+    public URL getURL(String pokemon) {
+        String urlString = getURLString(pokemon);
         return verifyURL(urlString);
     }
 
     // There's a couple pokemon later on that will have spaces in their name, so it's important to use URLEncoder
-    private String getURLString(String url, String name) {
+    private String getURLString(String name) {
         String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
-        return String.format(url, nameEncoded);
+        return String.format("https://pokeapi.co/api/v2/pokemon/%s", nameEncoded);
     }
 
     public Object stringToObject(String urlString) {

@@ -50,8 +50,8 @@ public class MoveParser {
     }
 
     private boolean pastValue(Object moveInputStream, String value) {
-        JSONArray pastValues = JsonPath.read(moveInputStream, "$.past_values");
-        if(pastValues.size() > 0) {
+        int pastValuesArraySize = JsonPath.read(moveInputStream, "$.past_values.length()");
+        if (pastValuesArraySize > 0) {
             return JsonPath.read(moveInputStream, "$.past_values[0]." + value) != null;
         }
         return false;
