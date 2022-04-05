@@ -21,18 +21,18 @@ public class SearchBar {
         searchInput.setPrefWidth(400);
     }
 
-    public void setUpGameSelection(List<Generation> generations) {
-        for(Generation generation: generations) {
-            getVersions(generation.getVersionGroups());
+    public void setUpGameSelection(List<Version> versions) {
+        for (Version version : versions) {
+            gameSelection.getItems().add(version);
         }
         gameSelection.getSelectionModel().selectFirst();
     }
 
-    private void getVersions(List<VersionGroup> versionGroups) {
-        for(VersionGroup versionGroup: versionGroups) {
-            gameSelection.getItems().addAll(versionGroup.getVersions());
-        }
-    }
+//    private void getVersions(List<VersionGroup> versionGroups) {
+//        for(VersionGroup versionGroup: versionGroups) {
+//            gameSelection.getItems().addAll(versionGroup.getVersionNames());
+//        }
+//    }
 
     public TextField getTextField() {
         return searchInput;
