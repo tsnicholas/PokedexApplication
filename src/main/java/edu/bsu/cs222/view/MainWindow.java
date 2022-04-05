@@ -122,7 +122,7 @@ public class MainWindow extends Application {
     }
 
     public void beginProcessing() {
-        if(pokedexProcessor.pokemonExistsWithinPokedex(searchBar.getInput())) {
+        if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
             searchBar.setDisable(true);
             dropDownMenu.setDisable(true);
             search();
@@ -130,8 +130,7 @@ public class MainWindow extends Application {
                 searchBar.setDisable(false);
                 dropDownMenu.setDisable(false);
             });
-        }
-        else {
+        } else {
             ErrorWindow doesNotExist = new ErrorWindow(searchBar.getInput() + " does not exist!");
             doesNotExist.display();
         }
