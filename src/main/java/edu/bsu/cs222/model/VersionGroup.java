@@ -15,6 +15,10 @@ public class VersionGroup {
         return name;
     }
 
+    public List<Version> getVersions() {
+        return versions;
+    }
+
     @Override
     public String toString() {
         return name;

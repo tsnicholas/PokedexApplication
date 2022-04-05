@@ -26,9 +26,7 @@ public class MainWindow extends Application {
     private final Pos DEFAULT_POSITION = Pos.CENTER;
 
     private final Text instruction = new Text("Enter a name of a Pokemon");
-    private final TextField searchInput = new TextField();
-    private final ChoiceBox<VersionGroup> gameSelection = new ChoiceBox<>();
-    private final Button searchButton = new Button("Search");
+    private final SearchBar searchBar = new SearchBar();
     private final Text types = new Text();
     private final Text stats = new Text();
     private final ImageView pokemonImage = new ImageView();
@@ -38,19 +36,20 @@ public class MainWindow extends Application {
     private MoveDisplay moveDisplay;
     private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
-    private static List<Generation> generations;
 
-    public static void main(String[] args) {
+    @Override
+    public void init() throws Exception {
+        super.init();
         GenerationProcessor generationProcessor = new GenerationProcessor();
-        generations = generationProcessor.createGenerationList();
-        launch(args);
+        List<Generation> generations = generationProcessor.createGenerationList();
+        searchBar.setUpGameSelection(generations);
     }
 
     @Override
     public void start(Stage primaryStage) {
         setUpWindowBasics(primaryStage);
-        setUpEventTriggers();
         setUpSizesAndFonts();
+        setUpEventTriggers();
         startUpDisplay(true);
         primaryStage.show();
     }
@@ -61,29 +60,27 @@ public class MainWindow extends Application {
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(HEIGHT_OF_WINDOW);
         primaryStage.setWidth(WIDTH_OF_WINDOW);
-        primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(X -> Platform.exit());
-    }
-
-    private void setUpEventTriggers() {
-        searchInput.setOnKeyPressed(keyPressed -> {
-            if (keyPressed.getCode() == KeyCode.ENTER) {
-                beginProcessing();
-            }
-        });
-        searchButton.setOnAction(clicked -> beginProcessing());
     }
 
     private void setUpSizesAndFonts() {
         lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
         lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
-        searchInput.setPrefWidth(400);
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         types.setFont(getPokeFactsFont());
         stats.setFont(getPokeFactsFont());
         dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
+    }
+
+    private void setUpEventTriggers() {
+        searchBar.getTextField().setOnKeyPressed(keyPressed -> {
+            if (keyPressed.getCode() == KeyCode.ENTER) {
+                beginProcessing();
+            }
+        });
+        searchBar.getButton().setOnAction(clicked -> beginProcessing());
     }
 
     private Font getPokeFactsFont() {
@@ -104,24 +101,12 @@ public class MainWindow extends Application {
         mainWindow.setSpacing(5);
         mainWindow.getChildren().addAll(
                 instruction,
-                createSearchBar(),
+                searchBar.getDisplay(),
                 createUpperPortion(),
                 dropDownMenu,
                 lowerPortion
         );
         return mainWindow;
-    }
-
-    private Parent createSearchBar() {
-        HBox searchBar = new HBox();
-        searchBar.setAlignment(DEFAULT_POSITION);
-        setUpGameSelection();
-        searchBar.getChildren().addAll(
-                searchInput,
-                gameSelection,
-                searchButton
-        );
-        return searchBar;
     }
 
     private Parent createUpperPortion() {
@@ -136,42 +121,35 @@ public class MainWindow extends Application {
         return upperPortion;
     }
 
-    private void setUpGameSelection() {
-        for(Generation generation: generations) {
-            gameSelection.getItems().addAll(
-                    generation.getVersionGroups()
-            );
+    public void beginProcessing() {
+        if(pokedexProcessor.pokemonExistsWithinPokedex(searchBar.getInput())) {
+            searchBar.setDisable(true);
+            dropDownMenu.setDisable(true);
+            search();
+            Platform.runLater(() -> {
+                searchBar.setDisable(false);
+                dropDownMenu.setDisable(false);
+            });
         }
-        gameSelection.getSelectionModel().selectFirst();
-    }
-
-    private void beginProcessing() {
-        searchInput.setDisable(true);
-        gameSelection.setDisable(true);
-        searchButton.setDisable(true);
-        dropDownMenu.setDisable(true);
-        search();
-        Platform.runLater(() -> {
-            searchInput.setDisable(false);
-            gameSelection.setDisable(false);
-            searchButton.setDisable(false);
-            dropDownMenu.setDisable(false);
-        });
+        else {
+            ErrorWindow doesNotExist = new ErrorWindow(searchBar.getInput() + " does not exist!");
+            doesNotExist.display();
+        }
     }
 
     private void search() {
         try {
-            currentPokemon = pokedexProcessor.process(searchInput.getText().toLowerCase(), gameSelection.getValue());
+            currentPokemon = pokedexProcessor.process(searchBar.getInput().toLowerCase(), searchBar.getSelectedVersion());
             update();
             startUpDisplay(false);
         }
         catch(NullPointerException nullPointerException) {
-            ErrorWindow genericError = new ErrorWindow("An error has occurred!!!!");
+            ErrorWindow genericError = new ErrorWindow("An error has occurred!");
             genericError.display();
             System.err.println("Error: " + nullPointerException);
         }
         catch (RuntimeException doesNotExist) {
-            ErrorWindow noExistence = new ErrorWindow(searchInput.getText() + " doesn't exist in Pokemon " + gameSelection.getValue().getName());
+            ErrorWindow noExistence = new ErrorWindow(searchBar.getInput() + " doesn't exist in Pokemon " + searchBar.getSelectedVersion());
             noExistence.display();
         }
     }

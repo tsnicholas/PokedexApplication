@@ -9,13 +9,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 class PokemonEngineerTest {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
     private final Object dittoDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ditto.json"));
-    private final PokemonEngineer pokemonEngineer = new PokemonEngineer(new CurrentPokemonBuilder(dittoDocument));
     private Pokemon pokemon;
 
     @BeforeEach
     public void setPokemonEngineer() {
-        pokemonEngineer.constructPokemon();
-        pokemon = pokemonEngineer.getPokemon();
+        PokemonEngineer pokemonEngineer = new PokemonEngineer();
+        pokemon = pokemonEngineer.constructPokemon(dittoDocument);
     }
 
     @Test

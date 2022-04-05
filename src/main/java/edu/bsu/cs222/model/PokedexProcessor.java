@@ -17,24 +17,25 @@ public class PokedexProcessor {
         this.nationalPokedex = new Pokedex(pokedexParser.parseForPokemonNames(nationalDexDocument));
     }
 
+
     public boolean pokemonExistsInNationalPokedex(String pokemon) {
         return nationalPokedex.containsPokemon(pokemon);
     }
 
-    public Pokemon process(String nameOfPokemon, VersionGroup games) throws RuntimeException {
+    public Pokemon process(String nameOfPokemon, Version version) throws RuntimeException {
         try {
-            return processPokemon(nameOfPokemon, games);
-        } catch (RuntimeException runtimeException) {
+            return processPokemon(nameOfPokemon, version);
+        }
+        catch(RuntimeException runtimeException) {
             throw new RuntimeException();
         }
     }
 
-    private Pokemon processPokemon(String nameOfPokemon, VersionGroup versionGroup) throws RuntimeException {
+    private Pokemon processPokemon(String nameOfPokemon, Version version) throws RuntimeException {
         URL pokemonUrl = urlProcessor.getURL(nameOfPokemon);
-        CurrentPokemonBuilder currentPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
-        PokemonEngineer pokemonEngineer = new PokemonEngineer(currentPokemonBuilder);
-        pokemonEngineer.constructPokemon();
-        return pokemonEngineer.getPokemon();
+        Object pokemonJsonObject = urlProcessor.urlToObject(pokemonUrl);
+        PokemonEngineer pokemonEngineer = new PokemonEngineer();
+        return pokemonEngineer.constructPokemon(pokemonJsonObject);
     }
 
     public String convertTypesToString(Pokemon pokemon) {
