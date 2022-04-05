@@ -64,4 +64,9 @@ class PokemonParserTest {
         List<Move> actual = pokemonParser.parseForMoves(dittoDocument);
         Assertions.assertEquals(expected.get(0).getMoveData(), actual.get(0).getMoveData());
     }
+
+    @Test
+    public void testAssertPokemonExistsInGame_pokemonExists() {
+        Assertions.assertTrue(pokemonParser.assertPokemonExistsInGame(dittoDocument, "yellow"));
+    }
 }

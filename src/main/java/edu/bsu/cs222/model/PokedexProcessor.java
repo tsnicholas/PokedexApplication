@@ -1,7 +1,6 @@
 package edu.bsu.cs222.model;
 
 import edu.bsu.cs222.model.parsers.PokedexParser;
-import edu.bsu.cs222.model.parsers.PokemonParser;
 
 import java.net.URL;
 import java.util.List;
@@ -15,18 +14,17 @@ public class PokedexProcessor {
         URLProcessor urlProcessor = new URLProcessor();
         PokedexParser pokedexParser = new PokedexParser();
         Object nationalDexDocument = urlProcessor.stringToObject("https://pokeapi.co/api/v2/pokedex/1");
-        nationalPokedex = pokedexParser.parsePokemonNames(nationalDexDocument);
+        this.nationalPokedex = new Pokedex(pokedexParser.parseForPokemonNames(nationalDexDocument));
     }
 
-    public boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
-        return pokedex.getPokemonNames().contains(pokemon);
+    public boolean pokemonExistsInNationalPokedex(String pokemon) {
+        return nationalPokedex.containsPokemon(pokemon);
     }
 
     public Pokemon process(String nameOfPokemon, VersionGroup games) throws RuntimeException {
         try {
             return processPokemon(nameOfPokemon, games);
-        }
-        catch(RuntimeException runtimeException) {
+        } catch (RuntimeException runtimeException) {
             throw new RuntimeException();
         }
     }
