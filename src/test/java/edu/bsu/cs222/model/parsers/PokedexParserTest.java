@@ -15,9 +15,9 @@ class PokedexParserTest {
         return resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("x-y.json"));
     }
 
-    @Test
-    public void testVersionGroup_XandY_jigglypuffIsIncluded() {
-        List<String> pokemonNamesInXandY = pokedexParser.parseForPokedex(xandYDoucment);
-        Assertions.assertTrue(pokemonNamesInXandY.contains("jigglypuff"));
-    }
+//    @Test
+//    public void testVersionGroup_XandY_jigglypuffIsIncluded() {
+//        List<String> pokemonNamesInXandY = pokedexParser.parseForPokedex(xandYDoucment);
+//        Assertions.assertTrue(pokemonNamesInXandY.contains("jigglypuff"));
+//    }
 }

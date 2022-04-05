@@ -1,7 +1,6 @@
 package edu.bsu.cs222.model;
 
 import edu.bsu.cs222.model.parsers.PokedexParser;
-import edu.bsu.cs222.model.parsers.PokemonParser;
 
 import java.net.URL;
 import java.util.List;
@@ -18,25 +17,24 @@ public class PokedexProcessor {
         nationalPokedex = pokedexParser.parsePokemonNames(nationalDexDocument);
     }
 
-    public boolean pokemonExistsWithinPokedex(String pokemon, Pokedex pokedex) {
-        return pokedex.getPokemonNames().contains(pokemon);
+    public boolean pokemonExistsWithinPokedex(String pokemon) {
+        return nationalPokedex.getPokemonNames().contains(pokemon);
     }
 
-    public Pokemon process(String nameOfPokemon, VersionGroup games) throws RuntimeException {
+    public Pokemon process(String nameOfPokemon, Version version) throws RuntimeException {
         try {
-            return processPokemon(nameOfPokemon, games);
+            return processPokemon(nameOfPokemon, version);
         }
         catch(RuntimeException runtimeException) {
             throw new RuntimeException();
         }
     }
 
-    private Pokemon processPokemon(String nameOfPokemon, VersionGroup versionGroup) throws RuntimeException {
+    private Pokemon processPokemon(String nameOfPokemon, Version version) throws RuntimeException {
         URL pokemonUrl = urlProcessor.getURL(nameOfPokemon);
-        CurrentPokemonBuilder currentPokemonBuilder = new CurrentPokemonBuilder(urlProcessor.urlToObject(pokemonUrl));
-        PokemonEngineer pokemonEngineer = new PokemonEngineer(currentPokemonBuilder);
-        pokemonEngineer.constructPokemon();
-        return pokemonEngineer.getPokemon();
+        Object pokemonJsonObject = urlProcessor.urlToObject(pokemonUrl);
+        PokemonEngineer pokemonEngineer = new PokemonEngineer();
+        return pokemonEngineer.constructPokemon(pokemonJsonObject);
     }
 
     public String convertTypesToString(Pokemon pokemon) {
