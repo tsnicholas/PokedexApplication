@@ -60,7 +60,7 @@ class PokemonParserTest {
         expectedMoveData.put("Accuracy", "--");
         expected.add(new Move(expectedMoveData, expectedLearnMethods));
 
-        List<Move> actual = pokemonParser.parseForMoves(dittoDocument);
+        List<Move> actual = pokemonParser.parseForMoves(dittoDocument, "yellow");
         Assertions.assertEquals(expected.get(0).getMoveData(), actual.get(0).getMoveData());
     }
 

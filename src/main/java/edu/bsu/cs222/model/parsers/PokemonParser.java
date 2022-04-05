@@ -55,20 +55,20 @@ public class PokemonParser {
         return statMap;
     }
 
-    public List<Move> parseForMoves(Object pokemonJsonDocument) {
+    public List<Move> parseForMoves(Object pokemonJsonDocument, String versionName) {
         List<Move> moveList = new LinkedList<>();
         MoveBuilder moveBuilder = new MoveBuilder();
 
-        Filter learnMethodFilter = filter(where("version_group.name").is("yellow"));
-        JSONArray yellowMoveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details" +
-                "[?(@.version_group.name == 'yellow')])]");
-        for (Object moveObject : yellowMoveArray) {
+        Filter learnMethodFilter = filter(where("version_group.name").is(versionName));
+        JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details" +
+                "[?(@.version_group.name == \"" + versionName + "\" )])]");
+        for (Object moveObject : moveArray) {
             String moveName = JsonPath.read(moveObject, "$.move.name");
             String moveURL = JsonPath.read(moveObject, "$.move.url");
 
-            JSONArray yellowMoveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
+            JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
             List<String> learnMethods = new ArrayList<>();
-            for (Object occurrence : yellowMoveVersionDetailsArray) {
+            for (Object occurrence : moveVersionDetailsArray) {
                 String method = JsonPath.read(occurrence, "$.move_learn_method.name");
                 if (method.equals("level-up")) {
                     Integer levelLearnedAt = JsonPath.read(occurrence, "$.level_learned_at");
@@ -86,7 +86,24 @@ public class PokemonParser {
         return moveList;
     }
 
-    public String parseForImage(Object pokemonJsonDocument) {
-        return JsonPath.read(pokemonJsonDocument, "$.sprites.front_default");
+    public String parseForImage(Object pokemonJsonDocument, Version version) {
+        String spriteURL = null;
+        if (versionGroupContainsSprite(pokemonJsonDocument, version))
+            spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.versions." +
+                    version.getGeneration().getGenerationName() +
+                    "." + version.getVersionGroup().getVersionGroupName() +
+                    ".front_default");
+        if (spriteURL == null) {
+            spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.front_default");
+        }
+        return spriteURL;
     }
+
+    private boolean versionGroupContainsSprite(Object pokemonJsonDocument, Version version) {
+        JSONArray spriteArray = JsonPath.read(pokemonJsonDocument, "$.sprites.versions." +
+                version.getGeneration().getGenerationName() +
+                "[?(@." + version.getVersionGroup().getVersionGroupName() + ")]");
+        return spriteArray.size() != 0;
+    }
+
 }
