@@ -10,7 +10,7 @@ class GenerationParserTest {
     private final GenerationParser generationParser = new GenerationParser();
 
     @Test
-    public void parseForGenerationsTest() {
+    public void testParseForGenerations_genOne_isFirst() {
         List<Generation> generations = generationParser.parseForGenerations();
         Assertions.assertEquals("generation-i", generations.get(0).getName());
     }
