@@ -21,7 +21,7 @@ public class PokemonParser {
 
     public List<Type> parseForTypes(Object pokemonJsonDocument) {
         List<Type> typeList = new LinkedList<>();
-        TypeBuilder typeBuilder = new TypeBuilder();
+        DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
 
         if (checkForPastTypes(pokemonJsonDocument)) {
             pokemonJsonDocument = JsonPath.read(pokemonJsonDocument, "$.past_types[0]");
@@ -31,8 +31,8 @@ public class PokemonParser {
 
         for (int i = 0; i < typeNames.size(); i++) {
             Object typeJsonObject = urlProcessor.stringToObject(typeURLs.get(i));
-            Type type = typeBuilder.createType(typeNames.get(i), typeJsonObject);
-            typeList.add(type);
+            HashMap<String, List<String>> damageRelations = damageRelationsParser.parseForDamageRelations(typeJsonObject);
+            typeList.add(Type.withName(typeNames.get(i)).andDamageRelations(damageRelations));
         }
         return typeList;
     }
