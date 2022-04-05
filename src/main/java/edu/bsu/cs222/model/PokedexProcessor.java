@@ -8,13 +8,11 @@ import java.util.Map;
 
 public class PokedexProcessor {
     private final URLProcessor urlProcessor = new URLProcessor();
-    private final Pokedex nationalPokedex;
+    private final NationalPokedex nationalPokedex = NationalPokedex.createNationalPokedex().loadNationalPokedexNames();
 
     public PokedexProcessor() {
         URLProcessor urlProcessor = new URLProcessor();
         PokedexParser pokedexParser = new PokedexParser();
-        Object nationalDexDocument = urlProcessor.stringToObject("https://pokeapi.co/api/v2/pokedex/1");
-        this.nationalPokedex = new Pokedex(pokedexParser.parseForPokemonNames(nationalDexDocument));
     }
 
 

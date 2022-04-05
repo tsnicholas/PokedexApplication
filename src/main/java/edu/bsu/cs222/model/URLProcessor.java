@@ -20,6 +20,10 @@ public class URLProcessor {
         return verifyURL(urlString);
     }
 
+    public Object getNationalPokedex() {
+        return stringToObject("https://pokeapi.co/api/v2/pokedex/national");
+    }
+
     // There's a couple pokemon later on that will have spaces in their name, so it's important to use URLEncoder
     private String getURLString(String name) {
         String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
