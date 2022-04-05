@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class PokedexParserTest {
-    private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final PokedexParser pokedexParser = new PokedexParser();
-    private final Object xandYDoucment = getJsonDocument();
+public class PokedexParserTest {
 
-    private Object getJsonDocument() {
-        return resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("x-y.json"));
+    @Test
+    public void testParseForPokemonNames_sizeIs898() {
+        PokedexParser pokedexParser = new PokedexParser();
+        InputStreamConverter resourceConverter = new InputStreamConverter();
+
+        Object testNationalPokedex = resourceConverter.inputStreamToJsonObject
+                (Thread.currentThread().getContextClassLoader().getResourceAsStream("nationalPokedex.json"));
+
+        List<String> pokemonNames = pokedexParser.parseForPokemonNames(testNationalPokedex);
+        int actual = pokemonNames.size();
+        Assertions.assertEquals(898, actual);
     }
-
-//    @Test
-//    public void testVersionGroup_XandY_jigglypuffIsIncluded() {
-//        List<String> pokemonNamesInXandY = pokedexParser.parseForPokedex(xandYDoucment);
-//        Assertions.assertTrue(pokemonNamesInXandY.contains("jigglypuff"));
-//    }
 }
