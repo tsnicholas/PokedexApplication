@@ -5,7 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.HashMap;
 import java.util.List;
 
-// Dragons behave differently, blame the PokeAPI for not having past damage relations for dragons
+// PokeAPI does not have past damage relations for Dragon type
 public class DamageRelationsParser {
 
     public HashMap<String, List<String>> parseForDamageRelations(Object typeJsonObject) {
