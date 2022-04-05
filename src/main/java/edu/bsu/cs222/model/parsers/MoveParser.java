@@ -1,7 +1,6 @@
 package edu.bsu.cs222.model.parsers;
 
 import com.jayway.jsonpath.JsonPath;
-import net.minidev.json.JSONArray;
 
 public class MoveParser {
     public String parseType(Object moveInputStream) {

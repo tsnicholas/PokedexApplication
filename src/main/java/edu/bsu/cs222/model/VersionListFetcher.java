@@ -14,11 +14,12 @@ public class VersionListFetcher {
     public List<Version> getListOfAllVersions() {
         List<Version> allVersions = new ArrayList<>();
         List<Generation> generations = getListOfAllGenerations();
+        GenerationMap generationMap = GenerationMap.withGenerationList(generations).createGenerationMap();
         for (Generation generation : generations) {
             for (VersionGroup versionGroup : generation.getVersionGroups()) {
                 for (String versionName : versionGroup.getVersionNames()) {
                     allVersions.add(Version.withName(versionName).andVersionGroup(versionGroup)
-                            .andGeneration(generation));
+                            .andGeneration(generation).andGenerationMap(generationMap));
                 }
             }
         }
