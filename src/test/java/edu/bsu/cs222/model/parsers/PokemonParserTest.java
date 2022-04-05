@@ -12,31 +12,30 @@ import java.util.*;
 
 class PokemonParserTest {
     private final PokemonParser pokemonParser = new PokemonParser();
-    private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object clefableDocument = getJsonDocument("clefable.json");
     private final Object charizardDocument = getJsonDocument("charizard.json");
     private final Object dittoDocument = getJsonDocument("ditto.json");
-    private List<Type> types = new ArrayList<>();
 
     private Object getJsonDocument(String fileName) {
+        InputStreamConverter resourceConverter = new InputStreamConverter();
         return resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
     }
 
     @Test
-    public void parseForPastTypeTest() {
-        types = pokemonParser.parseForTypes(clefableDocument);
-        Assertions.assertEquals("normal", types.get(0).getName());
+    public void testParseForTypes_pastType_normal() {
+        Object clefableDocument = getJsonDocument("clefable.json");
+        List<Type> actual = pokemonParser.parseForTypes(clefableDocument);
+        Assertions.assertEquals("normal", actual.get(0).getName());
     }
 
     @ParameterizedTest
     @CsvSource({"fire, 0", "flying, 1"})
-    public void parseForTypesTest(String typeName, int typeIndex) {
-        types = pokemonParser.parseForTypes(charizardDocument);
-        Assertions.assertEquals(typeName, types.get(typeIndex).getName());
+    public void testParseForTypes_multipleTypes_fireAndFlying(String typeName, int typeIndex) {
+        List<Type> actual = pokemonParser.parseForTypes(charizardDocument);
+        Assertions.assertEquals(typeName, actual.get(typeIndex).getName());
     }
 
     @Test
-    public void parseForStatsTest() {
+    public void testParseForStats_charizardStats() {
         Map<String, Integer> expected = new HashMap<>();
         expected.put("hp", 78);
         expected.put("attack", 84);
@@ -44,12 +43,12 @@ class PokemonParserTest {
         expected.put("special-attack", 109);
         expected.put("special-defense", 85);
         expected.put("speed", 100);
-        Map<String, Integer> stats = pokemonParser.parseForStats(charizardDocument);
-        Assertions.assertEquals(expected, stats);
+        Map<String, Integer> actual = pokemonParser.parseForStats(charizardDocument);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void parseForMovesTest() {
+    public void testParseForMoves_transform() {
         List<Move> expected = new ArrayList<>();
         List<String> expectedLearnMethods = new ArrayList<>();
         expectedLearnMethods.add("LV 1");
@@ -66,7 +65,7 @@ class PokemonParserTest {
     }
 
     @Test
-    public void testAssertPokemonExistsInGame_pokemonExists() {
+    public void testAssertPokemonExistsInGame_Yellow_dittoExists() {
         Assertions.assertTrue(pokemonParser.assertPokemonExistsInGame(dittoDocument, "yellow"));
     }
 }
