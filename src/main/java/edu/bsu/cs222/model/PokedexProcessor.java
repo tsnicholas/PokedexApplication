@@ -35,7 +35,7 @@ public class PokedexProcessor {
         URL pokemonUrl = urlProcessor.getURL(nameOfPokemon);
         Object pokemonJsonObject = urlProcessor.urlToObject(pokemonUrl);
         PokemonEngineer pokemonEngineer = new PokemonEngineer();
-        return pokemonEngineer.constructPokemon(pokemonJsonObject);
+        return pokemonEngineer.constructPokemon(pokemonJsonObject, version);
     }
 
     public String convertTypesToString(Pokemon pokemon) {
