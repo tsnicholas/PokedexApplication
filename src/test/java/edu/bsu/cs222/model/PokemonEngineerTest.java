@@ -6,9 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.List;
 
-class PokemonEngineerTest {
+class PokemonEngineerTest extends TestsWithVersions {
     private final InputStreamConverter resourceConverter = new InputStreamConverter();
     private final Object dittoDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ditto.json"));
     private Pokemon ditto;
@@ -16,12 +15,7 @@ class PokemonEngineerTest {
     @BeforeEach
     public void setPokemonEngineer() {
         PokemonEngineer pokemonEngineer = new PokemonEngineer();
-        ditto = pokemonEngineer.constructPokemon(dittoDocument,
-                Version.withName("yellow").andVersionGroup(VersionGroup.withName("yellow").andVersionNames(List.of("yellow")))
-                        .andGeneration(Generation.withName("generation-i").andID(1)
-                                .andVersionGroups(List.of(VersionGroup.withName("red-blue")
-                                                .andVersionNames(List.of("red", "blue")),
-                                        VersionGroup.withName("yellow").andVersionNames(List.of("yellow"))))));
+        ditto = pokemonEngineer.constructPokemon(dittoDocument, allVersions.get(2));
     }
 
     @Test

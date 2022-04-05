@@ -1,8 +1,6 @@
 package edu.bsu.cs222.model.parsers;
 
-import edu.bsu.cs222.model.InputStreamConverter;
-import edu.bsu.cs222.model.Move;
-import edu.bsu.cs222.model.Type;
+import edu.bsu.cs222.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.*;
 
-class PokemonParserTest {
+class PokemonParserTest extends TestsWithVersions {
     private final PokemonParser pokemonParser = new PokemonParser();
     private final Object charizardDocument = getJsonDocument("charizard.json");
     private final Object dittoDocument = getJsonDocument("ditto.json");
@@ -23,14 +21,14 @@ class PokemonParserTest {
     @Test
     public void testParseForTypes_pastType_normal() {
         Object clefableDocument = getJsonDocument("clefable.json");
-        List<Type> actual = pokemonParser.parseForTypes(clefableDocument);
+        List<Type> actual = pokemonParser.parseForTypes(clefableDocument, allVersions.get(2));
         Assertions.assertEquals("normal", actual.get(0).getName());
     }
 
     @ParameterizedTest
     @CsvSource({"fire, 0", "flying, 1"})
     public void testParseForTypes_multipleTypes_fireAndFlying(String typeName, int typeIndex) {
-        List<Type> actual = pokemonParser.parseForTypes(charizardDocument);
+        List<Type> actual = pokemonParser.parseForTypes(charizardDocument, allVersions.get(2));
         Assertions.assertEquals(typeName, actual.get(typeIndex).getName());
     }
 

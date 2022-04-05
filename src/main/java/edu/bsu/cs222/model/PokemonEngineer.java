@@ -11,7 +11,7 @@ public class PokemonEngineer {
 
     public Pokemon constructPokemon(Object pokemonJsonObject, Version version) {
         Pokemon.Builder pokemonBuilder = new Pokemon.Builder();
-        pokemonBuilder.setTypeList(pokemonParser.parseForTypes(pokemonJsonObject));
+        pokemonBuilder.setTypeList(pokemonParser.parseForTypes(pokemonJsonObject, version));
         pokemonBuilder.setStatsMap(pokemonParser.parseForStats(pokemonJsonObject));
         pokemonBuilder.setMoveList(pokemonParser.parseForMoves(pokemonJsonObject, version.getVersionName()));
         pokemonBuilder.setImageURL(pokemonParser.parseForImage(pokemonJsonObject, version));

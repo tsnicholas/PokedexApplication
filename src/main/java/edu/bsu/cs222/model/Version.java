@@ -10,6 +10,7 @@ public class Version {
         private final String versionName;
         private VersionGroup versionGroup;
         private Generation generation;
+        private GenerationMap generationMap;
 
         public Builder(String versionName) {
             this.versionName = versionName;
@@ -20,8 +21,13 @@ public class Version {
             return this;
         }
 
-        public Version andGeneration(Generation generation) {
+        public Builder andGeneration(Generation generation) {
             this.generation = generation;
+            return this;
+        }
+
+        public Version andGenerationMap(GenerationMap generationMap) {
+            this.generationMap = generationMap;
             return new Version(this);
         }
     }
@@ -29,11 +35,13 @@ public class Version {
     private final String versionName;
     private final VersionGroup versionGroup;
     private final Generation generation;
+    private final GenerationMap generationMap;
 
-    public Version(Builder builder) {
+    private Version(Builder builder) {
         this.versionName = builder.versionName;
         this.versionGroup = builder.versionGroup;
         this.generation = builder.generation;
+        this.generationMap = builder.generationMap;
     }
 
     public String getVersionName() {
@@ -46,5 +54,9 @@ public class Version {
 
     public Generation getGeneration() {
         return generation;
+    }
+
+    public GenerationMap getGenerationMap() {
+        return generationMap;
     }
 }

@@ -15,17 +15,17 @@ public class PokemonParser {
     private final URLProcessor urlProcessor = new URLProcessor();
 
     public boolean assertPokemonExistsInGame(Object pokemonJsonDocument, String game) {
-        JSONArray gameIndices = JsonPath.read(pokemonJsonDocument, "$.game_indices[?(@.version.name == \"" + game + "\")].length()");
+        JSONArray gameIndices = JsonPath.read(pokemonJsonDocument, "$.game_indices[?(@.version.name == \""
+                + game +
+                "\")].length()");
         return 0 != gameIndices.size();
     }
 
-    public List<Type> parseForTypes(Object pokemonJsonDocument) {
+    public List<Type> parseForTypes(Object pokemonJsonDocument, Version version) {
         List<Type> typeList = new LinkedList<>();
         DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
+        pokemonJsonDocument = makeTypeJsonPath(pokemonJsonDocument, version);
 
-        if (checkForPastTypes(pokemonJsonDocument)) {
-            pokemonJsonDocument = JsonPath.read(pokemonJsonDocument, "$.past_types[0]");
-        }
         List<String> typeNames = JsonPath.read(pokemonJsonDocument, "$.types..name");
         List<String> typeURLs = JsonPath.read(pokemonJsonDocument, "$.types..url");
 
@@ -37,9 +37,16 @@ public class PokemonParser {
         return typeList;
     }
 
-    private boolean checkForPastTypes(Object pokemonJsonDocument) {
-        int sizeOfPastTypesArray = JsonPath.read(pokemonJsonDocument, "$.past_types.length()");
-        return sizeOfPastTypesArray != 0;
+    private Object makeTypeJsonPath(Object pokemonJsonDoucment, Version version) {
+        JSONArray pastTypesDetailsArray = JsonPath.read(pokemonJsonDoucment, "$.past_types");
+        for (Object pastTypeDetails : pastTypesDetailsArray) {
+            String generationName = JsonPath.read(pastTypeDetails, "$.generation.name");
+            int generationID = version.getGenerationMap().getIdOf(generationName);
+            if (version.getGeneration().getGenerationID() <= generationID) {
+                return pastTypeDetails;
+            }
+        }
+        return pokemonJsonDoucment;
     }
 
     public Map<String, Integer> parseForStats(Object pokemonJsonDocument) {
