@@ -14,25 +14,12 @@ public class Type {
         private HashMap<String, List<String>> damageRelations;
 
         public Builder(String name) {
-            if (name == null) {
-                throw new IllegalArgumentException();
-            }
             this.name = name;
         }
 
         public Type andDamageRelations(HashMap<String, List<String>> damageRelations) {
-            if (damageRelations == null) {
-                throw new IllegalArgumentException();
-            }
             this.damageRelations = damageRelations;
-            checkForNull();
             return new Type(this);
-        }
-
-        private void checkForNull() {
-            if (damageRelations == null) {
-                throw new IllegalStateException("Damage relations must be specified");
-            }
         }
     }
 

@@ -3,24 +3,44 @@ package edu.bsu.cs222.model;
 import java.util.List;
 
 public class VersionGroup {
-    private final String name;
-    private final List<Version> versions;
 
-    public VersionGroup(String name, List<Version> versions) {
-        this.name = name;
-        this.versions = versions;
+    public static Builder withName(String versionGroupName) {
+        return new Builder(versionGroupName);
     }
 
-    public String getName() {
-        return name;
+    public static final class Builder {
+        private final String versionGroupName;
+        private List<String> versionNames;
+
+        public Builder(String versionGroupName) {
+            this.versionGroupName = versionGroupName;
+        }
+
+        public VersionGroup andVersionNames(List<String> versionNames) {
+            this.versionNames = versionNames;
+            return new VersionGroup(this);
+        }
     }
 
-    public List<Version> getVersions() {
-        return versions;
+
+    private final String versionGroupName;
+    private final List<String> versionNames;
+
+    public VersionGroup(Builder builder) {
+        this.versionGroupName = builder.versionGroupName;
+        this.versionNames = builder.versionNames;
+    }
+
+    public String getVersionGroupName() {
+        return versionGroupName;
+    }
+
+    public List<String> getVersionNames() {
+        return versionNames;
     }
 
     @Override
     public String toString() {
-        return name;
+        return versionGroupName;
     }
 }
