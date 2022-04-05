@@ -1,12 +1,11 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.model.parsers.JsonParser;
+import com.jayway.jsonpath.Configuration;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
 public class InputStreamConverter {
-    private final JsonParser jsonParser = new JsonParser();
 
     public Object inputStreamToJsonObject(InputStream stream) {
         assert stream != null;
@@ -16,6 +15,12 @@ public class InputStreamConverter {
             stringBuilder.append(scanner.nextLine());
         }
         scanner.close();
-        return jsonParser.parseJson(stringBuilder);
+        return parseJson(stringBuilder);
+    }
+
+    // JsonPath GitHub README recommends the following method to avoid parsing the whole document everytime
+    // JsonPath.read is used.
+    private Object parseJson(StringBuilder json) {
+        return Configuration.defaultConfiguration().jsonProvider().parse(String.valueOf(json));
     }
 }
