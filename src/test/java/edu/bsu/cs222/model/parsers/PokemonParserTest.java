@@ -48,22 +48,22 @@ class PokemonParserTest extends TestResourceConverter {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test
-    public void testParseForMoves_transform() {
-        List<Move> expected = new ArrayList<>();
-        List<String> expectedLearnMethods = new ArrayList<>();
-        expectedLearnMethods.add("LV 1");
-        LinkedHashMap<String, String> expectedMoveData = new LinkedHashMap<>();
-        expectedMoveData.put("Name", "transform");
-        expectedMoveData.put("Type", "normal");
-        expectedMoveData.put("PP", "10");
-        expectedMoveData.put("Power", "--");
-        expectedMoveData.put("Accuracy", "--");
-        expected.add(new Move(expectedMoveData, expectedLearnMethods));
-
-        List<Move> actual = pokemonParser.parseForMoves(dittoDocument, "yellow");
-        Assertions.assertEquals(expected.get(0).getMoveData(), actual.get(0).getMoveData());
-    }
+//    @Test
+//    public void testParseForMoves_transform() {
+//        List<Move> expected = new ArrayList<>();
+//        List<String> expectedLearnMethods = new ArrayList<>();
+//        expectedLearnMethods.add("LV 1");
+//        LinkedHashMap<String, String> expectedMoveData = new LinkedHashMap<>();
+//        expectedMoveData.put("Name", "transform");
+//        expectedMoveData.put("Type", "normal");
+//        expectedMoveData.put("PP", "10");
+//        expectedMoveData.put("Power", "--");
+//        expectedMoveData.put("Accuracy", "--");
+//        expected.add(new Move(expectedMoveData, expectedLearnMethods));
+//
+//        List<Move> actual = pokemonParser.parseForMoves(dittoDocument, "yellow");
+//        Assertions.assertEquals(expected.get(0).getMoveData(), actual.get(0).getMoveData());
+//    }
 
     @Test
     public void testAssertPokemonExistsInGame_Yellow_dittoExists() {

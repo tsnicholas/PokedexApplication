@@ -16,7 +16,7 @@ class PokemonEngineerTest extends TestResourceConverter {
         TestURLProcessor testURLProcessor = new TestURLProcessor();
         PokemonEngineer pokemonEngineer = new PokemonEngineer(testURLProcessor);
         Generation genOne = Generation.withName("generation-i").andVersionGroups(null);
-        VersionGroup yellowVersionGroup = VersionGroup.withName("yellow").andVersionNames(null);
+        VersionGroup yellowVersionGroup = VersionGroup.withName("yellow").andID(2).andVersionNames(null);
         ditto = pokemonEngineer.constructPokemon(dittoDocument, Version.withName("yellow").andGeneration(genOne).
                 andVersionGroup(yellowVersionGroup).andGenerationMap(null));
     }
@@ -28,7 +28,7 @@ class PokemonEngineerTest extends TestResourceConverter {
 
     @Test
     public void pokemonMoveListTest() {
-        Assertions.assertEquals("transform", ditto.getMoveList().get(0).access("Name"));
+        Assertions.assertEquals("transform", ditto.getMoveList().get(0).getName());
     }
 
     @Test
