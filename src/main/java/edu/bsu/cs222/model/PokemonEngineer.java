@@ -3,10 +3,16 @@ package edu.bsu.cs222.model;
 import edu.bsu.cs222.model.parsers.PokemonParser;
 
 public class PokemonEngineer {
-    private final PokemonParser pokemonParser = new PokemonParser();
+    //TODO: this can just be in Pokemon.Builder
+
+    private final PokemonParser pokemonParser;
 
     public PokemonEngineer() {
+        this.pokemonParser = new PokemonParser();
+    }
 
+    public PokemonEngineer(URLProcessor urlProcessor) {
+        this.pokemonParser = new PokemonParser(urlProcessor);
     }
 
     public Pokemon constructPokemon(Object pokemonJsonObject, Version version) {

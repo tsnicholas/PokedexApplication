@@ -17,7 +17,7 @@ class GenerationParserTest extends TestResourceConverter {
 
     @Test
     public void testParseForCountOfGenerations_8() {
-        int actual = generationParser.parseForCountOfGenerations(allGenerations);
+        int actual = generationParser.parseForNumberOfGenerations(allGenerations);
         Assertions.assertEquals(8, actual);
     }
 

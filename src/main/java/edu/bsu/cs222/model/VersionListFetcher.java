@@ -41,7 +41,7 @@ public class VersionListFetcher {
             return makeListOfGenerations(allGenerationsJsonDocument);
         }
 
-        int count = generationParser.parseForCountOfGenerations(allGenerationsJsonDocument);
+        int count = generationParser.parseForNumberOfGenerations(allGenerationsJsonDocument);
         allGenerationsJsonDocument = urlProcessor.getAllGenerations(count);
         return makeListOfGenerations(allGenerationsJsonDocument);
     }

@@ -8,22 +8,30 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.*;
 
-class PokemonParserTest extends TestsWithVersions {
-    private final PokemonParser pokemonParser = new PokemonParser();
+class PokemonParserTest extends TestResourceConverter {
+    private final TestURLProcessor testURLProcessor = new TestURLProcessor();
+    private final PokemonParser pokemonParser = new PokemonParser(testURLProcessor);
     private final Object charizardDocument = convertFileNameToObject("charizard.json");
     private final Object dittoDocument = convertFileNameToObject("ditto.json");
 
     @Test
-    public void testParseForTypes_pastType_normal() {
+    public void testParseForTypes_pastType_genOneIsNormal() {
         Object clefableDocument = convertFileNameToObject("clefable.json");
-        List<Type> actual = pokemonParser.parseForTypes(clefableDocument, allVersions.get(2));
+
+        Generation genOne = Generation.withName("generation-i").andID(1).andVersionGroups(null);
+        Generation genFive = Generation.withName("generation-v").andID(5).andVersionGroups(null);
+        GenerationMap generationMap = GenerationMap.withGenerationList(List.of(genOne, genFive)).createGenerationMap();
+
+        List<Type> actual = pokemonParser.parseForTypes(clefableDocument, Version.withName(null).
+                andGeneration(genOne).andGenerationMap(generationMap));
+
         Assertions.assertEquals("normal", actual.get(0).getName());
     }
 
     @ParameterizedTest
     @CsvSource({"fire, 0", "flying, 1"})
     public void testParseForTypes_multipleTypes_fireAndFlying(String typeName, int typeIndex) {
-        List<Type> actual = pokemonParser.parseForTypes(charizardDocument, allVersions.get(2));
+        List<Type> actual = pokemonParser.parseForTypes(charizardDocument, Version.withName(null).andGenerationMap(null));
         Assertions.assertEquals(typeName, actual.get(typeIndex).getName());
     }
 

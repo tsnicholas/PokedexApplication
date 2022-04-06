@@ -11,7 +11,7 @@ public class GenerationParser {
         return next == null;
     }
 
-    public int parseForCountOfGenerations(Object allGenerationsJsonDocument) {
+    public int parseForNumberOfGenerations(Object allGenerationsJsonDocument) {
         return JsonPath.read(allGenerationsJsonDocument, "$.count");
     }
 
