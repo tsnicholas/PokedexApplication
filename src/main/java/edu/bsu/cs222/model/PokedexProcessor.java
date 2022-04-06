@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.model.parsers.PokedexParser;
+import edu.bsu.cs222.model.parsers.NationalPokedexParser;
 
 import java.net.URL;
 import java.util.List;
@@ -12,7 +12,7 @@ public class PokedexProcessor {
 
     public PokedexProcessor() {
         URLProcessor urlProcessor = new URLProcessor();
-        PokedexParser pokedexParser = new PokedexParser();
+        NationalPokedexParser nationalPokedexParser = new NationalPokedexParser();
     }
 
 

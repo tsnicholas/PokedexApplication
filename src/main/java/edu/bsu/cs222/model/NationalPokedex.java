@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.model.parsers.PokedexParser;
+import edu.bsu.cs222.model.parsers.NationalPokedexParser;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class NationalPokedex {
 
         private static final URLProcessor urlProcessor = new URLProcessor();
         private static final Object nationalPokedexJsonDocument = urlProcessor.getNationalPokedex();
-        private static final PokedexParser nationalPokedexParser = new PokedexParser();
+        private static final NationalPokedexParser nationalPokedexParser = new NationalPokedexParser();
         private List<String> nationalDexPokemonNames;
 
         public Factory() {
