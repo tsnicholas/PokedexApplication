@@ -1,8 +1,6 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.Generation;
 import edu.bsu.cs222.model.Version;
-import edu.bsu.cs222.model.VersionGroup;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -27,12 +25,6 @@ public class SearchBar {
         }
         gameSelection.getSelectionModel().selectFirst();
     }
-
-//    private void getVersions(List<VersionGroup> versionGroups) {
-//        for(VersionGroup versionGroup: versionGroups) {
-//            gameSelection.getItems().addAll(versionGroup.getVersionNames());
-//        }
-//    }
 
     public TextField getTextField() {
         return searchInput;
