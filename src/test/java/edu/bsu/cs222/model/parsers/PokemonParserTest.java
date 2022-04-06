@@ -48,22 +48,30 @@ class PokemonParserTest extends TestResourceConverter {
         Assertions.assertEquals(expected, actual);
     }
 
-//    @Test
-//    public void testParseForMoves_transform() {
-//        List<Move> expected = new ArrayList<>();
-//        List<String> expectedLearnMethods = new ArrayList<>();
-//        expectedLearnMethods.add("LV 1");
-//        LinkedHashMap<String, String> expectedMoveData = new LinkedHashMap<>();
-//        expectedMoveData.put("Name", "transform");
-//        expectedMoveData.put("Type", "normal");
-//        expectedMoveData.put("PP", "10");
-//        expectedMoveData.put("Power", "--");
-//        expectedMoveData.put("Accuracy", "--");
-//        expected.add(new Move(expectedMoveData, expectedLearnMethods));
-//
-//        List<Move> actual = pokemonParser.parseForMoves(dittoDocument, "yellow");
-//        Assertions.assertEquals(expected.get(0).getMoveData(), actual.get(0).getMoveData());
-//    }
+    @ParameterizedTest
+    @CsvSource({"name", "type", "pp", "power", "accuracy", "learn method"})
+    public void testParseForMoves_transform(String key) {
+        Move expectedMove = Move.withName("transform").andType("normal").andPP("10").andPower("--").andAccuracy("--")
+                .andLearnMethods(List.of("LV 1"));
+        Move actualMove = pokemonParser.parseForMoves(dittoDocument, Version.withName("yellow")
+                .andGenerationMap(null)).get(0);
+
+        HashMap<String, String> expected = makeMoveDataMap(expectedMove);
+        HashMap<String, String> actual = makeMoveDataMap(actualMove);
+
+        Assertions.assertEquals(expected.get(key), actual.get(key));
+    }
+
+    private HashMap<String, String> makeMoveDataMap(Move move) {
+        HashMap<String, String> moveData = new HashMap<>();
+        moveData.put("name", move.getName());
+        moveData.put("type", move.getType());
+        moveData.put("pp", move.getPP());
+        moveData.put("power", move.getPower());
+        moveData.put("accuracy", move.getAccuracy());
+        moveData.put("learn method", move.getLearnMethods().get(0));
+        return moveData;
+    }
 
     @Test
     public void testAssertPokemonExistsInGame_Yellow_dittoExists() {
