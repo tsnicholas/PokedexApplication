@@ -31,8 +31,7 @@ public class PokedexProcessor {
     }
 
     private Pokemon processPokemon(String nameOfPokemon, Version version) throws RuntimeException {
-        URL pokemonUrl = productionUrlProcessor.getURL(nameOfPokemon);
-        Object pokemonJsonObject = productionUrlProcessor.urlToObject(pokemonUrl);
+        Object pokemonJsonObject = productionUrlProcessor.getPokemonJsonObject(nameOfPokemon);
         PokemonEngineer pokemonEngineer = new PokemonEngineer();
         return pokemonEngineer.constructPokemon(pokemonJsonObject, version);
     }
@@ -74,16 +73,16 @@ public class PokedexProcessor {
         return output.toString();
     }
 
-    public String convertMoveDataToString(Pokemon pokemon, String moveData) {
-        StringBuilder output = new StringBuilder();
-        for(Move move: pokemon.getMoveList()) {
-            for(int i = 0; i < move.getLearnMethods().size(); i++) {
-                output.append(move.access(moveData));
-                output.append("\n");
-            }
-        }
-        return output.toString();
-    }
+//    public String convertMoveDataToString(Pokemon pokemon, String moveData) {
+//        StringBuilder output = new StringBuilder();
+//        for(Move move: pokemon.getMoveList()) {
+//            for(int i = 0; i < move.getLearnMethods().size(); i++) {
+//                output.append(move.access(moveData));
+//                output.append("\n");
+//            }
+//        }
+//        return output.toString();
+//    }
 
     public String convertLearnMethodsToString(Pokemon currentPokemon) {
         StringBuilder output = new StringBuilder();
