@@ -12,7 +12,7 @@ import static com.jayway.jsonpath.Filter.filter;
 import static com.jayway.jsonpath.JsonPath.parse;
 
 public class PokemonParser {
-    private final URLProcessor urlProcessor = new URLProcessor();
+    private final ProductionURLProcessor productionUrlProcessor = new ProductionURLProcessor();
 
     public boolean assertPokemonExistsInGame(Object pokemonJsonDocument, String game) {
         JSONArray gameIndices = JsonPath.read(pokemonJsonDocument, "$.game_indices[?(@.version.name == \""
@@ -30,7 +30,7 @@ public class PokemonParser {
         List<String> typeURLs = JsonPath.read(pokemonJsonDocument, "$.types..url");
 
         for (int i = 0; i < typeNames.size(); i++) {
-            Object typeJsonObject = urlProcessor.stringToObject(typeURLs.get(i));
+            Object typeJsonObject = productionUrlProcessor.stringToObject(typeURLs.get(i));
             HashMap<String, List<String>> damageRelations = damageRelationsParser.parseForDamageRelations(typeJsonObject);
             typeList.add(Type.withName(typeNames.get(i)).andDamageRelations(damageRelations));
         }
@@ -85,7 +85,7 @@ public class PokemonParser {
                 }
             }
 
-            Object moveJsonDocument = urlProcessor.stringToObject(moveURL);
+            Object moveJsonDocument = productionUrlProcessor.stringToObject(moveURL);
 
             Move move = moveBuilder.createMove(moveName, moveJsonDocument, learnMethods);
             moveList.add(move);
