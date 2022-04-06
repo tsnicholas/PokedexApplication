@@ -1,6 +1,6 @@
 package edu.bsu.cs222.model.parsers;
 
-import edu.bsu.cs222.model.InputStreamConverter;
+import edu.bsu.cs222.model.TestResourceConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,11 +8,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 
-public class VersionGroupParserTest {
+public class VersionGroupParserTest extends TestResourceConverter {
     private final VersionGroupParser versionGroupParser = new VersionGroupParser();
-    private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object xyVersionGroupJsonDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread()
-            .getContextClassLoader().getResourceAsStream("x-y.json"));
+    private final Object xyVersionGroupJsonDocument = convertFileNameToObject("x-y.json");
 
     @Test
     public void testParseForName_xy() {

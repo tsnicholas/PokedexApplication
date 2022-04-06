@@ -21,6 +21,16 @@ public class ProductionURLProcessor implements URLProcessor {
     }
 
     @Override
+    public Object getUpTo20Generations() {
+        return stringToObject("https://pokeapi.co/api/v2/generation");
+    }
+
+    @Override
+    public Object getAllGenerations(int count) {
+        return stringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
+    }
+
+    @Override
     public Object stringToObject(String urlString) {
         URL url = verifyURL(urlString);
         return urlToObject(url);

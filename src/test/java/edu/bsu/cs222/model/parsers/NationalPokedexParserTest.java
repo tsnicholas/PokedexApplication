@@ -1,20 +1,18 @@
 package edu.bsu.cs222.model.parsers;
 
-import edu.bsu.cs222.model.InputStreamConverter;
+import edu.bsu.cs222.model.TestResourceConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class NationalPokedexParserTest {
+public class NationalPokedexParserTest extends TestResourceConverter {
 
     @Test
     public void testParseForPokemonNames_sizeIs898() {
         NationalPokedexParser nationalPokedexParser = new NationalPokedexParser();
-        InputStreamConverter resourceConverter = new InputStreamConverter();
 
-        Object testNationalPokedex = resourceConverter.inputStreamToJsonObject
-                (Thread.currentThread().getContextClassLoader().getResourceAsStream("nationalPokedex.json"));
+        Object testNationalPokedex = convertFileNameToObject("nationalPokedex.json");
 
         List<String> pokemonNames = nationalPokedexParser.parseForPokemonNames(testNationalPokedex);
         int actual = pokemonNames.size();

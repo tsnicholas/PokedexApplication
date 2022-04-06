@@ -10,17 +10,12 @@ import java.util.*;
 
 class PokemonParserTest extends TestsWithVersions {
     private final PokemonParser pokemonParser = new PokemonParser();
-    private final Object charizardDocument = getJsonDocument("charizard.json");
-    private final Object dittoDocument = getJsonDocument("ditto.json");
-
-    private Object getJsonDocument(String fileName) {
-        InputStreamConverter resourceConverter = new InputStreamConverter();
-        return resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
-    }
+    private final Object charizardDocument = convertFileNameToObject("charizard.json");
+    private final Object dittoDocument = convertFileNameToObject("ditto.json");
 
     @Test
     public void testParseForTypes_pastType_normal() {
-        Object clefableDocument = getJsonDocument("clefable.json");
+        Object clefableDocument = convertFileNameToObject("clefable.json");
         List<Type> actual = pokemonParser.parseForTypes(clefableDocument, allVersions.get(2));
         Assertions.assertEquals("normal", actual.get(0).getName());
     }

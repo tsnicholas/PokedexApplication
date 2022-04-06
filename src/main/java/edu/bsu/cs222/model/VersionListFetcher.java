@@ -8,8 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VersionListFetcher {
-    private final ProductionURLProcessor productionUrlProcessor = new ProductionURLProcessor();
+    private final URLProcessor urlProcessor;
     private final GenerationParser generationParser = new GenerationParser();
+
+    public VersionListFetcher() {
+        this.urlProcessor = new ProductionURLProcessor();
+    }
+
+    public VersionListFetcher(URLProcessor urlProcessor) {
+        this.urlProcessor = urlProcessor;
+    }
 
     public List<Version> getListOfAllVersions() {
         List<Version> allVersions = new ArrayList<>();
@@ -27,15 +35,14 @@ public class VersionListFetcher {
     }
 
     private List<Generation> getListOfAllGenerations() {
-        Object allGenerationsJsonDocument = productionUrlProcessor.stringToObject("https://pokeapi.co/api/v2/generation");
+        Object allGenerationsJsonDocument = urlProcessor.getUpTo20Generations();
 
         if (generationParser.containsAllGenerations(allGenerationsJsonDocument)) {
             return makeListOfGenerations(allGenerationsJsonDocument);
         }
 
         int count = generationParser.parseForCountOfGenerations(allGenerationsJsonDocument);
-        allGenerationsJsonDocument = productionUrlProcessor
-                .stringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
+        allGenerationsJsonDocument = urlProcessor.getAllGenerations(count);
         return makeListOfGenerations(allGenerationsJsonDocument);
     }
 
@@ -45,7 +52,7 @@ public class VersionListFetcher {
         List<String> generationURLs = generationParser.parseForGenerationURL(allGenerationsJsonDocument);
 
         for (String url : generationURLs) {
-            Object generationJsonDocument = productionUrlProcessor.stringToObject(url);
+            Object generationJsonDocument = urlProcessor.stringToObject(url);
             String name = generationParser.parseForName(generationJsonDocument);
             Integer id = generationParser.parseForID(generationJsonDocument);
             List<VersionGroup> versionGroups = makeListOfVersionGroups(generationJsonDocument);
@@ -60,7 +67,7 @@ public class VersionListFetcher {
 
         List<String> versionGroupURLs = JsonPath.read(generationJsonDocument, "$.version_groups..url");
         for (String url : versionGroupURLs) {
-            Object versionGroupJsonDocument = productionUrlProcessor.stringToObject(url);
+            Object versionGroupJsonDocument = urlProcessor.stringToObject(url);
             String name = versionGroupParser.parseForName(versionGroupJsonDocument);
             List<String> versions = versionGroupParser.parseForVersionNames(versionGroupJsonDocument);
             versionGroups.add(VersionGroup.withName(name).andVersionNames(versions));
