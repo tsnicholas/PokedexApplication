@@ -3,29 +3,32 @@ package edu.bsu.cs222.model;
 import java.util.*;
 
 public class Pokemon {
+    public static Builder withTypeList(List<Type> typeList) {
+        return new Builder(typeList);
+    }
+
     public static final class Builder {
-        private List<Type> typeList;
+        private final List<Type> typeList;
         private List<Move> moveList;
         private Map<String, Integer> statsMap;
         private String imageURL;
 
-        public void setTypeList(List<Type> typeList) {
+        public Builder (List<Type> typeList) {
             this.typeList = typeList;
         }
 
-        public void setStatsMap(Map<String, Integer> statsMap) {
+        public Builder andStatsMap(Map<String, Integer> statsMap) {
             this.statsMap = statsMap;
+            return this;
         }
 
-        public void setMoveList(List<Move> moveList) {
+        public Builder andMoveList(List<Move> moveList) {
             this.moveList = moveList;
+            return this;
         }
 
-        public void setImageURL(String imageURL) {
+        public Pokemon andImageURL(String imageURL) {
             this.imageURL = imageURL;
-        }
-
-        public Pokemon build() {
             return new Pokemon(this);
         }
     }

@@ -1,8 +1,8 @@
 package edu.bsu.cs222.model;
 
 import edu.bsu.cs222.model.parsers.NationalPokedexParser;
+import edu.bsu.cs222.model.parsers.PokemonParser;
 
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +10,7 @@ public class PokedexProcessor {
 
     private final ProductionURLProcessor productionUrlProcessor = new ProductionURLProcessor();
     private final NationalPokedex nationalPokedex = NationalPokedex.createNationalPokedex().loadNationalPokedexNames();
+    private final PokemonParser pokemonParser = new PokemonParser();
 
     public PokedexProcessor() {
         ProductionURLProcessor productionUrlProcessor = new ProductionURLProcessor();
@@ -32,8 +33,10 @@ public class PokedexProcessor {
 
     private Pokemon processPokemon(String nameOfPokemon, Version version) throws RuntimeException {
         Object pokemonJsonObject = productionUrlProcessor.getPokemonJsonObject(nameOfPokemon);
-        PokemonEngineer pokemonEngineer = new PokemonEngineer();
-        return pokemonEngineer.constructPokemon(pokemonJsonObject, version);
+        return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonObject, version))
+                .andStatsMap(pokemonParser.parseForStats(pokemonJsonObject))
+                .andMoveList(pokemonParser.parseForMoves(pokemonJsonObject, version))
+                .andImageURL(pokemonParser.parseForImage(pokemonJsonObject, version));
     }
 
     public String convertTypesToString(Pokemon pokemon) {

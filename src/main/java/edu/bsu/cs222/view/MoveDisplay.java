@@ -34,8 +34,8 @@ public class MoveDisplay implements MenuDisplay {
         VBox moveDataText = new VBox();
         moveDataText.setSpacing(5);
         moveDataText.getChildren().addAll(
-                createText(moveData),
-                createText(pokedexProcessor.convertMoveDataToString(currentPokemon, moveData))
+                createText(moveData)
+//                createText(pokedexProcessor.convertMoveDataToString(currentPokemon, moveData))
         );
         return moveDataText;
     }

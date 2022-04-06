@@ -45,8 +45,8 @@ public class PokemonParser {
         return typeList;
     }
 
-    private Object makeTypeJsonPath(Object pokemonJsonDoucment, Version version) {
-        JSONArray pastTypesDetailsArray = JsonPath.read(pokemonJsonDoucment, "$.past_types");
+    private Object makeTypeJsonPath(Object PokemonJsonDocument, Version version) {
+        JSONArray pastTypesDetailsArray = JsonPath.read(PokemonJsonDocument, "$.past_types");
         for (Object pastTypeDetails : pastTypesDetailsArray) {
             String generationName = JsonPath.read(pastTypeDetails, "$.generation.name");
             int generationID = version.getGenerationMap().getIdOf(generationName);
@@ -54,7 +54,7 @@ public class PokemonParser {
                 return pastTypeDetails;
             }
         }
-        return pokemonJsonDoucment;
+        return PokemonJsonDocument;
     }
 
     public Map<String, Integer> parseForStats(Object pokemonJsonDocument) {
@@ -70,15 +70,14 @@ public class PokemonParser {
         return statMap;
     }
 
-    public List<Move> parseForMoves(Object pokemonJsonDocument, String versionName) {
+    public List<Move> parseForMoves(Object pokemonJsonDocument, Version version) {
         List<Move> moveList = new LinkedList<>();
-        MoveBuilder moveBuilder = new MoveBuilder();
+        MoveEngineer moveEngineer = new MoveEngineer();
 
-        Filter learnMethodFilter = filter(where("version_group.name").is(versionName));
+        Filter learnMethodFilter = filter(where("version_group.name").is(version.getVersionName()));
         JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details" +
-                "[?(@.version_group.name == \"" + versionName + "\" )])]");
+                "[?(@.version_group.name == \"" + version + "\" )])]");
         for (Object moveObject : moveArray) {
-            String moveName = JsonPath.read(moveObject, "$.move.name");
             String moveURL = JsonPath.read(moveObject, "$.move.url");
 
             JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
@@ -95,7 +94,7 @@ public class PokemonParser {
 
             Object moveJsonDocument = urlProcessor.stringToObject(moveURL);
 
-            Move move = moveBuilder.createMove(moveName, moveJsonDocument, learnMethods);
+            Move move = moveEngineer.createMove(moveJsonDocument, learnMethods);
             moveList.add(move);
         }
         return moveList;
