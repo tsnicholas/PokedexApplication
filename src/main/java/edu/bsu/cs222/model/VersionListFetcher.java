@@ -62,8 +62,9 @@ public class VersionListFetcher {
         for (String url : versionGroupURLs) {
             Object versionGroupJsonDocument = urlProcessor.stringToObject(url);
             String name = versionGroupParser.parseForName(versionGroupJsonDocument);
+            int id = versionGroupParser.parseForID(versionGroupJsonDocument);
             List<String> versions = versionGroupParser.parseForVersionNames(versionGroupJsonDocument);
-            versionGroups.add(VersionGroup.withName(name).andVersionNames(versions));
+            versionGroups.add(VersionGroup.withName(name).andID(id).andVersionNames(versions));
         }
         return versionGroups;
     }
