@@ -3,64 +3,43 @@ package edu.bsu.cs222.model.parsers;
 import com.jayway.jsonpath.JsonPath;
 
 public class MoveParser {
-    public String parseType(Object moveInputStream) {
-        String type;
-        if(pastValue(moveInputStream, "type")) {
-            type = JsonPath.read(moveInputStream, "$.past_values[0].type.name");
-        }
-        else {
-            type = JsonPath.read(moveInputStream, "$.type.name");
-        }
-        return nullCheck(type);
+    public String parseName(Object moveJsonDocument) {
+        return JsonPath.read(moveJsonDocument, "$.name");
     }
 
-    public String parsePP(Object moveInputStream) {
-        Integer pp;
-        if(pastValue(moveInputStream, "pp")) {
-            pp = JsonPath.read(moveInputStream, "$.past_values[0].pp");
-        }
-        else {
-            pp = JsonPath.read(moveInputStream, "$.pp");
-        }
-        return nullCheck(String.valueOf(pp));
-    }
-
-    public String parsePower(Object moveInputStream) {
-        Integer power;
-        if(pastValue(moveInputStream, "power")) {
-            power = JsonPath.read(moveInputStream, "$.past_values[0].power");
-        }
-        else {
-            power = JsonPath.read(moveInputStream, "$.power");
-        }
-        return nullCheck(String.valueOf(power));
-    }
-
-    public String parseAccuracy(Object moveInputStream) {
-        Integer accuracy;
-        if(pastValue(moveInputStream, "accuracy")) {
-            accuracy = JsonPath.read(moveInputStream, "$.past_values[0].accuracy");
-        }
-        else {
-            accuracy = JsonPath.read(moveInputStream, "$.accuracy");
-        }
-
-        return nullCheck(String.valueOf(accuracy));
-    }
-
-    private boolean pastValue(Object moveInputStream, String value) {
-        int pastValuesArraySize = JsonPath.read(moveInputStream, "$.past_values.length()");
-        if (pastValuesArraySize > 0) {
-            return JsonPath.read(moveInputStream, "$.past_values[0]." + value) != null;
-        }
-        return false;
-    }
-
-    private String nullCheck(String type) {
-        if(type.equals("null")) {
+    public String parseType(Object moveJsonDocument) {
+        Object typeObject = JsonPath.read(moveJsonDocument, "$.type.name");
+        if(nullCheck(typeObject)) {
             return "--";
         }
+        return String.valueOf(typeObject);
+    }
 
-        return type;
+    public String parsePP(Object moveJsonDocument) {
+        Object ppObject = JsonPath.read(moveJsonDocument, "$.pp");
+        if(nullCheck(ppObject)) {
+            return "--";
+        }
+        return String.valueOf(ppObject);
+    }
+
+    public String parsePower(Object moveJsonDocument) {
+        Object powerObject = JsonPath.read(moveJsonDocument, "$.power");
+        if(nullCheck(powerObject)) {
+            return "--";
+        }
+        return String.valueOf(powerObject);
+    }
+
+    public String parseAccuracy(Object moveJsonDocument) {
+        Object accuracyObject = JsonPath.read(moveJsonDocument, "$.accuracy");
+        if(nullCheck(accuracyObject)) {
+            return "--";
+        }
+        return String.valueOf(accuracyObject);
+    }
+
+    private boolean nullCheck(Object data) {
+        return data == null;
     }
 }
