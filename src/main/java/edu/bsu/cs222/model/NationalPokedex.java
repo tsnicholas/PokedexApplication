@@ -1,5 +1,6 @@
 package edu.bsu.cs222.model;
 
+
 import edu.bsu.cs222.model.parsers.NationalPokedexParser;
 
 import java.util.List;

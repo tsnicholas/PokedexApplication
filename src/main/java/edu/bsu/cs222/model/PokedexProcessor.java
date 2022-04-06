@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PokedexProcessor {
+
     private final ProductionURLProcessor productionUrlProcessor = new ProductionURLProcessor();
     private final NationalPokedex nationalPokedex = NationalPokedex.createNationalPokedex().loadNationalPokedexNames();
 
