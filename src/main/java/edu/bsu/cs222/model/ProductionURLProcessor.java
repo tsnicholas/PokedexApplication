@@ -30,15 +30,22 @@ public class ProductionURLProcessor implements URLProcessor {
         return stringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
     }
 
+    public Object getPokemonJsonObject(String pokemon) {
+        String urlString = getPokemonURLString(pokemon);
+        return stringToObject(urlString);
+    }
+
+    // There's a couple pokemon later on that will have spaces in their name,
+    // so it's important to use URLEncoder
+    private String getPokemonURLString(String name) {
+        String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
+        return String.format("https://pokeapi.co/api/v2/pokemon/%s", nameEncoded);
+    }
+
     @Override
     public Object stringToObject(String urlString) {
         URL url = verifyURL(urlString);
         return urlToObject(url);
-    }
-
-    public URL getURL(String pokemon) {
-        String urlString = getPokemonURLString(pokemon);
-        return verifyURL(urlString);
     }
 
     private URL verifyURL(String urlString) {
@@ -49,13 +56,7 @@ public class ProductionURLProcessor implements URLProcessor {
         }
     }
 
-    // There's a couple pokemon later on that will have spaces in their name, so it's important to use URLEncoder
-    private String getPokemonURLString(String name) {
-        String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
-        return String.format("https://pokeapi.co/api/v2/pokemon/%s", nameEncoded);
-    }
-
-    public Object urlToObject(URL url) {
+    private Object urlToObject(URL url) {
 //        if (cache.containsKey(url)) {
 //            return cache.get(url);
 //        }
