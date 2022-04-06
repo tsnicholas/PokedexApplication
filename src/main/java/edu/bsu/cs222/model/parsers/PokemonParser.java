@@ -39,7 +39,8 @@ public class PokemonParser {
 
         for (int i = 0; i < typeNames.size(); i++) {
             Object typeJsonObject = urlProcessor.stringToObject(typeURLs.get(i));
-            HashMap<String, List<String>> damageRelations = damageRelationsParser.parseForDamageRelations(typeJsonObject);
+            HashMap<String, List<String>> damageRelations = damageRelationsParser
+                    .parseForDamageRelations(typeJsonObject, version);
             typeList.add(Type.withName(typeNames.get(i)).andDamageRelations(damageRelations));
         }
         return typeList;

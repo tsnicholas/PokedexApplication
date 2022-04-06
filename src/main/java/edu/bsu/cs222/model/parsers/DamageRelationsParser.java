@@ -1,22 +1,28 @@
 package edu.bsu.cs222.model.parsers;
 
 import com.jayway.jsonpath.JsonPath;
+import edu.bsu.cs222.model.Version;
+import net.minidev.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
 
-// PokeAPI does not have past damage relations for Dragon type
+// PokeAPI does not have past damage relations for Dragon or Fighting type
 public class DamageRelationsParser {
 
-    public HashMap<String, List<String>> parseForDamageRelations(Object typeJsonObject) {
-        Object damageRelationsJsonDocument = makeDamageRelationsJsonDocument(typeJsonObject);
+    public HashMap<String, List<String>> parseForDamageRelations(Object typeJsonObject, Version version) {
+        Object damageRelationsJsonDocument = makeDamageRelationsJsonDocument(typeJsonObject, version);
         return makeDamageRelationsMap(damageRelationsJsonDocument);
     }
 
-    private Object makeDamageRelationsJsonDocument(Object typeJsonDocument) {
-        int pastDamageRelationsArraySize = JsonPath.read(typeJsonDocument, "$.past_damage_relations.length()");
-        if (pastDamageRelationsArraySize != 0) {
-            typeJsonDocument = JsonPath.read(typeJsonDocument, "$.past_damage_relations[0]");
+    private Object makeDamageRelationsJsonDocument(Object typeJsonDocument, Version version) {
+        JSONArray pastDamageRelationsArray = JsonPath.read(typeJsonDocument, "$.past_damage_relations");
+        for (Object pastDamageRelation : pastDamageRelationsArray) {
+            String generationName = JsonPath.read(pastDamageRelation, "$.generation.name");
+            int generationID = version.getGenerationMap().getIdOf(generationName);
+            if (version.getGeneration().getGenerationID() <= generationID) {
+                return JsonPath.read(pastDamageRelation, "$.damage_relations");
+            }
         }
         return JsonPath.read(typeJsonDocument, "$.damage_relations");
     }

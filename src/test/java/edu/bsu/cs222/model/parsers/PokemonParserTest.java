@@ -13,14 +13,21 @@ class PokemonParserTest extends TestResourceConverter {
     private final PokemonParser pokemonParser = new PokemonParser(testURLProcessor);
     private final Object charizardDocument = convertFileNameToObject("charizard.json");
     private final Object dittoDocument = convertFileNameToObject("ditto.json");
+    private final Generation genOne = makeGenOne();
+    private final GenerationMap generationMap = makeGenOneAndGenFiveMap();
+
+    private Generation makeGenOne() {
+        return Generation.withName("generation-i").andID(1).andVersionGroups(null);
+    }
+
+    private GenerationMap makeGenOneAndGenFiveMap() {
+        Generation genFive = Generation.withName("generation-v").andID(5).andVersionGroups(null);
+        return GenerationMap.withGenerationList(List.of(genOne, genFive)).createGenerationMap();
+    }
 
     @Test
     public void testParseForTypes_pastType_genOneIsNormal() {
         Object clefableDocument = convertFileNameToObject("clefable.json");
-
-        Generation genOne = Generation.withName("generation-i").andID(1).andVersionGroups(null);
-        Generation genFive = Generation.withName("generation-v").andID(5).andVersionGroups(null);
-        GenerationMap generationMap = GenerationMap.withGenerationList(List.of(genOne, genFive)).createGenerationMap();
 
         List<Type> actual = pokemonParser.parseForTypes(clefableDocument, Version.withName(null).
                 andGeneration(genOne).andGenerationMap(generationMap));
@@ -31,7 +38,8 @@ class PokemonParserTest extends TestResourceConverter {
     @ParameterizedTest
     @CsvSource({"fire, 0", "flying, 1"})
     public void testParseForTypes_multipleTypes_fireAndFlying(String typeName, int typeIndex) {
-        List<Type> actual = pokemonParser.parseForTypes(charizardDocument, Version.withName(null).andGenerationMap(null));
+        List<Type> actual = pokemonParser.parseForTypes(charizardDocument, Version.withName(null).andGeneration(genOne)
+                .andGenerationMap(generationMap));
         Assertions.assertEquals(typeName, actual.get(typeIndex).getName());
     }
 
