@@ -10,6 +10,10 @@ public class VersionGroupParser {
         return JsonPath.read(versionGroupJsonDocument, "$.name");
     }
 
+    public int parseForID(Object versionGroupJsonDocument) {
+        return JsonPath.read(versionGroupJsonDocument, "$.id");
+    }
+
     public List<String> parseForVersionNames(Object versionGroupJsonDocument) {
         return JsonPath.read(versionGroupJsonDocument, "$.versions..name");
     }

@@ -59,4 +59,9 @@ public class Version {
     public GenerationMap getGenerationMap() {
         return generationMap;
     }
+
+    @Override
+    public String toString() {
+        return versionName;
+    }
 }

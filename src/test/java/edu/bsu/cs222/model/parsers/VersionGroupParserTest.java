@@ -20,6 +20,12 @@ public class VersionGroupParserTest {
         Assertions.assertEquals("x-y", actual);
     }
 
+    @Test
+    public void testParseForID_xy() {
+        int actual = versionGroupParser.parseForID(xyVersionGroupJsonDocument);
+        Assertions.assertEquals(15, actual);
+    }
+
     @ParameterizedTest
     @CsvSource({"0, x", "1, y"})
     public void testParseForVersionNames_xAndY(int index, String expected) {
