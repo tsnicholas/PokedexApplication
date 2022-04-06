@@ -4,7 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 
-public class PokedexParser {
+public class NationalPokedexParser {
 
     public List<String> parseForPokemonNames(Object pokedexJsonObject) {
         return JsonPath.read(pokedexJsonObject, "$.pokemon_entries..pokemon_species.name");

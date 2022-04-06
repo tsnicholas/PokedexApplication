@@ -8,8 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VersionListFetcher {
-    private final URLProcessor urlProcessor = new URLProcessor();
+    private final URLProcessor urlProcessor;
     private final GenerationParser generationParser = new GenerationParser();
+
+    public VersionListFetcher() {
+        this.urlProcessor = new ProductionURLProcessor();
+    }
+
+    public VersionListFetcher(URLProcessor urlProcessor) {
+        this.urlProcessor = urlProcessor;
+    }
 
     public List<Version> getListOfAllVersions() {
         List<Version> allVersions = new ArrayList<>();
@@ -27,15 +35,14 @@ public class VersionListFetcher {
     }
 
     private List<Generation> getListOfAllGenerations() {
-        Object allGenerationsJsonDocument = urlProcessor.stringToObject("https://pokeapi.co/api/v2/generation");
+        Object allGenerationsJsonDocument = urlProcessor.getUpTo20Generations();
 
         if (generationParser.containsAllGenerations(allGenerationsJsonDocument)) {
             return makeListOfGenerations(allGenerationsJsonDocument);
         }
 
-        int count = generationParser.parseForCountOfGenerations(allGenerationsJsonDocument);
-        allGenerationsJsonDocument = urlProcessor
-                .stringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
+        int count = generationParser.parseForNumberOfGenerations(allGenerationsJsonDocument);
+        allGenerationsJsonDocument = urlProcessor.getAllGenerations(count);
         return makeListOfGenerations(allGenerationsJsonDocument);
     }
 

@@ -7,15 +7,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
-class PokemonEngineerTest extends TestsWithVersions {
-    private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object dittoDocument = resourceConverter.inputStreamToJsonObject(Thread.currentThread().getContextClassLoader().getResourceAsStream("ditto.json"));
+class PokemonEngineerTest extends TestResourceConverter {
+    private final Object dittoDocument = convertFileNameToObject("ditto.json");
     private Pokemon ditto;
 
     @BeforeEach
     public void setPokemonEngineer() {
-        PokemonEngineer pokemonEngineer = new PokemonEngineer();
-        ditto = pokemonEngineer.constructPokemon(dittoDocument, allVersions.get(2));
+        TestURLProcessor testURLProcessor = new TestURLProcessor();
+        PokemonEngineer pokemonEngineer = new PokemonEngineer(testURLProcessor);
+        Generation genOne = Generation.withName("generation-i").andVersionGroups(null);
+        VersionGroup yellowVersionGroup = VersionGroup.withName("yellow").andVersionNames(null);
+        ditto = pokemonEngineer.constructPokemon(dittoDocument, Version.withName("yellow").andGeneration(genOne).
+                andVersionGroup(yellowVersionGroup).andGenerationMap(null));
     }
 
     @Test

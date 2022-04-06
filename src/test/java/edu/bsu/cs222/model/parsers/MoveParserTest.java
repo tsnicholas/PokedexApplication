@@ -1,14 +1,12 @@
 package edu.bsu.cs222.model.parsers;
 
-import edu.bsu.cs222.model.InputStreamConverter;
+import edu.bsu.cs222.model.TestResourceConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class MoveParserTest {
+public class MoveParserTest extends TestResourceConverter {
     private final MoveParser moveParser = new MoveParser();
-    private final InputStreamConverter resourceConverter = new InputStreamConverter();
-    private final Object tackle = resourceConverter.inputStreamToJsonObject(Thread.currentThread()
-            .getContextClassLoader().getResourceAsStream("tackle.json"));
+    private final Object tackle = convertFileNameToObject("tackle.json");
 
     @Test
     public void testParseType_tackle_normal() {

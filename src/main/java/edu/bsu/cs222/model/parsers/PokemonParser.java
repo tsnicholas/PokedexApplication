@@ -12,7 +12,15 @@ import static com.jayway.jsonpath.Filter.filter;
 import static com.jayway.jsonpath.JsonPath.parse;
 
 public class PokemonParser {
-    private final URLProcessor urlProcessor = new URLProcessor();
+    private final URLProcessor urlProcessor;
+
+    public PokemonParser() {
+        this.urlProcessor = new ProductionURLProcessor();
+    }
+
+    public PokemonParser(URLProcessor urlProcessor) {
+        this.urlProcessor = urlProcessor;
+    }
 
     public boolean assertPokemonExistsInGame(Object pokemonJsonDocument, String game) {
         JSONArray gameIndices = JsonPath.read(pokemonJsonDocument, "$.game_indices[?(@.version.name == \""
