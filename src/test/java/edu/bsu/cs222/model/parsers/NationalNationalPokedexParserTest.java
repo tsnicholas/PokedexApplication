@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class NationalPokedexParserTest extends TestResourceConverter {
+public class NationalNationalPokedexParserTest extends TestResourceConverter {
 
     @Test
     public void testParseForPokemonNames_sizeIs898() {
