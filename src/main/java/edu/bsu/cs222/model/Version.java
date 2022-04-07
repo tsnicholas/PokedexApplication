@@ -54,10 +54,6 @@ public class Version {
         this.versionGroupMap = builder.versionGroupMap;
     }
 
-    public String getVersionName() {
-        return versionName;
-    }
-
     public VersionGroup getVersionGroup() {
         return versionGroup;
     }
