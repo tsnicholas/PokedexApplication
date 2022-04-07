@@ -2,6 +2,7 @@ package edu.bsu.cs222.model;
 
 import edu.bsu.cs222.model.parsers.PokemonParser;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,20 +33,18 @@ public class PokedexProcessor {
         return pokemonParser.assertPokemonExistsInGame(pokemonJsonObject, version);
     }
 
-    public String convertTypesToString(Pokemon pokemon) {
+    public String convertTypesToString(List<Type> typeList) {
         StringBuilder output = new StringBuilder();
-        List<Type> types = pokemon.getTypeList();
-        for(Type type: types) {
+        for(Type type: typeList) {
             output.append(type.getName());
             output.append(" ");
         }
         return output.toString();
     }
 
-    public String convertStatsToString(Pokemon pokemon) {
+    public String convertStatsToString(Map<String, Integer> statsMap) {
         StringBuilder output = new StringBuilder();
-        Map<String, Integer> stats = pokemon.getStats();
-        for(Map.Entry<String, Integer> stat: stats.entrySet()) {
+        for(Map.Entry<String, Integer> stat: statsMap.entrySet()) {
             output.append(stat.getKey());
             output.append(" ");
             output.append(stat.getValue());
