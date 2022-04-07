@@ -50,4 +50,9 @@ public class MoveParserTest extends TestResourceConverter {
         String actualTackle = moveParser.parseAccuracy(tackle);
         Assertions.assertEquals(expectedTackle, actualTackle);
     }
+
+    @Test
+    public void testParseAccuracy_sunAndMoon_100() {
+        String expectedAccuracy = "100";
+    }
 }

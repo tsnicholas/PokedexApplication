@@ -20,9 +20,11 @@ class DamageRelationsParserTest extends TestResourceConverter {
     private final Generation genOne = Generation.withName("generation-i").andID(1).andVersionGroups(null);
     private final Generation genFive = Generation.withName("generation-v").andID(5).andVersionGroups(null);
 
-    private final GenerationMap generationMap = GenerationMap.withGenerationList(List.of(genOne, genFive)).createGenerationMap();
+    private final GenerationMap generationMap = GenerationMap.withGenerationList(List.of(genOne, genFive))
+            .createGenerationMap();
 
-    private final Version yellow = Version.withName(null).andGeneration(genOne).andGenerationMap(generationMap);
+    private final Version yellow = Version.withName(null).andGeneration(genOne).andGenerationMap(generationMap)
+            .andVersionGroupMap(null);
 
 
     @Test
@@ -34,7 +36,8 @@ class DamageRelationsParserTest extends TestResourceConverter {
 
     @Test
     public void testParseForDamageRelations_genFive_bugWeaknesses() {
-        Version black = Version.withName(null).andGeneration(genFive).andGenerationMap(generationMap);
+        Version black = Version.withName(null).andGeneration(genFive).andGenerationMap(generationMap)
+                .andVersionGroupMap(null);
 
         List<String> expected = new ArrayList<>(List.of("flying", "rock", "fire"));
         HashMap<String, List<String>> actual = damageRelationsParser.parseForDamageRelations(bugDocument, black);

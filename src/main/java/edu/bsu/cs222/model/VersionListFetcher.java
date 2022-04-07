@@ -5,11 +5,14 @@ import edu.bsu.cs222.model.parsers.GenerationParser;
 import edu.bsu.cs222.model.parsers.VersionGroupParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VersionListFetcher {
     private final URLProcessor urlProcessor;
     private final GenerationParser generationParser = new GenerationParser();
+
+    private final HashMap<String, Integer> versionGroupMap = new HashMap<>();
 
     public VersionListFetcher() {
         this.urlProcessor = new ProductionURLProcessor();
@@ -27,7 +30,8 @@ public class VersionListFetcher {
             for (VersionGroup versionGroup : generation.getVersionGroups()) {
                 for (String versionName : versionGroup.getVersionNames()) {
                     allVersions.add(Version.withName(versionName).andVersionGroup(versionGroup)
-                            .andGeneration(generation).andGenerationMap(generationMap));
+                            .andGeneration(generation).andGenerationMap(generationMap)
+                            .andVersionGroupMap(versionGroupMap));
                 }
             }
         }
@@ -71,7 +75,9 @@ public class VersionListFetcher {
             String name = versionGroupParser.parseForName(versionGroupJsonDocument);
             int id = versionGroupParser.parseForID(versionGroupJsonDocument);
             List<String> versions = versionGroupParser.parseForVersionNames(versionGroupJsonDocument);
-            versionGroups.add(VersionGroup.withName(name).andID(id).andVersionNames(versions));
+            VersionGroup versionGroup = VersionGroup.withName(name).andID(id).andVersionNames(versions);
+            versionGroups.add(versionGroup);
+            versionGroupMap.put(versionGroup.getVersionGroupName(), versionGroup.getID());
         }
         return versionGroups;
     }
