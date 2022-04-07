@@ -2,7 +2,6 @@ package edu.bsu.cs222.model;
 
 import edu.bsu.cs222.model.parsers.PokemonParser;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

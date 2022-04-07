@@ -1,21 +1,12 @@
 package edu.bsu.cs222.model;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
 public class PokedexProcessorTest extends TestResourceConverter {
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
-    private Version crystal;
-
-    @BeforeEach
-    public void setUpVersion() {
-        VersionListFetcher versionListFetcher = new VersionListFetcher();
-        List<Version> versions = versionListFetcher.getListOfAllVersions();
-        crystal = versions.get(5);
-    }
 
     @Test
     public void testPokemonExistsInNationalPokedex_TrueCase() {
@@ -25,17 +16,6 @@ public class PokedexProcessorTest extends TestResourceConverter {
     @Test
     public void testPokemonExistsInNationalPokedex_FalseCase() {
         Assertions.assertFalse(pokedexProcessor.pokemonExistsInNationalPokedex("dark magician"));
-    }
-
-    @Test
-    public void testProcess_QuaqsireImmunities() {
-        try {
-            Pokemon actual = pokedexProcessor.process("quagsire", crystal);
-            Assertions.assertEquals("electric", actual.getImmunities().get(0));
-        }
-        catch(PokemonDoesNotExistInVersionException pokemonDoesNotExistInVersionException) {
-            Assertions.fail(pokemonDoesNotExistInVersionException.getMessage());
-        }
     }
 
     @Test
