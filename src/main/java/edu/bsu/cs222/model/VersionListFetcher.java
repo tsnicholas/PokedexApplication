@@ -56,7 +56,7 @@ public class VersionListFetcher {
         List<String> generationURLs = generationParser.parseForGenerationURL(allGenerationsJsonDocument);
 
         for (String url : generationURLs) {
-            Object generationJsonDocument = urlProcessor.stringToObject(url);
+            Object generationJsonDocument = urlProcessor.convertStringToObject(url);
             String name = generationParser.parseForName(generationJsonDocument);
             Integer id = generationParser.parseForID(generationJsonDocument);
             List<VersionGroup> versionGroups = makeListOfVersionGroups(generationJsonDocument);
@@ -71,7 +71,7 @@ public class VersionListFetcher {
 
         List<String> versionGroupURLs = JsonPath.read(generationJsonDocument, "$.version_groups..url");
         for (String url : versionGroupURLs) {
-            Object versionGroupJsonDocument = urlProcessor.stringToObject(url);
+            Object versionGroupJsonDocument = urlProcessor.convertStringToObject(url);
             String name = versionGroupParser.parseForName(versionGroupJsonDocument);
             int id = versionGroupParser.parseForID(versionGroupJsonDocument);
             List<String> versions = versionGroupParser.parseForVersionNames(versionGroupJsonDocument);

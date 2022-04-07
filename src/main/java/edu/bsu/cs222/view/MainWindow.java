@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import java.util.List;
 
 public class MainWindow extends Application {
-    private final int WIDTH_OF_WINDOW = 700;
+    private final int WIDTH_OF_WINDOW = 800;
     private final int HEIGHT_OF_WINDOW = 800;
     private final Pos DEFAULT_POSITION = Pos.CENTER;
     private final Font UPPER_FONT = Font.font("Verdana", 25);
@@ -63,14 +63,14 @@ public class MainWindow extends Application {
     }
 
     private void setUpSizesAndFonts() {
-        lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
-        lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
+        instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
-        instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
         dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
+        lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
+        lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
     }
 
     private void setUpEventTriggers() {
@@ -126,7 +126,7 @@ public class MainWindow extends Application {
     }
 
     public void beginProcessing() {
-        if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
+        if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput().toLowerCase())) {
             searchBar.setDisable(true);
             dropDownMenu.setDisable(true);
             search();
@@ -146,10 +146,10 @@ public class MainWindow extends Application {
             update();
             startUpDisplay(false);
         }
-        catch(NullPointerException nullPointerException) {
+        catch(RuntimeException runtimeException) {
             ErrorWindow genericError = new ErrorWindow("An error has occurred!");
             genericError.display();
-            System.err.println("Error: " + nullPointerException);
+            System.err.println("Error: \n" + runtimeException.getCause());
         }
         catch(PokemonDoesNotExistInVersionException notInGame) {
             ErrorWindow noExistence = new ErrorWindow(notInGame.getMessage());
@@ -158,8 +158,8 @@ public class MainWindow extends Application {
     }
 
     private void update() {
-        types.setText(pokedexProcessor.convertTypesToString(currentPokemon));
-        stats.setText(pokedexProcessor.convertStatsToString(currentPokemon));
+        types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
+        stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
         pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
         setUpLowerContent();
     }

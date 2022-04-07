@@ -37,7 +37,7 @@ public class PokemonParser {
         List<String> typeURLs = JsonPath.read(pokemonJsonDocument, "$.types..url");
 
         for (int i = 0; i < typeNames.size(); i++) {
-            Object typeJsonObject = urlProcessor.stringToObject(typeURLs.get(i));
+            Object typeJsonObject = urlProcessor.convertStringToObject(typeURLs.get(i));
             HashMap<String, List<String>> damageRelations = damageRelationsParser
                     .parseForDamageRelations(typeJsonObject, version);
             typeList.add(Type.withName(typeNames.get(i)).andDamageRelations(damageRelations));
@@ -91,7 +91,7 @@ public class PokemonParser {
                 }
             }
 
-            Object moveJsonDocument = urlProcessor.stringToObject(moveURL);
+            Object moveJsonDocument = urlProcessor.convertStringToObject(moveURL);
 
             Move move = createMove(moveJsonDocument, learnMethods, version);
             moveList.add(move);

@@ -17,35 +17,36 @@ public class ProductionURLProcessor implements URLProcessor {
 
     @Override
     public Object getNationalPokedex() {
-        return stringToObject("https://pokeapi.co/api/v2/pokedex/national");
+        return convertStringToObject("https://pokeapi.co/api/v2/pokedex/national");
     }
 
     @Override
     public Object getUpTo20Generations() {
-        return stringToObject("https://pokeapi.co/api/v2/generation");
+        return convertStringToObject("https://pokeapi.co/api/v2/generation");
     }
 
     @Override
     public Object getAllGenerations(int count) {
-        return stringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
+        return convertStringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
     }
 
     public Object getPokemonJsonObject(String pokemon) {
         String urlString = getPokemonURLString(pokemon);
-        return stringToObject(urlString);
+        return convertStringToObject(urlString);
     }
 
     // There's a couple pokemon later on that will have spaces in their name,
     // so it's important to use URLEncoder
     private String getPokemonURLString(String name) {
-        String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
+        String nameEdited = name.replace(" ", "-").replace(".", "");
+        String nameEncoded = URLEncoder.encode(nameEdited, Charset.defaultCharset());
         return String.format("https://pokeapi.co/api/v2/pokemon/%s", nameEncoded);
     }
 
     @Override
-    public Object stringToObject(String urlString) {
+    public Object convertStringToObject(String urlString) {
         URL url = verifyURL(urlString);
-        return urlToObject(url);
+        return convertUrlToObject(url);
     }
 
     private URL verifyURL(String urlString) {
@@ -56,7 +57,7 @@ public class ProductionURLProcessor implements URLProcessor {
         }
     }
 
-    private Object urlToObject(URL url) {
+    private Object convertUrlToObject(URL url) {
 //        if (cache.containsKey(url)) {
 //            return cache.get(url);
 //        }

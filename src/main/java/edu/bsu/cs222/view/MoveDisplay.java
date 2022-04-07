@@ -29,7 +29,7 @@ public class MoveDisplay implements MenuDisplay {
         layout.setHgap(40);
         layout.setVgap(5);
         createMoveDataHeaders();
-        createMoveDataStrings(pokemon.getMoveList());
+        createMoveDataStrings(pokemon.getMoves());
         return layout;
     }
 
@@ -56,9 +56,17 @@ public class MoveDisplay implements MenuDisplay {
             layout.add(createText(move.getPP()), PP_COLUMN_INDEX, i + 1);
             layout.add(createText(move.getPower()), POWER_COLUMN_INDEX, i + 1);
             layout.add(createText(move.getAccuracy()), ACCURACY_COLUMN_INDEX, i + 1);
-            // TODO: refactor this so that it accounts for moves which have multiple learn methods
-            layout.add(createText(move.getLearnMethods().get(0)), LEARN_METHOD_COLUMN_INDEX, i + 1);
+            layout.add(createText(obtainLearnMethods(move.getLearnMethods())), LEARN_METHOD_COLUMN_INDEX, i + 1);
         }
+    }
+
+    private String obtainLearnMethods(List<String> learnMethods) {
+        StringBuilder output = new StringBuilder();
+        for(String learnMethod: learnMethods) {
+            output.append(learnMethod);
+            output.append(" ");
+        }
+        return output.toString();
     }
 
     private Text createText(String name) {

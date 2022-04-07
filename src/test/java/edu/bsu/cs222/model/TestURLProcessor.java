@@ -4,11 +4,11 @@ public class TestURLProcessor implements URLProcessor {
 
     @Override
     public Object getNationalPokedex() {
-        return stringToObject("nationalPokedex.json");
+        return convertStringToObject("nationalPokedex.json");
     }
 
     @Override
-    public Object stringToObject(String fileName) {
+    public Object convertStringToObject(String fileName) {
         InputStreamConverter resourceConverter = new InputStreamConverter();
 
         if (isUrl(fileName)) {
@@ -21,12 +21,12 @@ public class TestURLProcessor implements URLProcessor {
 
     @Override
     public Object getUpTo20Generations() {
-        return stringToObject("versionListFetcherTest.json");
+        return convertStringToObject("versionListFetcherTest.json");
     }
 
     @Override
     public Object getAllGenerations(int count) {
-        return stringToObject("versionListFetcherTest.json");
+        return convertStringToObject("versionListFetcherTest.json");
     }
 
     private boolean isUrl(String input) {

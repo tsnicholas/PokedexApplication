@@ -11,7 +11,8 @@ public class PokedexProcessor {
     private final PokemonParser pokemonParser = new PokemonParser();
 
     public boolean pokemonExistsInNationalPokedex(String pokemon) {
-        return nationalPokedex.containsPokemon(pokemon);
+        String pokemonEdited = pokemon.replace(" ", "-").replace(".", "");
+        return nationalPokedex.containsPokemon(pokemonEdited);
     }
 
     public Pokemon process(String nameOfPokemon, Version version) throws PokemonDoesNotExistInVersionException {
@@ -31,20 +32,18 @@ public class PokedexProcessor {
         return pokemonParser.assertPokemonExistsInGame(pokemonJsonObject, version);
     }
 
-    public String convertTypesToString(Pokemon pokemon) {
+    public String convertTypesToString(List<Type> typeList) {
         StringBuilder output = new StringBuilder();
-        List<Type> types = pokemon.getTypeList();
-        for(Type type: types) {
+        for(Type type: typeList) {
             output.append(type.getName());
             output.append(" ");
         }
         return output.toString();
     }
 
-    public String convertStatsToString(Pokemon pokemon) {
+    public String convertStatsToString(Map<String, Integer> statsMap) {
         StringBuilder output = new StringBuilder();
-        Map<String, Integer> stats = pokemon.getStats();
-        for(Map.Entry<String, Integer> stat: stats.entrySet()) {
+        for(Map.Entry<String, Integer> stat: statsMap.entrySet()) {
             output.append(stat.getKey());
             output.append(" ");
             output.append(stat.getValue());
