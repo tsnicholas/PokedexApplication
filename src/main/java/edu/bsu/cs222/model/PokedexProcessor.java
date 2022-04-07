@@ -11,7 +11,8 @@ public class PokedexProcessor {
     private final PokemonParser pokemonParser = new PokemonParser();
 
     public boolean pokemonExistsInNationalPokedex(String pokemon) {
-        return nationalPokedex.containsPokemon(pokemon);
+        String pokemonEdited = pokemon.replace(" ", "-").replace(".", "");
+        return nationalPokedex.containsPokemon(pokemonEdited);
     }
 
     public Pokemon process(String nameOfPokemon, Version version) throws PokemonDoesNotExistInVersionException {

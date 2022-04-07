@@ -38,7 +38,8 @@ public class ProductionURLProcessor implements URLProcessor {
     // There's a couple pokemon later on that will have spaces in their name,
     // so it's important to use URLEncoder
     private String getPokemonURLString(String name) {
-        String nameEncoded = URLEncoder.encode(name, Charset.defaultCharset());
+        String nameEdited = name.replace(" ", "-").replace(".", "");
+        String nameEncoded = URLEncoder.encode(nameEdited, Charset.defaultCharset());
         return String.format("https://pokeapi.co/api/v2/pokemon/%s", nameEncoded);
     }
 
