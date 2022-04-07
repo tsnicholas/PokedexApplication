@@ -46,11 +46,11 @@ public class MoveParser {
                 .andLearnMethods(learnMethods);
     }
 
-    public String parseName(Object moveJsonDocument) {
+    private String parseName(Object moveJsonDocument) {
         return JsonPath.read(moveJsonDocument, "$.name");
     }
 
-    public String parseType(Object moveJsonDocument) {
+    private String parseType(Object moveJsonDocument) {
         Object typeObject = JsonPath.read(moveJsonDocument, "$.type");
         if (nullCheck(typeObject)) {
             return "--";
@@ -58,7 +58,7 @@ public class MoveParser {
         return JsonPath.read(moveJsonDocument, "$.type.name");
     }
 
-    public String parsePP(Object moveJsonDocument) {
+    private String parsePP(Object moveJsonDocument) {
         Object ppObject = JsonPath.read(moveJsonDocument, "$.pp");
         if(nullCheck(ppObject)) {
             return "--";
@@ -66,7 +66,7 @@ public class MoveParser {
         return String.valueOf(ppObject);
     }
 
-    public String parsePower(Object moveJsonDocument) {
+    private String parsePower(Object moveJsonDocument) {
         Object powerObject = JsonPath.read(moveJsonDocument, "$.power");
         if(nullCheck(powerObject)) {
             return "--";
@@ -74,7 +74,7 @@ public class MoveParser {
         return String.valueOf(powerObject);
     }
 
-    public String parseAccuracy(Object moveJsonDocument) {
+    private String parseAccuracy(Object moveJsonDocument) {
         Object accuracyObject = JsonPath.read(moveJsonDocument, "$.accuracy");
         if(nullCheck(accuracyObject)) {
             return "--";
