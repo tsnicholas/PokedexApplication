@@ -1,20 +1,20 @@
 package edu.bsu.cs222.model;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
 public class PokedexProcessorTest extends TestResourceConverter {
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
-    private static Version crystal;
+    private Version crystal;
 
-    @BeforeAll
-    static void setUpVersion() {
+    @BeforeEach
+    public void setUpVersion() {
         VersionListFetcher versionListFetcher = new VersionListFetcher();
         List<Version> versions = versionListFetcher.getListOfAllVersions();
-        crystal = versions.get(6);
+        crystal = versions.get(5);
     }
 
     @Test
