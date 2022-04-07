@@ -83,7 +83,7 @@ public class Pokemon {
         return new ArrayList<>(stringSet);
     }
 
-    public List<Type> getTypeList() {
+    public List<Type> getTypes() {
         return typeList;
     }
 
@@ -91,7 +91,7 @@ public class Pokemon {
         return statsMap;
     }
 
-    public List<Move> getMoveList() {
+    public List<Move> getMoves() {
         return moveList;
     }
 

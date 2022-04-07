@@ -29,7 +29,7 @@ public class MoveDisplay implements MenuDisplay {
         layout.setHgap(40);
         layout.setVgap(5);
         createMoveDataHeaders();
-        createMoveDataStrings(pokemon.getMoveList());
+        createMoveDataStrings(pokemon.getMoves());
         return layout;
     }
 
