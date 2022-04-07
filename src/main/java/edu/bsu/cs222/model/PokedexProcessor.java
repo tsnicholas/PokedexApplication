@@ -23,12 +23,12 @@ public class PokedexProcessor {
                     .andImageURL(pokemonParser.parseForImage(pokemonJsonObject, version));
         }
         else {
-            throw new PokemonDoesNotExistInVersionException(nameOfPokemon + "does not exist in Pokemon " + version);
+            throw new PokemonDoesNotExistInVersionException(nameOfPokemon + " does not exist in Pokemon " + version);
         }
     }
 
     private boolean pokemonExistsInVersion(Object pokemonJsonObject, Version version) {
-        return pokemonParser.assertPokemonExistsInGame(pokemonJsonObject, version.getVersionName());
+        return pokemonParser.assertPokemonExistsInGame(pokemonJsonObject, version);
     }
 
     public String convertTypesToString(Pokemon pokemon) {
