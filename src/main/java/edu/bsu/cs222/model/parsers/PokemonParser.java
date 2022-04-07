@@ -93,20 +93,15 @@ public class PokemonParser {
 
             Object moveJsonDocument = urlProcessor.stringToObject(moveURL);
 
-            Move move = createMove(moveJsonDocument, learnMethods);
+            Move move = createMove(moveJsonDocument, learnMethods, version);
             moveList.add(move);
         }
         return moveList;
     }
 
-    private Move createMove(Object moveJsonDocument, List<String> learnMethods) {
+    private Move createMove(Object moveJsonDocument, List<String> learnMethods, Version version) {
         MoveParser moveParser = new MoveParser();
-        return Move.withName(moveParser.parseName(moveJsonDocument))
-                .andType(moveParser.parseType(moveJsonDocument))
-                .andPP(moveParser.parsePP(moveJsonDocument))
-                .andPower(moveParser.parsePower(moveJsonDocument))
-                .andAccuracy(moveParser.parseAccuracy(moveJsonDocument))
-                .andLearnMethods(learnMethods);
+        return moveParser.parseForMove(moveJsonDocument, learnMethods, version);
     }
 
     public String parseForImage(Object pokemonJsonDocument, Version version) {

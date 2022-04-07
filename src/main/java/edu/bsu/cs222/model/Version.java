@@ -1,18 +1,19 @@
 package edu.bsu.cs222.model;
 
+import java.util.HashMap;
+
 public class Version {
 
     public static Builder withName(String name) {
         return new Builder(name);
     }
 
-    //TODO: See if this class is still needed, or if everything can be done through Version Groups.
-
     public static final class Builder {
         private final String versionName;
         private VersionGroup versionGroup;
         private Generation generation;
         private GenerationMap generationMap;
+        private HashMap<String, Integer> versionGroupMap;
 
         public Builder(String versionName) {
             this.versionName = versionName;
@@ -28,8 +29,13 @@ public class Version {
             return this;
         }
 
-        public Version andGenerationMap(GenerationMap generationMap) {
+        public Builder andGenerationMap(GenerationMap generationMap) {
             this.generationMap = generationMap;
+            return this;
+        }
+
+        public Version andVersionGroupMap(HashMap<String, Integer> versionGroupMap) {
+            this.versionGroupMap = versionGroupMap;
             return new Version(this);
         }
     }
@@ -38,12 +44,14 @@ public class Version {
     private final VersionGroup versionGroup;
     private final Generation generation;
     private final GenerationMap generationMap;
+    private final HashMap<String, Integer> versionGroupMap;
 
     private Version(Builder builder) {
         this.versionName = builder.versionName;
         this.versionGroup = builder.versionGroup;
         this.generation = builder.generation;
         this.generationMap = builder.generationMap;
+        this.versionGroupMap = builder.versionGroupMap;
     }
 
     public String getVersionName() {
@@ -60,6 +68,10 @@ public class Version {
 
     public GenerationMap getGenerationMap() {
         return generationMap;
+    }
+
+    public HashMap<String, Integer> getVersionGroupMap() {
+        return versionGroupMap;
     }
 
     // Without this, names on the ChoiceBox will be meaningless

@@ -30,7 +30,7 @@ class PokemonParserTest extends TestResourceConverter {
         Object clefableDocument = convertFileNameToObject("clefable.json");
 
         List<Type> actual = pokemonParser.parseForTypes(clefableDocument, Version.withName(null).
-                andGeneration(genOne).andGenerationMap(generationMap));
+                andGeneration(genOne).andGenerationMap(generationMap).andVersionGroupMap(null));
 
         Assertions.assertEquals("normal", actual.get(0).getName());
     }
@@ -39,7 +39,7 @@ class PokemonParserTest extends TestResourceConverter {
     @CsvSource({"fire, 0", "flying, 1"})
     public void testParseForTypes_multipleTypes_fireAndFlying(String typeName, int typeIndex) {
         List<Type> actual = pokemonParser.parseForTypes(charizardDocument, Version.withName(null).andGeneration(genOne)
-                .andGenerationMap(generationMap));
+                .andGenerationMap(generationMap).andVersionGroupMap(null));
         Assertions.assertEquals(typeName, actual.get(typeIndex).getName());
     }
 
@@ -63,7 +63,7 @@ class PokemonParserTest extends TestResourceConverter {
                 .andLearnMethods(List.of("LV 1"));
         Move actualMove = pokemonParser.parseForMoves(dittoDocument, Version.withName("yellow")
                 .andVersionGroup(VersionGroup.withName("yellow").andVersionNames(null))
-                .andGenerationMap(null)).get(0);
+                .andVersionGroupMap(null)).get(0);
 
         HashMap<String, String> expected = makeMoveDataMap(expectedMove);
         HashMap<String, String> actual = makeMoveDataMap(actualMove);
@@ -85,7 +85,7 @@ class PokemonParserTest extends TestResourceConverter {
     @Test
     public void testAssertPokemonExistsInGame_Yellow_dittoExists() {
         Version yellow = Version.withName(null).andVersionGroup(VersionGroup.withName("yellow")
-                .andVersionNames(null)).andGenerationMap(null);
+                .andVersionNames(null)).andVersionGroupMap(null);
         Assertions.assertTrue(pokemonParser.assertPokemonExistsInGame(dittoDocument, yellow));
     }
 }
