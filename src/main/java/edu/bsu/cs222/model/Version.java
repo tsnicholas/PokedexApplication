@@ -60,6 +60,7 @@ public class Version {
         return generationMap;
     }
 
+    // Without this, names on the ChoiceBox will be meaningless
     @Override
     public String toString() {
         return versionName;

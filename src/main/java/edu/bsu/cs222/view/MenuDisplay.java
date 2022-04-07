@@ -1,7 +1,8 @@
 package edu.bsu.cs222.view;
 
+import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 
 public interface MenuDisplay {
-    Parent display();
+    Parent display(Pokemon pokemon);
 }

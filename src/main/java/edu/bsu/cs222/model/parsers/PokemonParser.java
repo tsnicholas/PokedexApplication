@@ -73,11 +73,10 @@ public class PokemonParser {
 
     public List<Move> parseForMoves(Object pokemonJsonDocument, Version version) {
         List<Move> moveList = new LinkedList<>();
-        MoveEngineer moveEngineer = new MoveEngineer();
 
         Filter learnMethodFilter = filter(where("version_group.name").is(version.getVersionName()));
-        JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details" +
-                "[?(@.version_group.name == \"" + version + "\" )])]");
+        JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
+                "contains \"" + version.getVersionGroup() +"\"])");
         for (Object moveObject : moveArray) {
             String moveURL = JsonPath.read(moveObject, "$.move.url");
 
@@ -95,10 +94,20 @@ public class PokemonParser {
 
             Object moveJsonDocument = urlProcessor.stringToObject(moveURL);
 
-            Move move = moveEngineer.createMove(moveJsonDocument, learnMethods);
+            Move move = createMove(moveJsonDocument, learnMethods);
             moveList.add(move);
         }
         return moveList;
+    }
+
+    private Move createMove(Object moveJsonDocument, List<String> learnMethods) {
+        MoveParser moveParser = new MoveParser();
+        return Move.withName(moveParser.parseName(moveJsonDocument))
+                .andType(moveParser.parseType(moveJsonDocument))
+                .andPP(moveParser.parsePP(moveJsonDocument))
+                .andPower(moveParser.parsePower(moveJsonDocument))
+                .andAccuracy(moveParser.parseAccuracy(moveJsonDocument))
+                .andLearnMethods(learnMethods);
     }
 
     public String parseForImage(Object pokemonJsonDocument, Version version) {

@@ -24,6 +24,7 @@ public class MainWindow extends Application {
     private final int WIDTH_OF_WINDOW = 700;
     private final int HEIGHT_OF_WINDOW = 800;
     private final Pos DEFAULT_POSITION = Pos.CENTER;
+    private final Font UPPER_FONT = Font.font("Verdana", 25);
 
     private final Text instruction = new Text("Enter a name of a Pokemon");
     private final SearchBar searchBar = new SearchBar();
@@ -33,8 +34,6 @@ public class MainWindow extends Application {
     private final ChoiceBox<MenuDisplay> dropDownMenu = new ChoiceBox<>();
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
-    private MoveDisplay moveDisplay;
-    private DamageRelationsDisplay damageRelationsDisplay;
     private Pokemon currentPokemon;
 
     @Override
@@ -69,8 +68,8 @@ public class MainWindow extends Application {
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-        types.setFont(getPokeFactsFont());
-        stats.setFont(getPokeFactsFont());
+        types.setFont(UPPER_FONT);
+        stats.setFont(UPPER_FONT);
         dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
     }
 
@@ -81,10 +80,6 @@ public class MainWindow extends Application {
             }
         });
         searchBar.getButton().setOnAction(clicked -> beginProcessing());
-    }
-
-    private Font getPokeFactsFont() {
-        return Font.font("Verdana", 25);
     }
 
     private void startUpDisplay(boolean firstStartedUp) {
@@ -106,6 +101,7 @@ public class MainWindow extends Application {
                 dropDownMenu,
                 lowerPortion
         );
+        setUpDropDownMenu();
         return mainWindow;
     }
 
@@ -119,6 +115,14 @@ public class MainWindow extends Application {
         );
 
         return upperPortion;
+    }
+
+    private void setUpDropDownMenu() {
+        MoveDisplay moveDisplay = new MoveDisplay();
+        DamageRelationsDisplay damageRelationsDisplay = new DamageRelationsDisplay();
+        dropDownMenu.setItems(FXCollections.observableArrayList(moveDisplay, damageRelationsDisplay));
+        dropDownMenu.getSelectionModel().selectFirst();
+        dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> setUpLowerContent());
     }
 
     public void beginProcessing() {
@@ -147,8 +151,8 @@ public class MainWindow extends Application {
             genericError.display();
             System.err.println("Error: " + nullPointerException);
         }
-        catch (RuntimeException doesNotExist) {
-            ErrorWindow noExistence = new ErrorWindow(searchBar.getInput() + " doesn't exist in Pokemon " + searchBar.getSelectedVersion());
+        catch(PokemonDoesNotExistInVersionException notInGame) {
+            ErrorWindow noExistence = new ErrorWindow(notInGame.getMessage());
             noExistence.display();
         }
     }
@@ -157,16 +161,7 @@ public class MainWindow extends Application {
         types.setText(pokedexProcessor.convertTypesToString(currentPokemon));
         stats.setText(pokedexProcessor.convertStatsToString(currentPokemon));
         pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
-        moveDisplay = new MoveDisplay(currentPokemon);
-        damageRelationsDisplay = new DamageRelationsDisplay(currentPokemon);
-        updateDropDownMenu();
         setUpLowerContent();
-    }
-
-    private void updateDropDownMenu() {
-        dropDownMenu.setItems(FXCollections.observableArrayList(moveDisplay, damageRelationsDisplay));
-        dropDownMenu.getSelectionModel().selectFirst();
-        dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> setUpLowerContent());
     }
 
     private Parent createPokeFacts() {
@@ -181,6 +176,6 @@ public class MainWindow extends Application {
 
     private void setUpLowerContent() {
         MenuDisplay currentLayout = dropDownMenu.getSelectionModel().getSelectedItem();
-        lowerPortion.setContent(currentLayout.display());
+        lowerPortion.setContent(currentLayout.display(currentPokemon));
     }
 }

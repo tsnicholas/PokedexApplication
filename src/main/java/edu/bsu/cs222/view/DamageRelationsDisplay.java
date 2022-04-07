@@ -1,34 +1,42 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.PokedexProcessor;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.util.List;
+
 public class DamageRelationsDisplay implements MenuDisplay {
-    private final PokedexProcessor pokemonProcessor = new PokedexProcessor();
-    private final Text results = new Text();
-    private final Pokemon currentPokemon;
-
-    public DamageRelationsDisplay(Pokemon pokemon) {
-        currentPokemon = pokemon;
-        setText();
+    public Parent display(Pokemon pokemon) {
+        VBox rows = new VBox();
+        rows.getChildren().addAll(
+            createDamageRelationRow("Immunities", pokemon.getImmunities()),
+            createDamageRelationRow("Resistances", pokemon.getResistances()),
+            createDamageRelationRow("Weaknesses", pokemon.getWeaknesses())
+        );
+        return rows;
     }
 
-    private void setText() {
-        results.setFont(Font.font("Times New Roman", 18));
-        results.setText(pokemonProcessor.convertDamageRelationsToString(currentPokemon));
+    private Text createDamageRelationRow(String damageRelation, List<String> damageRelationList) {
+        StringBuilder output = new StringBuilder();
+        output.append(damageRelation);
+        output.append(": ");
+        for(String listValue: damageRelationList) {
+            output.append(listValue);
+            output.append(" ");
+        }
+        return convertStringToText(output.toString());
     }
 
-    public Parent display() {
-        HBox display = new HBox();
-        display.getChildren().add(results);
-        return display;
+    private Text convertStringToText(String input) {
+        Text text = new Text(input);
+        text.setFont(Font.font("Times New Roman", 25));
+        return text;
     }
 
-    // Without this, the names displayed in the drop-down menu are meaningless
+    // Without this, the name displayed in the drop-down menu is meaningless
     @Override
     public String toString() {
         return "Damage Relations";

@@ -1,66 +1,72 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.PokedexProcessor;
+import edu.bsu.cs222.model.Move;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.List;
+
 public class MoveDisplay implements MenuDisplay {
-    private final String[] MOVE_DATA_KEYS = {"Name", "Type", "PP", "Power", "Accuracy"};
+    private final String FONT_NAME = "Times New Roman";
+    private final int FONT_SIZE = 18;
+    private final int NAME_COLUMN_INDEX = 0;
+    private final int TYPE_COLUMN_INDEX = 1;
+    private final int PP_COLUMN_INDEX = 2;
+    private final int POWER_COLUMN_INDEX = 3;
+    private final int ACCURACY_COLUMN_INDEX = 4;
+    private final int LEARN_METHOD_COLUMN_INDEX = 5;
 
-    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
-    private final HBox layout = new HBox();
-    private final Pokemon currentPokemon;
+    private GridPane layout;
 
-    public MoveDisplay(Pokemon pokemon) {
-        currentPokemon = pokemon;
-        createLayout();
-    }
-
-    private void createLayout() {
-        layout.setSpacing(50);
+    public Parent display(Pokemon pokemon) {
+        layout = new GridPane();
         layout.setAlignment(Pos.CENTER);
-        for (String moveData : MOVE_DATA_KEYS) {
-            layout.getChildren().add(createDataText(moveData));
+        layout.setHgap(40);
+        layout.setVgap(5);
+        createMoveDataHeaders();
+        createMoveDataStrings(pokemon.getMoveList());
+        return layout;
+    }
+
+    private void createMoveDataHeaders() {
+        layout.addColumn(NAME_COLUMN_INDEX, createHeaderText("Name"));
+        layout.addColumn(TYPE_COLUMN_INDEX, createHeaderText("Type"));
+        layout.addColumn(PP_COLUMN_INDEX, createHeaderText("PP"));
+        layout.addColumn(POWER_COLUMN_INDEX, createHeaderText("Power"));
+        layout.addColumn(ACCURACY_COLUMN_INDEX, createHeaderText("Accuracy"));
+        layout.addColumn(LEARN_METHOD_COLUMN_INDEX, createHeaderText("Obtained By"));
+    }
+
+    private Text createHeaderText(String header) {
+        Text text = new Text(header);
+        text.setFont(Font.font(FONT_NAME, FontWeight.BOLD, FONT_SIZE));
+        return text;
+    }
+
+    private void createMoveDataStrings(List<Move> moveList) {
+        for(int i = 0; i < moveList.size(); i++) {
+            Move move = moveList.get(i);
+            layout.add(createText(move.getName()), NAME_COLUMN_INDEX, i + 1);
+            layout.add(createText(move.getType()), TYPE_COLUMN_INDEX, i + 1);
+            layout.add(createText(move.getPP()), PP_COLUMN_INDEX, i + 1);
+            layout.add(createText(move.getPower()), POWER_COLUMN_INDEX, i + 1);
+            layout.add(createText(move.getAccuracy()), ACCURACY_COLUMN_INDEX, i + 1);
+            layout.add(createText(move.getLearnMethods().get(i)), LEARN_METHOD_COLUMN_INDEX, i + 1);
         }
-        layout.getChildren().add(getLearnMethods());
-    }
-
-    private Parent createDataText(String moveData) {
-        VBox moveDataText = new VBox();
-        moveDataText.setSpacing(5);
-        moveDataText.getChildren().addAll(
-                createText(moveData)
-//                createText(pokedexProcessor.convertMoveDataToString(currentPokemon, moveData))
-        );
-        return moveDataText;
-    }
-
-    private Parent getLearnMethods() {
-        VBox learnMethods = new VBox();
-        learnMethods.setSpacing(5);
-        learnMethods.getChildren().addAll(
-                createText("Obtained By"),
-                createText(pokedexProcessor.convertLearnMethodsToString(currentPokemon))
-        );
-        return learnMethods;
     }
 
     private Text createText(String name) {
         Text text = new Text(name);
-        text.setFont(Font.font("Times New Roman", 18));
+        text.setFont(Font.font(FONT_NAME, FONT_SIZE));
         return text;
     }
 
-    public Parent display() {
-        return layout;
-    }
-
-    // Without this, the names displayed in the drop-down menu are meaningless
+    // Without this, the name displayed in the drop-down menu is meaningless
     @Override
     public String toString() {
         return "Move Set";
