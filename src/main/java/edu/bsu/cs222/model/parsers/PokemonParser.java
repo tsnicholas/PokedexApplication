@@ -22,10 +22,9 @@ public class PokemonParser {
         this.urlProcessor = urlProcessor;
     }
 
-    public boolean assertPokemonExistsInGame(Object pokemonJsonDocument, String game) {
-        JSONArray gameIndices = JsonPath.read(pokemonJsonDocument, "$.game_indices[?(@.version.name == \""
-                + game +
-                "\")].length()");
+    public boolean assertPokemonExistsInGame(Object pokemonJsonDocument, Version version) {
+        JSONArray gameIndices = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
+                "contains \"" + version.getVersionGroup().getVersionGroupName() + "\")]");
         return 0 != gameIndices.size();
     }
 
@@ -74,9 +73,9 @@ public class PokemonParser {
     public List<Move> parseForMoves(Object pokemonJsonDocument, Version version) {
         List<Move> moveList = new LinkedList<>();
 
-        Filter learnMethodFilter = filter(where("version_group.name").is(version.getVersionName()));
+        Filter learnMethodFilter = filter(where("version_group.name").is(version.getVersionGroup().getVersionGroupName()));
         JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
-                "contains \"" + version.getVersionGroup() +"\"])");
+                "contains \"" + version.getVersionGroup().getVersionGroupName() + "\")]");
         for (Object moveObject : moveArray) {
             String moveURL = JsonPath.read(moveObject, "$.move.url");
 

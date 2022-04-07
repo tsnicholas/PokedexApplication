@@ -6,6 +6,8 @@ public class Version {
         return new Builder(name);
     }
 
+    //TODO: See if this class is still needed, or if everything can be done through Version Groups.
+
     public static final class Builder {
         private final String versionName;
         private VersionGroup versionGroup;

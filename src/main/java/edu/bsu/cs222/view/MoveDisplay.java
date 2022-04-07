@@ -56,7 +56,8 @@ public class MoveDisplay implements MenuDisplay {
             layout.add(createText(move.getPP()), PP_COLUMN_INDEX, i + 1);
             layout.add(createText(move.getPower()), POWER_COLUMN_INDEX, i + 1);
             layout.add(createText(move.getAccuracy()), ACCURACY_COLUMN_INDEX, i + 1);
-            layout.add(createText(move.getLearnMethods().get(i)), LEARN_METHOD_COLUMN_INDEX, i + 1);
+            // TODO: refactor this so that it accounts for moves which have multiple learn methods
+            layout.add(createText(move.getLearnMethods().get(0)), LEARN_METHOD_COLUMN_INDEX, i + 1);
         }
     }
 

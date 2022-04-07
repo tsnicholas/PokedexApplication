@@ -62,6 +62,7 @@ class PokemonParserTest extends TestResourceConverter {
         Move expectedMove = Move.withName("transform").andType("normal").andPP("10").andPower("--").andAccuracy("--")
                 .andLearnMethods(List.of("LV 1"));
         Move actualMove = pokemonParser.parseForMoves(dittoDocument, Version.withName("yellow")
+                .andVersionGroup(VersionGroup.withName("yellow").andVersionNames(null))
                 .andGenerationMap(null)).get(0);
 
         HashMap<String, String> expected = makeMoveDataMap(expectedMove);
@@ -83,6 +84,8 @@ class PokemonParserTest extends TestResourceConverter {
 
     @Test
     public void testAssertPokemonExistsInGame_Yellow_dittoExists() {
-        Assertions.assertTrue(pokemonParser.assertPokemonExistsInGame(dittoDocument, "yellow"));
+        Version yellow = Version.withName(null).andVersionGroup(VersionGroup.withName("yellow")
+                .andVersionNames(null)).andGenerationMap(null);
+        Assertions.assertTrue(pokemonParser.assertPokemonExistsInGame(dittoDocument, yellow));
     }
 }
