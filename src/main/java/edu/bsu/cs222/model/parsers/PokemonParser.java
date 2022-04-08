@@ -86,8 +86,10 @@ public class PokemonParser {
                 if (method.equals("level-up")) {
                     Integer levelLearnedAt = JsonPath.read(occurrence, "$.level_learned_at");
                     learnMethods.add("LV " + levelLearnedAt.toString());
-                } else {
+                } else if (method.equals("machine")) {
                     learnMethods.add("TM");
+                } else {
+                    learnMethods.add(method);
                 }
             }
 
