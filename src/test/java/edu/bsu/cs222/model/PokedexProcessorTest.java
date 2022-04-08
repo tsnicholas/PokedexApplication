@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 public class PokedexProcessorTest extends TestResourceConverter {
-    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
+    private final TestURLProcessor testURLProcessor = new TestURLProcessor();
+    private final PokedexProcessor pokedexProcessor = new PokedexProcessor(testURLProcessor);
 
     @Test
     public void testPokemonExistsInNationalPokedex_TrueCase() {

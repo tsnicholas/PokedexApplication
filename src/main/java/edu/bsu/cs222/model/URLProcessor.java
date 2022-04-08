@@ -8,4 +8,6 @@ public interface URLProcessor {
     Object getUpTo20Generations();
 
     Object getAllGenerations(int count);
+
+    Object getPokemonJsonObject(String nameOfPokemon);
 }

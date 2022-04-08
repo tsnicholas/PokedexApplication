@@ -6,9 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 public class PokedexProcessor {
-    private final ProductionURLProcessor productionUrlProcessor = new ProductionURLProcessor();
-    private final NationalPokedex nationalPokedex = NationalPokedex.createNationalPokedex().loadNationalPokedexNames();
+    private final URLProcessor urlProcessor;
+    private final NationalPokedex nationalPokedex;
     private final PokemonParser pokemonParser = new PokemonParser();
+
+    public PokedexProcessor() {
+        this.urlProcessor = new ProductionURLProcessor();
+        this.nationalPokedex = NationalPokedex.createNationalPokedex().loadNationalPokedexNames();
+    }
+
+    public PokedexProcessor(URLProcessor urlProcessor) {
+        this.urlProcessor = urlProcessor;
+        this.nationalPokedex = NationalPokedex.createNationalPokedex(urlProcessor).loadNationalPokedexNames();
+    }
 
     public boolean pokemonExistsInNationalPokedex(String pokemon) {
         String pokemonEdited = pokemon.replace(" ", "-").replace(".", "");
@@ -16,8 +26,8 @@ public class PokedexProcessor {
     }
 
     public Pokemon process(String nameOfPokemon, Version version) throws PokemonDoesNotExistInVersionException {
-        Object pokemonJsonObject = productionUrlProcessor.getPokemonJsonObject(nameOfPokemon);
-        if(pokemonExistsInVersion(pokemonJsonObject, version)) {
+        Object pokemonJsonObject = urlProcessor.getPokemonJsonObject(nameOfPokemon);
+        if (pokemonExistsInVersion(pokemonJsonObject, version)) {
             return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonObject, version))
                     .andStatsMap(pokemonParser.parseForStats(pokemonJsonObject))
                     .andMoveList(pokemonParser.parseForMoves(pokemonJsonObject, version))
