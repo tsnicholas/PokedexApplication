@@ -63,10 +63,7 @@ public class MainWindow extends Application {
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(HEIGHT_OF_WINDOW);
         primaryStage.setWidth(WIDTH_OF_WINDOW);
-        primaryStage.setOnCloseRequest(X -> {
-            primaryStage.close();
-            Platform.exit();
-        });
+        primaryStage.setOnCloseRequest(X -> Platform.exit());
     }
 
     private void setUpSizesAndFonts() {
