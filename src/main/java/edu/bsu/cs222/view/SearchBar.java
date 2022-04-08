@@ -6,17 +6,40 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBar {
     private final TextField searchInput = new TextField();
     private final ChoiceBox<Version> gameSelection = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
+    private final List<SearchBarListener> listeners = new ArrayList<>();
 
     public SearchBar() {
         searchInput.setPrefWidth(400);
+        setUpEventTriggers();
+    }
+
+    private void setUpEventTriggers() {
+        searchInput.setOnKeyPressed(keyPressed -> {
+            if (keyPressed.getCode() == KeyCode.ENTER) {
+                fireSearch();
+            }
+        });
+        searchButton.setOnAction(clicked -> fireSearch());
+    }
+
+    private void fireSearch() {
+        for(SearchBarListener listener: listeners) {
+            listener.onSearchRequest();
+        }
+    }
+
+    public void addListener(SearchBarListener listener) {
+        listeners.add(listener);
     }
 
     public void setUpGameSelection(List<Version> versions) {
@@ -24,14 +47,6 @@ public class SearchBar {
             gameSelection.getItems().add(version);
         }
         gameSelection.getSelectionModel().selectFirst();
-    }
-
-    public TextField getTextField() {
-        return searchInput;
-    }
-
-    public Button getButton() {
-        return searchButton;
     }
 
     public Parent getDisplay() {

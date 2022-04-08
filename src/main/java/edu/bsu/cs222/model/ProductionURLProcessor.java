@@ -12,8 +12,6 @@ import java.nio.charset.Charset;
 
 public class ProductionURLProcessor implements URLProcessor {
     private final InputStreamConverter inputStreamConverter = new InputStreamConverter();
-//    private final HashMap<URL, Object> cache = new HashMap<>();
-//    Could be worth looking into this, makes the application run faster the more queries it does, takes up memory
 
     @Override
     public Object getNationalPokedex() {
@@ -58,13 +56,8 @@ public class ProductionURLProcessor implements URLProcessor {
     }
 
     private Object convertUrlToObject(URL url) {
-//        if (cache.containsKey(url)) {
-//            return cache.get(url);
-//        }
         InputStream inputStream = getInputStream(url);
-        Object jsonDocument = inputStreamConverter.inputStreamToJsonObject(inputStream);
-//        cache.put(url, jsonDocument);
-        return jsonDocument;
+        return inputStreamConverter.inputStreamToJsonObject(inputStream);
     }
 
     private InputStream getInputStream(URL url) {
