@@ -148,24 +148,23 @@ public class MainWindow extends Application {
     private void beginProcessingPokemon() {
         try {
             currentPokemon = pokedexProcessor.process(searchBar.getInput().toLowerCase(), searchBar.getSelectedVersion());
-            startUpDisplay(false);
-        }
-        catch(RuntimeException runtimeException) {
-            ErrorWindow genericError = new ErrorWindow("An error has occurred!");
-            genericError.display();
-            System.err.println("Error: \n" + runtimeException.getCause());
         }
         catch(PokemonDoesNotExistInVersionException notInGame) {
-            ErrorWindow noExistence = new ErrorWindow(notInGame.getMessage());
-            noExistence.display();
+            Platform.runLater(() -> {
+                ErrorWindow doesNotExistWindow = new ErrorWindow(notInGame.getMessage());
+                doesNotExistWindow.display();
+            });
         }
     }
 
     private void update() {
-        types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
-        stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
-        pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
-        setUpLowerContent();
+        if(currentPokemon != null) {
+            types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
+            stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
+            pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
+            setUpLowerContent();
+            startUpDisplay(false);
+        }
     }
 
     private Parent createPokeFacts() {
