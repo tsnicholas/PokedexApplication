@@ -29,6 +29,11 @@ public class TestURLProcessor implements URLProcessor {
         return convertStringToObject("versionListFetcherTest.json");
     }
 
+    @Override
+    public Object getPokemonJsonObject(String nameOfPokemon) {
+        return null;
+    }
+
     private boolean isUrl(String input) {
         return input.startsWith("https");
     }
