@@ -7,7 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -18,7 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainWindow extends Application {
@@ -38,7 +39,7 @@ public class MainWindow extends Application {
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private Pokemon currentPokemon;
 
-    private final Executor executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = Executors.newCachedThreadPool();
 
     @Override
     public void init() throws Exception {
@@ -63,7 +64,11 @@ public class MainWindow extends Application {
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(HEIGHT_OF_WINDOW);
         primaryStage.setWidth(WIDTH_OF_WINDOW);
-        primaryStage.setOnCloseRequest(X -> Platform.exit());
+        primaryStage.setOnCloseRequest(X -> {
+            executor.shutdown();
+            primaryStage.close();
+            Platform.exit();
+        });
     }
 
     private void setUpSizesAndFonts() {
@@ -126,8 +131,9 @@ public class MainWindow extends Application {
                 searchBar.setDisable(true);
                 dropDownMenu.setDisable(true);
                 instruction.setText("The pokedex is searching. Please wait...");
+                beginProcessingPokemon();
                 Platform.runLater(() -> {
-                    beginProcessingPokemon();
+                    update();
                     instruction.setText(INSTRUCTION_STRING);
                     searchBar.setDisable(false);
                     dropDownMenu.setDisable(false);
@@ -142,7 +148,6 @@ public class MainWindow extends Application {
     private void beginProcessingPokemon() {
         try {
             currentPokemon = pokedexProcessor.process(searchBar.getInput().toLowerCase(), searchBar.getSelectedVersion());
-            update();
             startUpDisplay(false);
         }
         catch(RuntimeException runtimeException) {
