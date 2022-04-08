@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -19,14 +18,17 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainWindow extends Application {
     private final int WIDTH_OF_WINDOW = 800;
     private final int HEIGHT_OF_WINDOW = 800;
     private final Pos DEFAULT_POSITION = Pos.CENTER;
     private final Font UPPER_FONT = Font.font("Verdana", 25);
+    private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
 
-    private final Text instruction = new Text("Enter a name of a Pokemon");
+    private final Text instruction = new Text(INSTRUCTION_STRING);
     private final SearchBar searchBar = new SearchBar();
     private final Text types = new Text();
     private final Text stats = new Text();
@@ -35,6 +37,8 @@ public class MainWindow extends Application {
     private final ScrollPane lowerPortion = new ScrollPane();
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private Pokemon currentPokemon;
+
+    private final Executor executor = Executors.newCachedThreadPool();
 
     @Override
     public void init() throws Exception {
@@ -48,7 +52,7 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) {
         setUpWindowBasics(primaryStage);
         setUpSizesAndFonts();
-        setUpEventTriggers();
+        searchBar.addListener(this::search);
         startUpDisplay(true);
         primaryStage.show();
     }
@@ -59,7 +63,10 @@ public class MainWindow extends Application {
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(HEIGHT_OF_WINDOW);
         primaryStage.setWidth(WIDTH_OF_WINDOW);
-        primaryStage.setOnCloseRequest(X -> Platform.exit());
+        primaryStage.setOnCloseRequest(X -> {
+            primaryStage.close();
+            Platform.exit();
+        });
     }
 
     private void setUpSizesAndFonts() {
@@ -71,15 +78,6 @@ public class MainWindow extends Application {
         dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
         lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
         lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
-    }
-
-    private void setUpEventTriggers() {
-        searchBar.getTextField().setOnKeyPressed(keyPressed -> {
-            if (keyPressed.getCode() == KeyCode.ENTER) {
-                beginProcessing();
-            }
-        });
-        searchBar.getButton().setOnAction(clicked -> beginProcessing());
     }
 
     private void startUpDisplay(boolean firstStartedUp) {
@@ -125,14 +123,18 @@ public class MainWindow extends Application {
         dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> setUpLowerContent());
     }
 
-    public void beginProcessing() {
+    public void search() {
         if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput().toLowerCase())) {
-            searchBar.setDisable(true);
-            dropDownMenu.setDisable(true);
-            search();
-            Platform.runLater(() -> {
-                searchBar.setDisable(false);
-                dropDownMenu.setDisable(false);
+            executor.execute(() -> {
+                searchBar.setDisable(true);
+                dropDownMenu.setDisable(true);
+                instruction.setText("The application is searching. Please wait...");
+                Platform.runLater(() -> {
+                    beginProcessingPokemon();
+                    instruction.setText(INSTRUCTION_STRING);
+                    searchBar.setDisable(false);
+                    dropDownMenu.setDisable(false);
+                });
             });
         } else {
             ErrorWindow doesNotExist = new ErrorWindow(searchBar.getInput() + " does not exist!");
@@ -140,7 +142,7 @@ public class MainWindow extends Application {
         }
     }
 
-    private void search() {
+    private void beginProcessingPokemon() {
         try {
             currentPokemon = pokedexProcessor.process(searchBar.getInput().toLowerCase(), searchBar.getSelectedVersion());
             update();
@@ -170,7 +172,6 @@ public class MainWindow extends Application {
                 types,
                 stats
         );
-
         return pokeFacts;
     }
 
