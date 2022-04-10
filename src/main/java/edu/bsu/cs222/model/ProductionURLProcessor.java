@@ -1,6 +1,7 @@
 package edu.bsu.cs222.model;
 
 import edu.bsu.cs222.view.ErrorWindow;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,8 +34,7 @@ public class ProductionURLProcessor implements URLProcessor {
         return convertStringToObject(urlString);
     }
 
-    // There's a couple pokemon later on that will have spaces in their name,
-    // so it's important to use URLEncoder
+    // The edited string solves the problem with mr. mime and other pokemon with similar problems
     private String getPokemonURLString(String name) {
         String nameEdited = name.replace(" ", "-").replace(".", "");
         String nameEncoded = URLEncoder.encode(nameEdited, Charset.defaultCharset());
@@ -42,7 +42,7 @@ public class ProductionURLProcessor implements URLProcessor {
     }
 
     @Override
-    public Object convertStringToObject(String urlString) {
+    public Object convertStringToObject(String urlString) throws NullPointerException {
         URL url = verifyURL(urlString);
         return convertUrlToObject(url);
     }
@@ -55,20 +55,24 @@ public class ProductionURLProcessor implements URLProcessor {
         }
     }
 
-    private Object convertUrlToObject(URL url) {
+    private Object convertUrlToObject(URL url) throws NullPointerException {
         InputStream inputStream = getInputStream(url);
         return inputStreamConverter.inputStreamToJsonObject(inputStream);
     }
 
-    private InputStream getInputStream(URL url) {
+    private InputStream getInputStream(URL url) throws NullPointerException {
         try {
             URLConnection urlConnection = url.openConnection();
             return urlConnection.getInputStream();
         } catch (IOException networkError) {
-            ErrorWindow networkErrorWindow = new ErrorWindow("A network error has occurred");
-            networkErrorWindow.display();
+            //TODO: Network Errors don't work properly when there isn't an illegalStateException,
+            // please fix in next iteration Tim in the future
+            Platform.runLater(() -> {
+                ErrorWindow networkErrorWindow = new ErrorWindow("A network error has occurred!");
+                networkErrorWindow.display();
+                throw new IllegalStateException();
+            });
         }
-
         return null;
     }
 }

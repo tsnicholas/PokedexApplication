@@ -122,7 +122,8 @@ public class MainWindow extends Application {
         DamageRelationsDisplay damageRelationsDisplay = new DamageRelationsDisplay();
         dropDownMenu.setItems(FXCollections.observableArrayList(moveDisplay, damageRelationsDisplay));
         dropDownMenu.getSelectionModel().selectFirst();
-        dropDownMenu.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> setUpLowerContent());
+        dropDownMenu.getSelectionModel().selectedItemProperty().addListener(
+                (v, oldValue, newValue) -> setUpLowerContent());
     }
 
     public void search() {
