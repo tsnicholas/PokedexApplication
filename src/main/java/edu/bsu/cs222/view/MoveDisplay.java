@@ -64,9 +64,9 @@ public class MoveDisplay implements MenuDisplay {
         StringBuilder output = new StringBuilder();
         for(String learnMethod: learnMethods) {
             output.append(learnMethod);
-            output.append(" ");
+            output.append(", ");
         }
-        return output.toString();
+        return output.substring(0, output.length() - 2);
     }
 
     private Text createText(String name) {
