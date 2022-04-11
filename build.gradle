@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.10'
+    id "org.beryx.jlink" version '2.25.0'
 }
 
 javafx {
@@ -11,10 +12,10 @@ javafx {
 
 application {
     mainClassName = "edu.bsu.cs222.view.MainWindow"
+    mainModule = 'edu.bsu.cs222.module-info'
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -26,7 +27,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     implementation 'com.github.PokeAPI:pokekotlin:2.3.1'
     implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.7.0'
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.36'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
 }
 
