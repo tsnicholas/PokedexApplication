@@ -8,8 +8,10 @@ import java.util.List;
 public class GenerationMapTest {
     @Test
     public void testGetIdOf_genOne_equals1() {
+        GenerationMapFactory generationMapFactory = new GenerationMapFactory();
+
         List<Generation> generationList = List.of(Generation.withName("generation-i").andID(1).andVersionGroups(null));
-        GenerationMap generationMap = GenerationMap.withGenerationList(generationList).createGenerationMap();
+        GenerationMap generationMap = generationMapFactory.createGenerationMap(generationList);
         Assertions.assertEquals(1, generationMap.getIdOf("generation-i"));
     }
 }

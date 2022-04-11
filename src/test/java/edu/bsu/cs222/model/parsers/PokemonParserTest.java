@@ -21,8 +21,9 @@ class PokemonParserTest extends TestResourceConverter {
     }
 
     private GenerationMap makeGenOneAndGenFiveMap() {
+        GenerationMapFactory generationMapFactory = new GenerationMapFactory();
         Generation genFive = Generation.withName("generation-v").andID(5).andVersionGroups(null);
-        return GenerationMap.withGenerationList(List.of(genOne, genFive)).createGenerationMap();
+        return generationMapFactory.createGenerationMap(List.of(genOne, genFive));
     }
 
     @Test

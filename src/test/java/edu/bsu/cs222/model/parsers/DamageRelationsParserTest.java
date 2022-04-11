@@ -1,9 +1,6 @@
 package edu.bsu.cs222.model.parsers;
 
-import edu.bsu.cs222.model.Generation;
-import edu.bsu.cs222.model.GenerationMap;
-import edu.bsu.cs222.model.TestResourceConverter;
-import edu.bsu.cs222.model.Version;
+import edu.bsu.cs222.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +10,7 @@ import java.util.List;
 
 class DamageRelationsParserTest extends TestResourceConverter {
     private final DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
+    private final GenerationMapFactory generationMapFactory = new GenerationMapFactory();
 
     private final Object bugDocument = convertFileNameToObject("bug.json");
     private final Object ghostDocument = convertFileNameToObject("ghost.json");
@@ -20,8 +18,7 @@ class DamageRelationsParserTest extends TestResourceConverter {
     private final Generation genOne = Generation.withName("generation-i").andID(1).andVersionGroups(null);
     private final Generation genFive = Generation.withName("generation-v").andID(5).andVersionGroups(null);
 
-    private final GenerationMap generationMap = GenerationMap.withGenerationList(List.of(genOne, genFive))
-            .createGenerationMap();
+    private final GenerationMap generationMap = generationMapFactory.createGenerationMap(List.of(genOne, genFive));
 
     private final Version yellow = Version.withName(null).andGeneration(genOne).andGenerationMap(generationMap)
             .andVersionGroupMap(null);

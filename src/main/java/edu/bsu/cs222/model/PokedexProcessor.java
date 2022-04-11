@@ -11,13 +11,15 @@ public class PokedexProcessor {
     private final PokemonParser pokemonParser = new PokemonParser();
 
     public PokedexProcessor() {
+        NationalPokedexFactory nationalPokedexFactory = new NationalPokedexFactory();
         this.urlProcessor = new ProductionURLProcessor();
-        this.nationalPokedex = NationalPokedex.createNationalPokedex().loadNationalPokedexNames();
+        this.nationalPokedex = nationalPokedexFactory.createNationalPokedex();
     }
 
     public PokedexProcessor(URLProcessor urlProcessor) {
+        NationalPokedexFactory nationalPokedexFactory = new NationalPokedexFactory(urlProcessor);
         this.urlProcessor = urlProcessor;
-        this.nationalPokedex = NationalPokedex.createNationalPokedex(urlProcessor).loadNationalPokedexNames();
+        this.nationalPokedex = nationalPokedexFactory.createNationalPokedex();
     }
 
     public boolean pokemonExistsInNationalPokedex(String pokemon) {
@@ -32,8 +34,7 @@ public class PokedexProcessor {
                     .andStatsMap(pokemonParser.parseForStats(pokemonJsonObject))
                     .andMoveList(pokemonParser.parseForMoves(pokemonJsonObject, version))
                     .andImageURL(pokemonParser.parseForImage(pokemonJsonObject, version));
-        }
-        else {
+        } else {
             throw new PokemonDoesNotExistInVersionException(nameOfPokemon + " does not exist in Pokemon " + version);
         }
     }
@@ -44,7 +45,7 @@ public class PokedexProcessor {
 
     public String convertTypesToString(List<Type> typeList) {
         StringBuilder output = new StringBuilder();
-        for(Type type: typeList) {
+        for (Type type : typeList) {
             output.append(type.getName());
             output.append(" ");
         }
@@ -53,7 +54,7 @@ public class PokedexProcessor {
 
     public String convertStatsToString(Map<String, Integer> statsMap) {
         StringBuilder output = new StringBuilder();
-        for(Map.Entry<String, Integer> stat: statsMap.entrySet()) {
+        for (Map.Entry<String, Integer> stat : statsMap.entrySet()) {
             output.append(stat.getKey());
             output.append(" ");
             output.append(stat.getValue());

@@ -23,9 +23,11 @@ public class VersionListFetcher {
     }
 
     public List<Version> getListOfAllVersions() {
+        GenerationMapFactory generationMapFactory = new GenerationMapFactory();
+
         List<Version> allVersions = new ArrayList<>();
         List<Generation> generations = getListOfAllGenerations();
-        GenerationMap generationMap = GenerationMap.withGenerationList(generations).createGenerationMap();
+        GenerationMap generationMap = generationMapFactory.createGenerationMap(generations);
         for (Generation generation : generations) {
             for (VersionGroup versionGroup : generation.getVersionGroups()) {
                 for (String versionName : versionGroup.getVersionNames()) {
