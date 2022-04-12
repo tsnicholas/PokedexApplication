@@ -10,7 +10,7 @@ public class Move {
     public static final class Builder {
         private final String name;
         private String type;
-        private String PP;
+        private String pp;
         private String power;
         private String accuracy;
         private List<String> learnMethods;
@@ -25,7 +25,7 @@ public class Move {
         }
 
         public Builder andPP(String PP) {
-            this.PP = PP;
+            this.pp = PP;
             return this;
         }
 
@@ -56,7 +56,7 @@ public class Move {
     public Move(Move.Builder builder) {
         this.name = builder.name;
         this.type = builder.type;
-        this.PP = builder.PP;
+        this.PP = builder.pp;
         this.power = builder.power;
         this.accuracy = builder.accuracy;
         this.learnMethods = builder.learnMethods;

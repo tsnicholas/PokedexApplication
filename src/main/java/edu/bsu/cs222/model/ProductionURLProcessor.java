@@ -42,7 +42,7 @@ public class ProductionURLProcessor implements URLProcessor {
     }
 
     @Override
-    public Object convertStringToObject(String urlString) throws NullPointerException {
+    public Object convertStringToObject(String urlString) {
         URL url = verifyURL(urlString);
         return convertUrlToObject(url);
     }
@@ -55,12 +55,12 @@ public class ProductionURLProcessor implements URLProcessor {
         }
     }
 
-    private Object convertUrlToObject(URL url) throws NullPointerException {
+    private Object convertUrlToObject(URL url) {
         InputStream inputStream = getInputStream(url);
         return inputStreamConverter.inputStreamToJsonObject(inputStream);
     }
 
-    private InputStream getInputStream(URL url) throws NullPointerException {
+    private InputStream getInputStream(URL url) {
         try {
             URLConnection urlConnection = url.openConnection();
             return urlConnection.getInputStream();
