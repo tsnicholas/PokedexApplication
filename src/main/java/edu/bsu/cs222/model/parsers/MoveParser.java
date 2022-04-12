@@ -8,7 +8,6 @@ import net.minidev.json.JSONArray;
 import java.util.List;
 
 public class MoveParser {
-
     public Move parseForMove(Object moveJsonDocument, List<String> learnMethods, Version version) {
         String moveName = parseName(moveJsonDocument);
 

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class InputStreamConverter {
-
     public Object inputStreamToJsonObject(InputStream stream) {
         assert stream != null;
         Scanner scanner = new Scanner(stream);
