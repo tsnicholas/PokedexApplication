@@ -56,31 +56,36 @@ public class Pokemon {
             resistances = typeList.get(0).getResistantTo();
             return;
         }
-        List<String> immuneTo = new ArrayList<>();
-        List<String> weakTo = new ArrayList<>();
-        List<String> resistantTo = new ArrayList<>();
-        for (Type type : typeList) {
-            immuneTo.addAll(type.getImmuneTo());
-            weakTo.addAll(type.getWeakTo());
-            resistantTo.addAll(type.getResistantTo());
-        }
-        weakTo.removeIf(resistantTo::remove);
-        immuneTo = eliminateDuplicates(immuneTo);
-        weakTo = eliminateDuplicates(weakTo);
-        resistantTo = eliminateDuplicates(resistantTo);
-        for (String immunity : immuneTo) {
-            weakTo.remove(immunity);
-            resistantTo.remove(immunity);
-        }
+        obtainBaseDamageRelations();
+        weaknesses.removeIf(resistances::remove);
+        getRidOfDuplicates();
+        removeSharedTypesWithImmunities();
+    }
 
-        immunities = immuneTo;
-        weaknesses = weakTo;
-        resistances = resistantTo;
+    private void obtainBaseDamageRelations() {
+        for (Type type : typeList) {
+            immunities.addAll(type.getImmuneTo());
+            weaknesses.addAll(type.getWeakTo());
+            resistances.addAll(type.getResistantTo());
+        }
+    }
+
+    private void getRidOfDuplicates() {
+        immunities = eliminateDuplicates(immunities);
+        weaknesses = eliminateDuplicates(weaknesses);
+        resistances = eliminateDuplicates(resistances);
     }
 
     private List<String> eliminateDuplicates(List<String> stringList) {
         Set<String> stringSet = new HashSet<>(stringList);
         return new ArrayList<>(stringSet);
+    }
+
+    private void removeSharedTypesWithImmunities() {
+        for (String immunity : immunities) {
+            weaknesses.remove(immunity);
+            resistances.remove(immunity);
+        }
     }
 
     public List<Type> getTypes() {

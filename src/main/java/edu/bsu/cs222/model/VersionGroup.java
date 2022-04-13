@@ -3,7 +3,6 @@ package edu.bsu.cs222.model;
 import java.util.List;
 
 public class VersionGroup {
-
     public static Builder withName(String versionGroupName) {
         return new Builder(versionGroupName);
     }

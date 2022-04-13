@@ -32,10 +32,8 @@ public class PokemonParser {
         List<Type> typeList = new LinkedList<>();
         DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
         pokemonJsonDocument = makeTypeJsonPath(pokemonJsonDocument, version);
-
         List<String> typeNames = JsonPath.read(pokemonJsonDocument, "$.types..name");
         List<String> typeURLs = JsonPath.read(pokemonJsonDocument, "$.types..url");
-
         for (int i = 0; i < typeNames.size(); i++) {
             Object typeJsonObject = urlProcessor.convertStringToObject(typeURLs.get(i));
             HashMap<String, List<String>> damageRelations = damageRelationsParser
@@ -59,11 +57,9 @@ public class PokemonParser {
 
     public Map<String, Integer> parseForStats(Object pokemonJsonDocument) {
         Map<String, Integer> statMap = new LinkedHashMap<>();
-
         JSONArray stats = JsonPath.read(pokemonJsonDocument, "$.stats");
         List<String> statNames = JsonPath.read(stats, "$..stat.name");
         List<Integer> baseStats = JsonPath.read(stats, "$..base_stat");
-
         for (int i = 0; i < stats.size(); i++) {
             statMap.put(statNames.get(i), baseStats.get(i));
         }
@@ -72,33 +68,37 @@ public class PokemonParser {
 
     public List<Move> parseForMoves(Object pokemonJsonDocument, Version version) {
         List<Move> moveList = new LinkedList<>();
-
         Filter learnMethodFilter = filter(where("version_group.name").is(version.getVersionGroup().getVersionGroupName()));
         JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
                 "contains \"" + version.getVersionGroup().getVersionGroupName() + "\")]");
         for (Object moveObject : moveArray) {
             String moveURL = JsonPath.read(moveObject, "$.move.url");
-
             JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
-            List<String> learnMethods = new ArrayList<>();
-            for (Object occurrence : moveVersionDetailsArray) {
-                String method = JsonPath.read(occurrence, "$.move_learn_method.name");
-                if (method.equals("level-up")) {
-                    Integer levelLearnedAt = JsonPath.read(occurrence, "$.level_learned_at");
-                    learnMethods.add("LV " + levelLearnedAt.toString());
-                } else if (method.equals("machine")) {
-                    learnMethods.add("TM");
-                } else {
-                    learnMethods.add(method);
-                }
-            }
-
+            List<String> learnMethods = parseLearnMethods(moveVersionDetailsArray);
             Object moveJsonDocument = urlProcessor.convertStringToObject(moveURL);
-
-            Move move = createMove(moveJsonDocument, learnMethods, version);
-            moveList.add(move);
+            moveList.add(createMove(moveJsonDocument, learnMethods, version));
         }
         return moveList;
+    }
+
+    private List<String> parseLearnMethods(JSONArray moveVersionDetailsArray) {
+        List<String> learnMethods = new ArrayList<>();
+        for (Object occurrence : moveVersionDetailsArray) {
+            learnMethods.add(processLearnMethod(occurrence));
+        }
+        return learnMethods;
+    }
+
+    private String processLearnMethod(Object occurrence) {
+        String method = JsonPath.read(occurrence, "$.move_learn_method.name");
+        if (method.equals("level-up")) {
+            Integer levelLearnedAt = JsonPath.read(occurrence, "$.level_learned_at");
+            return "LV " + levelLearnedAt.toString();
+        }
+        if(method.equals("machine")) {
+            return "TM";
+        }
+        return method;
     }
 
     private Move createMove(Object moveJsonDocument, List<String> learnMethods, Version version) {

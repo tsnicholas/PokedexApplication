@@ -12,5 +12,4 @@ public class GenerationMap {
     public int getIdOf(String generationName) {
         return generationMap.get(generationName);
     }
-
 }

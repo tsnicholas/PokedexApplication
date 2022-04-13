@@ -3,7 +3,6 @@ package edu.bsu.cs222.model;
 import java.util.List;
 
 public class Generation {
-
     public static Builder withName(String name) {
         return new Builder(name);
     }

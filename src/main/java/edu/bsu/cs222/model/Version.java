@@ -3,7 +3,6 @@ package edu.bsu.cs222.model;
 import java.util.HashMap;
 
 public class Version {
-
     public static Builder withName(String name) {
         return new Builder(name);
     }

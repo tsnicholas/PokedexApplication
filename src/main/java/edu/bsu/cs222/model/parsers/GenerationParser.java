@@ -5,7 +5,6 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.List;
 
 public class GenerationParser {
-
     public boolean containsAllGenerations(Object allGenerationsJsonDocument) {
         Object next = JsonPath.read(allGenerationsJsonDocument, "$.next");
         return next == null;

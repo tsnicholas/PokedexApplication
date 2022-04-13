@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Type {
-
     public static Builder withName(String name) {
         return new Builder(name);
     }

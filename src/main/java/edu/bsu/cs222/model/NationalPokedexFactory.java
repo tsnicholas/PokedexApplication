@@ -17,7 +17,6 @@ public class NationalPokedexFactory {
 
     public NationalPokedex createNationalPokedex() {
         NationalPokedexParser nationalPokedexParser = new NationalPokedexParser();
-
         Object nationalPokedexJsonObject = urlProcessor.getNationalPokedex();
         List<String> pokemonNames = nationalPokedexParser.parseForPokemonNames(nationalPokedexJsonObject);
         return new NationalPokedex(pokemonNames);

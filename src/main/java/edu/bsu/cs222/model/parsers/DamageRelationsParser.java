@@ -9,7 +9,6 @@ import java.util.List;
 
 // PokeAPI does not have past damage relations for Dragon or Fighting type
 public class DamageRelationsParser {
-
     public HashMap<String, List<String>> parseForDamageRelations(Object typeJsonObject, Version version) {
         Object damageRelationsJsonDocument = makeDamageRelationsJsonDocument(typeJsonObject, version);
         return makeDamageRelationsMap(damageRelationsJsonDocument);
