@@ -37,9 +37,9 @@ public class Pokemon {
     private final List<Move> moveList;
     private final Map<String, Integer> statsMap;
     private final String imageURL;
-    private List<String> weaknesses;
-    private List<String> resistances;
-    private List<String> immunities;
+    private List<String> weaknesses = new ArrayList<>();
+    private List<String> resistances = new ArrayList<>();
+    private List<String> immunities = new ArrayList<>();
 
     public Pokemon(Builder builder) {
         typeList = builder.typeList;
