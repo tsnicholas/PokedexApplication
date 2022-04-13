@@ -10,9 +10,7 @@ public class NationalPokedexParserTest extends TestResourceConverter {
     @Test
     public void testParseForPokemonNames_sizeIs898() {
         NationalPokedexParser nationalPokedexParser = new NationalPokedexParser();
-
         Object testNationalPokedex = convertFileNameToObject("nationalPokedex.json");
-
         List<String> pokemonNames = nationalPokedexParser.parseForPokemonNames(testNationalPokedex);
         int actual = pokemonNames.size();
         Assertions.assertEquals(898, actual);
