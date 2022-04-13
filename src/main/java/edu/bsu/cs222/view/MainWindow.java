@@ -44,8 +44,8 @@ public class MainWindow extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        VersionListFetcher versionsListFetcher = new VersionListFetcher();
-        List<Version> versions = versionsListFetcher.getListOfAllVersions();
+        VersionListGenerator versionsListGenerator = new VersionListGenerator();
+        List<Version> versions = versionsListGenerator.getListOfAllVersions();
         searchBar.setUpGameSelection(versions);
     }
 

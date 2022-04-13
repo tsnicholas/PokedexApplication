@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VersionListFetcher {
+public class VersionListGenerator {
     private final URLProcessor urlProcessor;
     private final GenerationParser generationParser = new GenerationParser();
 
     private final HashMap<String, Integer> versionGroupMap = new HashMap<>();
 
-    public VersionListFetcher() {
+    public VersionListGenerator() {
         this.urlProcessor = new ProductionURLProcessor();
     }
 
-    public VersionListFetcher(URLProcessor urlProcessor) {
+    public VersionListGenerator(URLProcessor urlProcessor) {
         this.urlProcessor = urlProcessor;
     }
 
