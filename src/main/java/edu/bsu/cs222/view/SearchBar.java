@@ -65,7 +65,7 @@ public class SearchBar {
     }
 
     public String getInput() {
-        return searchInput.getText();
+        return searchInput.getText().toLowerCase();
     }
 
     public void setDisable(boolean isProcessingSearch) {

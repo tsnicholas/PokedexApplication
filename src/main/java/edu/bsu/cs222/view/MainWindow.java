@@ -18,6 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,8 +45,8 @@ public class MainWindow extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        VersionListFetcher versionsListFetcher = new VersionListFetcher();
-        List<Version> versions = versionsListFetcher.getListOfAllVersions();
+        VersionListGenerator versionsListGenerator = new VersionListGenerator();
+        List<Version> versions = versionsListGenerator.getListOfAllVersions();
         searchBar.setUpGameSelection(versions);
     }
 
@@ -148,12 +149,20 @@ public class MainWindow extends Application {
 
     private void beginProcessingPokemon() {
         try {
-            currentPokemon = pokedexProcessor.process(searchBar.getInput().toLowerCase(), searchBar.getSelectedVersion());
+            Object pokemonJsonDocument = pokedexProcessor.getPokemonJsonDocument(searchBar.getInput());
+            currentPokemon = pokedexProcessor.process(pokemonJsonDocument, searchBar.getSelectedVersion());
         }
         catch(PokemonDoesNotExistInVersionException notInGame) {
             Platform.runLater(() -> {
-                ErrorWindow doesNotExistWindow = new ErrorWindow(notInGame.getMessage());
+                ErrorWindow doesNotExistWindow = new ErrorWindow(searchBar.getInput() + " does not exist in " + searchBar.getSelectedVersion());
                 doesNotExistWindow.display();
+            });
+        }
+        catch(UncheckedIOException networkError) {
+            Platform.runLater(() -> {
+                ErrorWindow networkErrorWindow = new ErrorWindow("An network error has occurred!");
+                networkErrorWindow.display();
+                System.err.println("Error: \n" + networkError.getMessage());
             });
         }
     }

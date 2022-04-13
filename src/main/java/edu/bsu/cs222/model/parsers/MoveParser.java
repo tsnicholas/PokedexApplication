@@ -11,10 +11,10 @@ public class MoveParser {
     public Move parseForMove(Object moveJsonDocument, List<String> learnMethods, Version version) {
         String moveName = parseName(moveJsonDocument);
 
-        String moveType = "--";
-        String pp = "--";
-        String power = "--";
-        String accuracy = "--";
+        String moveType = null;
+        String pp = null;
+        String power = null;
+        String accuracy = null;
 
         JSONArray pastValuesArray = JsonPath.read(moveJsonDocument, "$.past_values");
         for (Object pastValueDocument : pastValuesArray) {
@@ -28,16 +28,16 @@ public class MoveParser {
                 break;
             }
         }
-        if (moveType.equals("--")) {
+        if (moveType == null) {
             moveType = parseType(moveJsonDocument);
         }
-        if (pp.equals("--")) {
+        if (pp == null) {
             pp = parsePP(moveJsonDocument);
         }
-        if (power.equals("--")) {
+        if (power == null) {
             power = parsePower(moveJsonDocument);
         }
-        if (accuracy.equals("--")) {
+        if (accuracy == null) {
             accuracy = parseAccuracy(moveJsonDocument);
         }
 
@@ -52,7 +52,7 @@ public class MoveParser {
     private String parseType(Object moveJsonDocument) {
         Object typeObject = JsonPath.read(moveJsonDocument, "$.type");
         if (nullCheck(typeObject)) {
-            return "--";
+            return null;
         }
         return JsonPath.read(moveJsonDocument, "$.type.name");
     }
@@ -60,7 +60,7 @@ public class MoveParser {
     private String parsePP(Object moveJsonDocument) {
         Object ppObject = JsonPath.read(moveJsonDocument, "$.pp");
         if(nullCheck(ppObject)) {
-            return "--";
+            return null;
         }
         return String.valueOf(ppObject);
     }
@@ -68,7 +68,7 @@ public class MoveParser {
     private String parsePower(Object moveJsonDocument) {
         Object powerObject = JsonPath.read(moveJsonDocument, "$.power");
         if(nullCheck(powerObject)) {
-            return "--";
+            return null;
         }
         return String.valueOf(powerObject);
     }
@@ -76,7 +76,7 @@ public class MoveParser {
     private String parseAccuracy(Object moveJsonDocument) {
         Object accuracyObject = JsonPath.read(moveJsonDocument, "$.accuracy");
         if(nullCheck(accuracyObject)) {
-            return "--";
+            return null;
         }
         return String.valueOf(accuracyObject);
     }
