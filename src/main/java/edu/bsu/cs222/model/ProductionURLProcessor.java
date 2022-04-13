@@ -1,10 +1,8 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.view.ErrorWindow;
-import javafx.application.Platform;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -64,13 +62,9 @@ public class ProductionURLProcessor implements URLProcessor {
         try {
             URLConnection urlConnection = url.openConnection();
             return urlConnection.getInputStream();
-        } catch (IOException networkError) {
-            Platform.runLater(() -> {
-                ErrorWindow networkErrorWindow = new ErrorWindow("A network error has occurred!");
-                networkErrorWindow.display();
-                throw new IllegalStateException();
-            });
         }
-        return null;
+        catch(IOException networkError) {
+            throw new UncheckedIOException(networkError);
+        }
     }
 }
