@@ -72,7 +72,6 @@ public class Pokemon {
             weakTo.remove(immunity);
             resistantTo.remove(immunity);
         }
-
         immunities = immuneTo;
         weaknesses = weakTo;
         resistances = resistantTo;

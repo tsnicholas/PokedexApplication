@@ -24,7 +24,6 @@ public class VersionListFetcher {
 
     public List<Version> getListOfAllVersions() {
         GenerationMapFactory generationMapFactory = new GenerationMapFactory();
-
         List<Version> allVersions = new ArrayList<>();
         List<Generation> generations = getListOfAllGenerations();
         GenerationMap generationMap = generationMapFactory.createGenerationMap(generations);
@@ -42,11 +41,9 @@ public class VersionListFetcher {
 
     private List<Generation> getListOfAllGenerations() {
         Object allGenerationsJsonDocument = urlProcessor.getUpTo20Generations();
-
         if (generationParser.containsAllGenerations(allGenerationsJsonDocument)) {
             return makeListOfGenerations(allGenerationsJsonDocument);
         }
-
         int count = generationParser.parseForNumberOfGenerations(allGenerationsJsonDocument);
         allGenerationsJsonDocument = urlProcessor.getAllGenerations(count);
         return makeListOfGenerations(allGenerationsJsonDocument);
@@ -54,9 +51,7 @@ public class VersionListFetcher {
 
     private List<Generation> makeListOfGenerations(Object allGenerationsJsonDocument) {
         List<Generation> generations = new ArrayList<>();
-
         List<String> generationURLs = generationParser.parseForGenerationURL(allGenerationsJsonDocument);
-
         for (String url : generationURLs) {
             Object generationJsonDocument = urlProcessor.convertStringToObject(url);
             String name = generationParser.parseForName(generationJsonDocument);
@@ -70,7 +65,6 @@ public class VersionListFetcher {
     private List<VersionGroup> makeListOfVersionGroups(Object generationJsonDocument) {
         VersionGroupParser versionGroupParser = new VersionGroupParser();
         List<VersionGroup> versionGroups = new ArrayList<>();
-
         List<String> versionGroupURLs = JsonPath.read(generationJsonDocument, "$.version_groups..url");
         for (String url : versionGroupURLs) {
             Object versionGroupJsonDocument = urlProcessor.convertStringToObject(url);
