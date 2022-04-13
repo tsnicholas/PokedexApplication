@@ -107,13 +107,18 @@ public class PokemonParser {
     }
 
     public String parseForImage(Object pokemonJsonDocument, Version version) {
-        String spriteURL = null;
+        String spriteURL;
         if (versionGroupContainsSprite(pokemonJsonDocument, version))
             spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.versions." +
                     version.getGeneration().getGenerationName() +
                     "." + version.getVersionGroup().getVersionGroupName() +
                     ".front_default");
-        if (spriteURL == null) {
+        else if (versionContainsSprite(pokemonJsonDocument, version)) {
+            spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.versions." +
+                    version.getGeneration().getGenerationName() +
+                    "." + version.getVersionName() + ".front_default");
+        }
+        else {
             spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.front_default");
         }
         return spriteURL;
@@ -123,6 +128,13 @@ public class PokemonParser {
         JSONArray spriteArray = JsonPath.read(pokemonJsonDocument, "$.sprites.versions." +
                 version.getGeneration().getGenerationName() +
                 "[?(@." + version.getVersionGroup().getVersionGroupName() + ")]");
+        return spriteArray.size() != 0;
+    }
+
+    private boolean versionContainsSprite(Object pokemonJsonDocument, Version version) {
+        JSONArray spriteArray = JsonPath.read(pokemonJsonDocument, "$.sprites.versions." +
+                version.getGeneration().getGenerationName() +
+                "[?(@." + version.getVersionName() + ")]");
         return spriteArray.size() != 0;
     }
 

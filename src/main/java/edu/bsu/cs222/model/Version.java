@@ -69,6 +69,10 @@ public class Version {
         return versionGroupMap;
     }
 
+    public String getVersionName() {
+        return versionName;
+    }
+
     // Without this, names on the ChoiceBox will be meaningless
     @Override
     public String toString() {
