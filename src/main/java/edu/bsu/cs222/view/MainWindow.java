@@ -34,9 +34,11 @@ public class MainWindow extends Application {
     private final SearchBar searchBar = new SearchBar();
     private final Text types = new Text();
     private final Text stats = new Text();
+    private final Text abilities = new Text();
+    private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final ChoiceBox<MenuDisplay> dropDownMenu = new ChoiceBox<>();
-    private final ScrollPane lowerPortion = new ScrollPane();
+    private final ScrollPane selectedItemDisplay = new ScrollPane();
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private Pokemon currentPokemon;
 
@@ -78,17 +80,16 @@ public class MainWindow extends Application {
         pokemonImage.setFitWidth(300);
         types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
-        dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW);
-        lowerPortion.setPrefViewportHeight(HEIGHT_OF_WINDOW);
-        lowerPortion.setPrefViewportWidth(WIDTH_OF_WINDOW);
+        abilities.setFont(UPPER_FONT);
+        egg_groups.setFont(UPPER_FONT);
+        dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW - 250);
+        selectedItemDisplay.setPrefViewportHeight(HEIGHT_OF_WINDOW - 100);
+        selectedItemDisplay.setPrefViewportWidth(WIDTH_OF_WINDOW - 100);
     }
 
     private void startUpDisplay(boolean firstStartedUp) {
-        pokemonImage.setVisible(!firstStartedUp);
-        types.setVisible(!firstStartedUp);
-        stats.setVisible(!firstStartedUp);
         dropDownMenu.setVisible(!firstStartedUp);
-        lowerPortion.setVisible(!firstStartedUp);
+        selectedItemDisplay.setVisible(!firstStartedUp);
     }
 
     private Parent createMainWindow() {
@@ -100,7 +101,7 @@ public class MainWindow extends Application {
                 searchBar.getDisplay(),
                 createUpperPortion(),
                 dropDownMenu,
-                lowerPortion
+                selectedItemDisplay
         );
         setUpDropDownMenu();
         return mainWindow;
@@ -128,7 +129,7 @@ public class MainWindow extends Application {
     }
 
     public void search() {
-        if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput().toLowerCase())) {
+        if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
             executor.execute(() -> {
                 searchBar.setDisable(true);
                 dropDownMenu.setDisable(true);
@@ -149,8 +150,7 @@ public class MainWindow extends Application {
 
     private void beginProcessingPokemon() {
         try {
-            Object pokemonJsonDocument = pokedexProcessor.getPokemonJsonDocument(searchBar.getInput());
-            currentPokemon = pokedexProcessor.process(pokemonJsonDocument, searchBar.getSelectedVersion());
+            currentPokemon = pokedexProcessor.process(searchBar.getInput(), searchBar.getSelectedVersion());
         }
         catch(PokemonDoesNotExistInVersionException notInGame) {
             Platform.runLater(() -> {
@@ -160,7 +160,7 @@ public class MainWindow extends Application {
         }
         catch(UncheckedIOException networkError) {
             Platform.runLater(() -> {
-                ErrorWindow networkErrorWindow = new ErrorWindow("An network error has occurred!");
+                ErrorWindow networkErrorWindow = new ErrorWindow("A network error has occurred!");
                 networkErrorWindow.display();
                 System.err.println("Error: \n" + networkError.getMessage());
             });
@@ -171,6 +171,8 @@ public class MainWindow extends Application {
         if(currentPokemon != null) {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
+            abilities.setText("Abilities: to be added!");
+            egg_groups.setText("Egg Groups: to be added!");
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             setUpLowerContent();
             startUpDisplay(false);
@@ -181,6 +183,8 @@ public class MainWindow extends Application {
         VBox pokeFacts = new VBox();
         pokeFacts.getChildren().addAll(
                 types,
+                abilities,
+                egg_groups,
                 stats
         );
         return pokeFacts;
@@ -188,6 +192,6 @@ public class MainWindow extends Application {
 
     private void setUpLowerContent() {
         MenuDisplay currentLayout = dropDownMenu.getSelectionModel().getSelectedItem();
-        lowerPortion.setContent(currentLayout.display(currentPokemon));
+        selectedItemDisplay.setContent(currentLayout.display(currentPokemon));
     }
 }
