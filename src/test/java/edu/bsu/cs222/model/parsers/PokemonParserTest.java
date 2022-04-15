@@ -60,7 +60,7 @@ class PokemonParserTest extends TestResourceConverter {
     @ParameterizedTest
     @CsvSource({"name", "type", "pp", "power", "accuracy", "learn method"})
     public void testParseForMoves_transform(String key) {
-        Move expectedMove = Move.withName("transform").andType("normal").andPP("10").andPower("--").andAccuracy("--")
+        Move expectedMove = Move.withName("transform").andType("normal").andPP("10").andPower(null).andAccuracy(null)
                 .andLearnMethods(List.of("LV 1"));
         Move actualMove = pokemonParser.parseForMoves(dittoDocument, Version.withName("yellow")
                 .andVersionGroup(VersionGroup.withName("yellow").andVersionNames(null))

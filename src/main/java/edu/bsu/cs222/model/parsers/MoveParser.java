@@ -21,25 +21,17 @@ public class MoveParser {
             String versionGroupName = JsonPath.read(pastValueDocument, "$.version_group.name");
             Integer versionGroupID = version.getVersionGroupMap().get(versionGroupName);
             if (version.getVersionGroup().getID() < versionGroupID) {
-                moveType = parseType(pastValueDocument);
-                pp = parsePP(pastValueDocument);
-                power = parsePower(pastValueDocument);
-                accuracy = parseAccuracy(pastValueDocument);
-                break;
+                moveType = parseType(pastValueDocument, moveType);
+                pp = parsePP(pastValueDocument, pp);
+                power = parsePower(pastValueDocument, power);
+                accuracy = parseAccuracy(pastValueDocument, accuracy);
             }
         }
-        if (moveType == null) {
-            moveType = parseType(moveJsonDocument);
-        }
-        if (pp == null) {
-            pp = parsePP(moveJsonDocument);
-        }
-        if (power == null) {
-            power = parsePower(moveJsonDocument);
-        }
-        if (accuracy == null) {
-            accuracy = parseAccuracy(moveJsonDocument);
-        }
+        moveType = parseType(moveJsonDocument, moveType);
+        pp = parsePP(moveJsonDocument, pp);
+        power = parsePower(moveJsonDocument, power);
+        accuracy = parseAccuracy(moveJsonDocument, accuracy);
+
 
         return Move.withName(moveName).andType(moveType).andPP(pp).andPower(power).andAccuracy(accuracy)
                 .andLearnMethods(learnMethods);
@@ -49,36 +41,36 @@ public class MoveParser {
         return JsonPath.read(moveJsonDocument, "$.name");
     }
 
-    private String parseType(Object moveJsonDocument) {
+    private String parseType(Object moveJsonDocument, String moveType) {
         Object typeObject = JsonPath.read(moveJsonDocument, "$.type");
-        if (nullCheck(typeObject)) {
-            return null;
+        if (!nullCheck(typeObject) && nullCheck(moveType)) {
+            return JsonPath.read(moveJsonDocument, "$.type.name");
         }
-        return JsonPath.read(moveJsonDocument, "$.type.name");
+        return moveType;
     }
 
-    private String parsePP(Object moveJsonDocument) {
+    private String parsePP(Object moveJsonDocument, String pp) {
         Object ppObject = JsonPath.read(moveJsonDocument, "$.pp");
-        if(nullCheck(ppObject)) {
-            return null;
+        if (!nullCheck(ppObject) && nullCheck(pp)) {
+            return String.valueOf(ppObject);
         }
-        return String.valueOf(ppObject);
+        return pp;
     }
 
-    private String parsePower(Object moveJsonDocument) {
+    private String parsePower(Object moveJsonDocument, String power) {
         Object powerObject = JsonPath.read(moveJsonDocument, "$.power");
-        if(nullCheck(powerObject)) {
-            return null;
+        if (!nullCheck(powerObject) && nullCheck(power)) {
+            return String.valueOf(powerObject);
         }
-        return String.valueOf(powerObject);
+        return power;
     }
 
-    private String parseAccuracy(Object moveJsonDocument) {
+    private String parseAccuracy(Object moveJsonDocument, String accuracy) {
         Object accuracyObject = JsonPath.read(moveJsonDocument, "$.accuracy");
-        if(nullCheck(accuracyObject)) {
-            return null;
+        if (!nullCheck(accuracyObject) && nullCheck(accuracy)) {
+            return String.valueOf(accuracyObject);
         }
-        return String.valueOf(accuracyObject);
+        return accuracy;
     }
 
     private boolean nullCheck(Object data) {
