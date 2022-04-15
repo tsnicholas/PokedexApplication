@@ -35,6 +35,7 @@ public class MainWindow extends Application {
     private final Text types = new Text();
     private final Text stats = new Text();
     private final Text abilities = new Text();
+    private final Text hiddenAbilities = new Text();
     private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final ChoiceBox<MenuDisplay> dropDownMenu = new ChoiceBox<>();
@@ -93,6 +94,7 @@ public class MainWindow extends Application {
         types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
         abilities.setFont(UPPER_FONT);
+        hiddenAbilities.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
         dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW - 250);
         selectedItemDisplay.setPrefHeight(HEIGHT_OF_WINDOW);
@@ -183,7 +185,8 @@ public class MainWindow extends Application {
         if(currentPokemon != null) {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
-            abilities.setText("Abilities: to be added!");
+            abilities.setText("Abilities: " + pokedexProcessor.convertAbilitiesToString(currentPokemon.getAbilities()));
+            hiddenAbilities.setText("Hidden Abilities: " + pokedexProcessor.convertHiddenAbilitiesToString(currentPokemon.getAbilities()));
             egg_groups.setText("Egg Groups: to be added!");
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             setUpLowerContent();
@@ -196,6 +199,7 @@ public class MainWindow extends Application {
         pokeFacts.getChildren().addAll(
                 types,
                 abilities,
+                hiddenAbilities,
                 egg_groups,
                 stats
         );

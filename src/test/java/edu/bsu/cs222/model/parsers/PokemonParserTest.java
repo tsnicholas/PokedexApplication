@@ -89,4 +89,12 @@ class PokemonParserTest extends TestResourceConverter {
                 .andVersionNames(null)).andVersionGroupMap(null);
         Assertions.assertTrue(pokemonParser.assertPokemonExistsInGame(dittoDocument, yellow));
     }
+
+    @Test
+    public void testParseForAbilities_isHiddenDitto() {
+        List<Ability> expectedAbilities = List.of(Ability.withName("limber").andIsHidden(false),
+                Ability.withName("imposter").andIsHidden(true));
+        List<Ability> actualAbilities = pokemonParser.parseForAbilities(dittoDocument);
+        Assertions.assertEquals(expectedAbilities.get(1).isHidden(), actualAbilities.get(1).isHidden());
+    }
 }
