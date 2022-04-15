@@ -60,6 +60,7 @@ public class MainWindow extends Application {
             ErrorWindow startUpNetworkError = new ErrorWindow("A network error has occurred. Shutting down.");
             startUpNetworkError.display();
             System.err.println("Error: \n" + initialNetworkError.getMessage());
+            Platform.exit();
         }
     }
 
