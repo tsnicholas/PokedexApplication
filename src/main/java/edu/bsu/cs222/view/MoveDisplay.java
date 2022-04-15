@@ -25,7 +25,6 @@ public class MoveDisplay implements MenuDisplay {
 
     public Parent display(Pokemon pokemon) {
         layout = new GridPane();
-        layout.setAlignment(Pos.CENTER);
         layout.setHgap(40);
         layout.setVgap(5);
         createMoveDataHeaders();
