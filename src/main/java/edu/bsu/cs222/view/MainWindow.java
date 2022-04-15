@@ -47,9 +47,20 @@ public class MainWindow extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        VersionListGenerator versionsListGenerator = new VersionListGenerator();
-        List<Version> versions = versionsListGenerator.getListOfAllVersions();
-        searchBar.setUpGameSelection(versions);
+        collectPokemonNames();
+    }
+
+    private void collectPokemonNames() {
+        try {
+            VersionListGenerator versionsListGenerator = new VersionListGenerator();
+            List<Version> versions = versionsListGenerator.getListOfAllVersions();
+            searchBar.setUpGameSelection(versions);
+        }
+        catch(UncheckedIOException initialNetworkError) {
+            ErrorWindow startUpNetworkError = new ErrorWindow("A network error has occurred. Shutting down.");
+            startUpNetworkError.display();
+            System.err.println("Error: \n" + initialNetworkError.getMessage());
+        }
     }
 
     @Override
@@ -83,8 +94,8 @@ public class MainWindow extends Application {
         abilities.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
         dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW - 250);
-        selectedItemDisplay.setPrefViewportHeight(HEIGHT_OF_WINDOW - 100);
-        selectedItemDisplay.setPrefViewportWidth(WIDTH_OF_WINDOW - 100);
+        selectedItemDisplay.setPrefHeight(HEIGHT_OF_WINDOW);
+        selectedItemDisplay.setPrefWidth(WIDTH_OF_WINDOW);
     }
 
     private void startUpDisplay(boolean firstStartedUp) {
