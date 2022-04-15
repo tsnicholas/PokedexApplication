@@ -29,17 +29,4 @@ public class PokedexProcessorTest extends TestResourceConverter {
         String expected = "flying ghost ";
         Assertions.assertEquals(expected, pokedexProcessor.convertTypesToString(testTypes));
     }
-
-    @Test
-    public void testConvertStatsToString() {
-        Map<String, Integer> testStats = new LinkedHashMap<>();
-        testStats.put("hp", 100);
-        testStats.put("attack", 69);
-        testStats.put("defense", 42);
-        testStats.put("special-attack", 420);
-        testStats.put("special-defense", 9001);
-        testStats.put("speed", 0);
-        String expected = "hp 100\nattack 69\ndefense 42\nspecial-attack 420\nspecial-defense 9001\nspeed 0\n";
-        Assertions.assertEquals(expected, pokedexProcessor.convertStatsToString(testStats));
-    }
 }

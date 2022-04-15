@@ -32,6 +32,7 @@ public class PokedexProcessor {
         if (pokemonExistsInVersion(pokemonJsonDocument, version)) {
             return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
                     .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
+                    .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument))
                     .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
                     .andImageURL(pokemonParser.parseForImage(pokemonJsonDocument, version));
         } else {
@@ -52,13 +53,24 @@ public class PokedexProcessor {
         return output.toString();
     }
 
-    public String convertStatsToString(Map<String, Integer> statsMap) {
+    public String convertAbilitiesToString(List<Ability> abilities) {
         StringBuilder output = new StringBuilder();
-        for (Map.Entry<String, Integer> stat : statsMap.entrySet()) {
-            output.append(stat.getKey());
-            output.append(" ");
-            output.append(stat.getValue());
-            output.append("\n");
+        for(Ability ability: abilities) {
+            if(!ability.isHidden()) {
+                output.append(ability.getAbilityName());
+                output.append(" ");
+            }
+        }
+        return output.toString();
+    }
+
+    public String convertHiddenAbilitiesToString(List<Ability> abilities) {
+        StringBuilder output = new StringBuilder();
+        for(Ability ability: abilities) {
+            if(ability.isHidden()) {
+                output.append(ability.getAbilityName());
+                output.append(" ");
+            }
         }
         return output.toString();
     }
