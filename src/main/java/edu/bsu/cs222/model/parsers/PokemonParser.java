@@ -138,4 +138,15 @@ public class PokemonParser {
         return spriteArray.size() != 0;
     }
 
+    public List<Ability> parseForAbilities(Object pokeJsonDocument) {
+        JSONArray abilitiesArray = JsonPath.read(pokeJsonDocument, "$.abilities");
+        List<Ability> abilities = new ArrayList<>();
+        for (Object ability : abilitiesArray) {
+            String abilityName = JsonPath.read(ability, "$.ability.name");
+            boolean isHidden = JsonPath.read(ability, "$.is_hidden");
+            abilities.add(Ability.withName(abilityName).andIsHidden(isHidden));
+        }
+        return abilities;
+    }
+
 }
