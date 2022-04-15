@@ -27,16 +27,13 @@ public class PokedexProcessor {
         return nationalPokedex.containsPokemon(pokemonEdited);
     }
 
-    public Object getPokemonJsonDocument(String pokemon) {
-        return urlProcessor.getPokemonJsonObject(pokemon);
-    }
-
-    public Pokemon process(Object pokemonJsonObject, Version version) throws PokemonDoesNotExistInVersionException {
-        if (pokemonExistsInVersion(pokemonJsonObject, version)) {
-            return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonObject, version))
-                    .andStatsMap(pokemonParser.parseForStats(pokemonJsonObject))
-                    .andMoveList(pokemonParser.parseForMoves(pokemonJsonObject, version))
-                    .andImageURL(pokemonParser.parseForImage(pokemonJsonObject, version));
+    public Pokemon process(String pokemon, Version version) throws PokemonDoesNotExistInVersionException {
+        Object pokemonJsonDocument = urlProcessor.getPokemonJsonObject(pokemon);
+        if (pokemonExistsInVersion(pokemonJsonDocument, version)) {
+            return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
+                    .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
+                    .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
+                    .andImageURL(pokemonParser.parseForImage(pokemonJsonDocument, version));
         } else {
             throw new PokemonDoesNotExistInVersionException();
         }
