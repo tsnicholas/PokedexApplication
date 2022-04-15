@@ -74,15 +74,4 @@ public class PokedexProcessor {
         }
         return output.toString();
     }
-
-    public String convertStatsToString(Map<String, Integer> statsMap) {
-        StringBuilder output = new StringBuilder();
-        for (Map.Entry<String, Integer> stat : statsMap.entrySet()) {
-            output.append(stat.getKey());
-            output.append(" ");
-            output.append(stat.getValue());
-            output.append("\n");
-        }
-        return output.toString();
-    }
 }
