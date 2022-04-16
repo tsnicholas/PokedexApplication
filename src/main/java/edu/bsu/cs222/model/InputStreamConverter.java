@@ -18,9 +18,9 @@ public class InputStreamConverter {
     }
 
     /**
-     * JsonPath GitHub @see <a href = "README">https://github.com/json-path/JsonPath#reading-a-document</a> recommends the following method to avoid parsing the whole document everytime
-     * JsonPath.read is used.
-    */
+     * JsonPath GitHub <a href = "https://github.com/json-path/JsonPath#reading-a-document">README</a> recommends
+     * the following method to avoid parsing the whole document everytime JsonPath.read is used.
+     */
     private Object parseJson(StringBuilder json) {
         return Configuration.defaultConfiguration().jsonProvider().parse(String.valueOf(json));
     }
