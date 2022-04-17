@@ -23,10 +23,13 @@ public class PokedexProcessorTest extends TestResourceConverter {
     public void testConvertTypesToString() {
         Type flying = Type.withName("flying").andDamageRelations(null);
         Type ghost = Type.withName("ghost").andDamageRelations(null);
-        List<Type> testTypes = new ArrayList<>();
-        testTypes.add(flying);
-        testTypes.add(ghost);
-        String expected = "flying ghost ";
-        Assertions.assertEquals(expected, pokedexProcessor.convertTypesToString(testTypes));
+        List<Type> testTypes = List.of(flying, ghost);
+        Assertions.assertEquals("flying ghost ", pokedexProcessor.convertTypesToString(testTypes));
+    }
+
+    @Test
+    public void testConvertEggGroupsToString() {
+        List<String> testValues = List.of("ditto", "no-eggs", "yu gi oh-card");
+        Assertions.assertEquals("ditto, no eggs, yu gi oh card", pokedexProcessor.convertEggGroupsToString(testValues));
     }
 }

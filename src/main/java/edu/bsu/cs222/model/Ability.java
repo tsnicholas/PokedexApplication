@@ -10,9 +10,6 @@ public class Ability {
         private boolean isHidden;
 
         public Builder(String abilityName) {
-            if (abilityName != null) {
-                abilityName = abilityName.replace("-", " ");
-            }
             this.abilityName = abilityName;
         }
 

@@ -36,6 +36,7 @@ public class PokedexProcessor {
             return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
                     .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
                     .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument))
+                    .andEggGroups(pokemonSpeciesParser.parseForEggGroups(pokemonSpeciesJsonDocument))
                     .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
                     .andImageURL(pokemonParser.parseForImage(pokemonJsonDocument, version));
         } else {
@@ -60,21 +61,34 @@ public class PokedexProcessor {
         StringBuilder output = new StringBuilder();
         for(Ability ability: abilities) {
             if(!ability.isHidden()) {
-                output.append(ability.getAbilityName());
-                output.append(" ");
+                output.append(ability.getAbilityName().replace("-", " "));
+                output.append(", ");
             }
         }
-        return output.toString();
+        return getRidOfEndingComma(output.toString());
     }
 
     public String convertHiddenAbilitiesToString(List<Ability> abilities) {
         StringBuilder output = new StringBuilder();
         for(Ability ability: abilities) {
             if(ability.isHidden()) {
-                output.append(ability.getAbilityName());
-                output.append(" ");
+                output.append(ability.getAbilityName().replace("-", " "));
+                output.append(", ");
             }
         }
-        return output.toString();
+        return getRidOfEndingComma(output.toString());
+    }
+
+    public String convertEggGroupsToString(List<String> eggGroups) {
+        StringBuilder output = new StringBuilder();
+        for(String eggGroup: eggGroups) {
+            output.append(eggGroup.replace("-", " "));
+            output.append(", ");
+        }
+        return getRidOfEndingComma(output.toString());
+    }
+
+    private String getRidOfEndingComma(String output) {
+        return output.substring(0, output.length() - 2);
     }
 }

@@ -185,7 +185,7 @@ public class MainWindow extends Application {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
             abilities.setText("Abilities: " + pokedexProcessor.convertAbilitiesToString(currentPokemon.getAbilities()));
             hiddenAbilities.setText("Hidden Abilities: " + pokedexProcessor.convertHiddenAbilitiesToString(currentPokemon.getAbilities()));
-            egg_groups.setText("Egg Groups: to be added!");
+            egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             setUpLowerContent();
             startUpDisplay(false);

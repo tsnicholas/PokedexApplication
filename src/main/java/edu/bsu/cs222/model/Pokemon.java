@@ -12,6 +12,7 @@ public class Pokemon {
         private List<Move> moveList;
         private Map<String, Integer> statsMap;
         private List<Ability> abilities;
+        private List<String> eggGroups;
         private String imageURL;
 
         public Builder (List<Type> typeList) {
@@ -33,6 +34,11 @@ public class Pokemon {
             return this;
         }
 
+        public Builder andEggGroups(List<String> eggGroups) {
+            this.eggGroups = eggGroups;
+            return this;
+        }
+
         public Pokemon andImageURL(String imageURL) {
             this.imageURL = imageURL;
             return new Pokemon(this);
@@ -43,6 +49,7 @@ public class Pokemon {
     private final List<Move> moveList;
     private final Map<String, Integer> statsMap;
     private final List<Ability> abilities;
+    private final List<String> eggGroups;
     private final String imageURL;
     private List<String> weaknesses = new ArrayList<>();
     private List<String> resistances = new ArrayList<>();
@@ -52,6 +59,7 @@ public class Pokemon {
         typeList = builder.typeList;
         moveList = builder.moveList;
         abilities = builder.abilities;
+        eggGroups = builder.eggGroups;
         statsMap = builder.statsMap;
         imageURL = builder.imageURL;
         setDamageRelations();
@@ -110,6 +118,10 @@ public class Pokemon {
 
     public List<Ability> getAbilities() {
         return abilities;
+    }
+
+    public List<String> getEggGroups() {
+        return eggGroups;
     }
 
     public String getImageURL() {
