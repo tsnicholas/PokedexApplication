@@ -14,8 +14,7 @@ public class PokemonTest {
     public void setUpPokemon() {
         Type water = setUpWaterType();
         Type ground = setUpGroundType();
-        quagsire = Pokemon.withTypeList(List.of(water, ground)).andStatsMap(null).andMoveList(null).andAbilities(null)
-                .andEggGroups(null).andImageURL(null);
+        quagsire = Pokemon.withTypeList(List.of(water, ground)).andImageURL(null);
     }
 
     private Type setUpWaterType() {
@@ -32,6 +31,16 @@ public class PokemonTest {
         damageRelations.put("Weaknesses", List.of("water", "grass", "ice"));
         damageRelations.put("Resistances", List.of("poison", "rock"));
         return Type.withName("ground").andDamageRelations(damageRelations);
+    }
+
+    @Test
+    public void testPokemon_getFirstType() {
+        Assertions.assertEquals("water", quagsire.getTypes().get(0).getName());
+    }
+
+    @Test
+    public void testPokemon_getSecondType() {
+        Assertions.assertEquals("ground", quagsire.getTypes().get(1).getName());
     }
 
     @Test
