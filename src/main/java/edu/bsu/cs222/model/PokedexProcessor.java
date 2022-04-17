@@ -1,9 +1,9 @@
 package edu.bsu.cs222.model;
 
+import edu.bsu.cs222.model.parsers.PokemonSpeciesParser;
 import edu.bsu.cs222.model.parsers.PokemonParser;
 
 import java.util.List;
-import java.util.Map;
 
 public class PokedexProcessor {
     private final URLProcessor urlProcessor;
@@ -28,7 +28,10 @@ public class PokedexProcessor {
     }
 
     public Pokemon process(String pokemon, Version version) throws PokemonDoesNotExistInVersionException {
-        Object pokemonJsonDocument = urlProcessor.getPokemonJsonObject(pokemon);
+        PokemonSpeciesParser pokemonSpeciesParser = new PokemonSpeciesParser();
+        Object pokemonSpeciesJsonDocument = urlProcessor.getPokemonSpeciesJsonObject(pokemon);
+        String pokemonURL = pokemonSpeciesParser.parseForPokemonURL(pokemonSpeciesJsonDocument);
+        Object pokemonJsonDocument = urlProcessor.convertStringToObject(pokemonURL);
         if (pokemonExistsInVersion(pokemonJsonDocument, version)) {
             return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
                     .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
