@@ -27,16 +27,16 @@ public class ProductionURLProcessor implements URLProcessor {
         return convertStringToObject("https://pokeapi.co/api/v2/generation?limit=" + count);
     }
 
-    public Object getPokemonJsonObject(String pokemon) {
-        String urlString = getPokemonURLString(pokemon);
+    public Object getPokemonSpeciesJsonObject(String pokemon) {
+        String urlString = getPokemonSpeciesURLString(pokemon);
         return convertStringToObject(urlString);
     }
 
     // The edited string solves the problem with mr. mime and other pokemon with similar problems
-    private String getPokemonURLString(String name) {
+    private String getPokemonSpeciesURLString(String name) {
         String nameEdited = name.replace(" ", "-").replace(".", "");
         String nameEncoded = URLEncoder.encode(nameEdited, Charset.defaultCharset());
-        return String.format("https://pokeapi.co/api/v2/pokemon/%s", nameEncoded);
+        return String.format("https://pokeapi.co/api/v2/pokemon-species/%s", nameEncoded);
     }
 
     @Override

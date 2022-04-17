@@ -30,7 +30,7 @@ public class TestURLProcessor implements URLProcessor {
     }
 
     @Override
-    public Object getPokemonJsonObject(String nameOfPokemon) {
+    public Object getPokemonSpeciesJsonObject(String nameOfPokemon) {
         return null;
     }
 

@@ -9,5 +9,5 @@ public interface URLProcessor {
 
     Object getAllGenerations(int count);
 
-    Object getPokemonJsonObject(String nameOfPokemon);
+    Object getPokemonSpeciesJsonObject(String nameOfPokemon);
 }
