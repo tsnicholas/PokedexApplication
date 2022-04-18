@@ -4,6 +4,7 @@ import edu.bsu.cs222.model.parsers.PokemonSpeciesParser;
 import edu.bsu.cs222.model.parsers.PokemonParser;
 
 import java.util.List;
+import java.util.Map;
 
 public class PokedexProcessor {
     private final URLProcessor urlProcessor;
@@ -57,26 +58,15 @@ public class PokedexProcessor {
         return output.toString();
     }
 
-    public String convertAbilitiesToString(List<Ability> abilities) {
+    public String convertStatsToString(Map<String, Integer> statsMap) {
         StringBuilder output = new StringBuilder();
-        for(Ability ability: abilities) {
-            if(!ability.isHidden()) {
-                output.append(ability.getAbilityName().replace("-", " "));
-                output.append(", ");
-            }
+        for (Map.Entry<String, Integer> stat : statsMap.entrySet()) {
+            output.append(stat.getKey());
+            output.append(" ");
+            output.append(stat.getValue());
+            output.append("\n");
         }
-        return getRidOfEndingComma(output.toString());
-    }
-
-    public String convertHiddenAbilitiesToString(List<Ability> abilities) {
-        StringBuilder output = new StringBuilder();
-        for(Ability ability: abilities) {
-            if(ability.isHidden()) {
-                output.append(ability.getAbilityName().replace("-", " "));
-                output.append(", ");
-            }
-        }
-        return getRidOfEndingComma(output.toString());
+        return output.toString();
     }
 
     public String convertEggGroupsToString(List<String> eggGroups) {

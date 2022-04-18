@@ -30,9 +30,8 @@ public class MainWindow extends Application {
     private final Text instruction = new Text(INSTRUCTION_STRING);
     private final SearchBar searchBar = new SearchBar();
     private final Text types = new Text();
-    private final Text abilities = new Text();
-    private final Text hiddenAbilities = new Text();
     private final Text egg_groups = new Text();
+    private final Text stats = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final TabPane tabMenu = new TabPane();
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
@@ -86,8 +85,7 @@ public class MainWindow extends Application {
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         types.setFont(UPPER_FONT);
-        abilities.setFont(UPPER_FONT);
-        hiddenAbilities.setFont(UPPER_FONT);
+        stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
         tabMenu.setPrefWidth(SIZE_OF_WINDOW);
     }
@@ -109,7 +107,7 @@ public class MainWindow extends Application {
     private void setUpTabMenu() {
         tabMenu.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabMenu.getTabs().addAll(
-                new Tab("Stats"),
+                new Tab("Abilities"),
                 new Tab("Move Set"),
                 new Tab("Damage Relations")
         );
@@ -166,8 +164,7 @@ public class MainWindow extends Application {
     private void update() {
         if(currentPokemon != null) {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
-            abilities.setText("Abilities: " + pokedexProcessor.convertAbilitiesToString(currentPokemon.getAbilities()));
-            hiddenAbilities.setText("Hidden Abilities: " + pokedexProcessor.convertHiddenAbilitiesToString(currentPokemon.getAbilities()));
+            stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             setUpLowerContent();
@@ -176,17 +173,17 @@ public class MainWindow extends Application {
 
     private Parent createPokeFacts() {
         VBox pokeFacts = new VBox();
+        pokeFacts.setSpacing(10);
         pokeFacts.getChildren().addAll(
                 types,
-                abilities,
-                hiddenAbilities,
+                stats,
                 egg_groups
         );
         return pokeFacts;
     }
 
     private void setUpLowerContent() {
-        List<MenuDisplay> menuDisplays = List.of(new StatsDisplay(), new MoveDisplay(), new DamageRelationsDisplay());
+        List<MenuDisplay> menuDisplays = List.of(new AbilitiesDisplay(), new MoveDisplay(), new DamageRelationsDisplay());
         for(int i = 0; i < tabMenu.getTabs().size(); i++) {
             tabMenu.getTabs().get(i).setContent(menuDisplays.get(i).display(currentPokemon));
         }
