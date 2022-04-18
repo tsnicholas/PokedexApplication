@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class StatsDisplay implements MenuDisplay {
     public Parent display(Pokemon pokemon) {
-        VBox vBox = new VBox();
-        vBox.getChildren().add(createText(convertStatsToString(pokemon.getStats())));
-        return vBox;
+        VBox statRows = new VBox();
+        statRows.getChildren().add(createText(convertStatsToString(pokemon.getStats())));
+        return statRows;
     }
 
     private String convertStatsToString(Map<String, Integer> statsMap) {
