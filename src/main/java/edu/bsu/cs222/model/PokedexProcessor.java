@@ -35,7 +35,7 @@ public class PokedexProcessor {
         if (pokemonExistsInVersion(pokemonJsonDocument, version)) {
             return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
                     .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
-                    .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument))
+                    .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument, version))
                     .andEggGroups(pokemonSpeciesParser.parseForEggGroups(pokemonSpeciesJsonDocument))
                     .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
                     .andImageURL(pokemonParser.parseForImage(pokemonJsonDocument, version));

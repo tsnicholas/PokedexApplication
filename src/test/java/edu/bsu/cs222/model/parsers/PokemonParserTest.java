@@ -14,16 +14,25 @@ class PokemonParserTest extends TestResourceConverter {
     private final Object charizardDocument = convertFileNameToObject("charizard.json");
     private final Object dittoDocument = convertFileNameToObject("ditto.json");
     private final Generation genOne = makeGenOne();
+    private final Generation genThree = makeGenThree();
+    private final Generation genFive = makeGenFive();
     private final GenerationMap generationMap = makeGenOneAndGenFiveMap();
 
     private Generation makeGenOne() {
         return Generation.withName("generation-i").andID(1).andVersionGroups(null);
     }
 
+    private Generation makeGenThree() {
+        return Generation.withName("generation-iii").andID(3).andVersionGroups(null);
+    }
+
+    private Generation makeGenFive() {
+        return Generation.withName("generation-v").andID(5).andVersionGroups(null);
+    }
+
     private GenerationMap makeGenOneAndGenFiveMap() {
         GenerationMapFactory generationMapFactory = new GenerationMapFactory();
-        Generation genFive = Generation.withName("generation-v").andID(5).andVersionGroups(null);
-        return generationMapFactory.createGenerationMap(List.of(genOne, genFive));
+        return generationMapFactory.createGenerationMap(List.of(genOne, genThree, genFive));
     }
 
     @Test
@@ -92,9 +101,18 @@ class PokemonParserTest extends TestResourceConverter {
 
     @Test
     public void testParseForAbilities_isHiddenDitto() {
+        Version black = Version.withName(null).andGeneration(genFive).andGenerationMap(generationMap).andVersionGroupMap(null);
         List<Ability> expectedAbilities = List.of(Ability.withName("limber").andIsHidden(false),
                 Ability.withName("imposter").andIsHidden(true));
-        List<Ability> actualAbilities = pokemonParser.parseForAbilities(dittoDocument);
+        List<Ability> actualAbilities = pokemonParser.parseForAbilities(dittoDocument, black);
         Assertions.assertEquals(expectedAbilities.get(1).isHidden(), actualAbilities.get(1).isHidden());
+    }
+
+    @Test
+    public void testParseForAbilities_noAbilities() {
+        Version yellow = Version.withName(null).andGeneration(genOne).andGenerationMap(generationMap)
+                .andVersionGroupMap(null);
+        List<Ability> actualAbilities = pokemonParser.parseForAbilities(dittoDocument, yellow);
+        Assertions.assertEquals(0, actualAbilities.size());
     }
 }

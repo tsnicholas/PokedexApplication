@@ -13,6 +13,7 @@ import static com.jayway.jsonpath.JsonPath.parse;
 
 public class PokemonParser {
     private final URLProcessor urlProcessor;
+    private final AbilityParser abilityParser = new AbilityParser();
 
     public PokemonParser() {
         this.urlProcessor = new ProductionURLProcessor();
@@ -138,15 +139,23 @@ public class PokemonParser {
         return spriteArray.size() != 0;
     }
 
-    public List<Ability> parseForAbilities(Object pokeJsonDocument) {
+    public List<Ability> parseForAbilities(Object pokeJsonDocument, Version version) {
         JSONArray abilitiesArray = JsonPath.read(pokeJsonDocument, "$.abilities");
         List<Ability> abilities = new ArrayList<>();
         for (Object ability : abilitiesArray) {
-            String abilityName = JsonPath.read(ability, "$.ability.name");
-            boolean isHidden = JsonPath.read(ability, "$.is_hidden");
-            abilities.add(Ability.withName(abilityName).andIsHidden(isHidden));
+            String abilityURL = JsonPath.read(ability, "$.ability.url");
+            Object abilityJsonDocument = urlProcessor.convertStringToObject(abilityURL);
+            if(abilityParser.assertExistsInVersion(abilityJsonDocument, version)) {
+                abilities.add(createAbility(ability, abilityJsonDocument));
+            }
         }
         return abilities;
+    }
+
+    private Ability createAbility(Object ability, Object abilityJsonDocument) {
+        String abilityName = JsonPath.read(ability, "$.ability.name");
+        boolean isHidden = JsonPath.read(ability, "$.is_hidden");
+        return Ability.withName(abilityName).andEffect(abilityParser.parseEffect(abilityJsonDocument)).andIsHidden(isHidden);
     }
 
 }
