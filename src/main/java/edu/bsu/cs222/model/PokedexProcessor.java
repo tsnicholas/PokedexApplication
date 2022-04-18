@@ -89,6 +89,9 @@ public class PokedexProcessor {
     }
 
     private String getRidOfEndingComma(String output) {
+        if (output.length() == 0) {
+            return output;
+        }
         return output.substring(0, output.length() - 2);
     }
 }
