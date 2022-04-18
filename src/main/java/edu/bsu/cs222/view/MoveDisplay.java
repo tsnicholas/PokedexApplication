@@ -2,8 +2,8 @@ package edu.bsu.cs222.view;
 
 import edu.bsu.cs222.model.Move;
 import edu.bsu.cs222.model.Pokemon;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -24,12 +24,14 @@ public class MoveDisplay implements MenuDisplay {
     private GridPane layout;
 
     public Parent display(Pokemon pokemon) {
+        ScrollPane scrollpane = new ScrollPane();
         layout = new GridPane();
         layout.setHgap(40);
         layout.setVgap(5);
         createMoveDataHeaders();
         createMoveDataStrings(pokemon.getMoves());
-        return layout;
+        scrollpane.setContent(layout);
+        return scrollpane;
     }
 
     private void createMoveDataHeaders() {

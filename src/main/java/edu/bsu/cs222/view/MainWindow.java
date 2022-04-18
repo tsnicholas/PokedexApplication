@@ -3,12 +3,10 @@ package edu.bsu.cs222.view;
 import edu.bsu.cs222.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -24,9 +22,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainWindow extends Application {
-    private final int WIDTH_OF_WINDOW = 800;
-    private final int HEIGHT_OF_WINDOW = 800;
-    private final Pos DEFAULT_POSITION = Pos.CENTER;
+    private final int SIZE_OF_WINDOW = 800;
+    private final Pos DEFAULT_POSITION = Pos.TOP_CENTER;
     private final Font UPPER_FONT = Font.font("Verdana", 25);
     private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
 
@@ -37,8 +34,7 @@ public class MainWindow extends Application {
     private final Text hiddenAbilities = new Text();
     private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
-    private final ChoiceBox<MenuDisplay> dropDownMenu = new ChoiceBox<>();
-    private final ScrollPane selectedItemDisplay = new ScrollPane();
+    private final TabPane tabMenu = new TabPane();
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private Pokemon currentPokemon;
 
@@ -69,7 +65,6 @@ public class MainWindow extends Application {
         setUpWindowBasics(primaryStage);
         setUpSizesAndFonts();
         searchBar.addListener(this::search);
-        startUpDisplay(true);
         primaryStage.show();
     }
 
@@ -77,8 +72,8 @@ public class MainWindow extends Application {
         primaryStage.setTitle("Pokedex");
         primaryStage.getIcons().add(new Image("pokeball.png"));
         primaryStage.setScene(new Scene(createMainWindow()));
-        primaryStage.setHeight(HEIGHT_OF_WINDOW);
-        primaryStage.setWidth(WIDTH_OF_WINDOW);
+        primaryStage.setHeight(SIZE_OF_WINDOW);
+        primaryStage.setWidth(SIZE_OF_WINDOW);
         primaryStage.setOnCloseRequest(X -> {
             executor.shutdown();
             primaryStage.close();
@@ -94,14 +89,7 @@ public class MainWindow extends Application {
         abilities.setFont(UPPER_FONT);
         hiddenAbilities.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
-        dropDownMenu.setPrefWidth(WIDTH_OF_WINDOW - 250);
-        selectedItemDisplay.setPrefHeight(HEIGHT_OF_WINDOW);
-        selectedItemDisplay.setPrefWidth(WIDTH_OF_WINDOW);
-    }
-
-    private void startUpDisplay(boolean firstStartedUp) {
-        dropDownMenu.setVisible(!firstStartedUp);
-        selectedItemDisplay.setVisible(!firstStartedUp);
+        tabMenu.setPrefWidth(SIZE_OF_WINDOW);
     }
 
     private Parent createMainWindow() {
@@ -112,11 +100,19 @@ public class MainWindow extends Application {
                 instruction,
                 searchBar.getDisplay(),
                 createUpperPortion(),
-                dropDownMenu,
-                selectedItemDisplay
+                tabMenu
         );
-        setUpDropDownMenu();
+        setUpTabMenu();
         return mainWindow;
+    }
+
+    private void setUpTabMenu() {
+        tabMenu.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabMenu.getTabs().addAll(
+                new Tab("Stats"),
+                new Tab("Move Set"),
+                new Tab("Damage Relations")
+        );
     }
 
     private Parent createUpperPortion() {
@@ -127,32 +123,19 @@ public class MainWindow extends Application {
                 pokemonImage,
                 createPokeFacts()
         );
-
         return upperPortion;
-    }
-
-    private void setUpDropDownMenu() {
-        MoveDisplay moveDisplay = new MoveDisplay();
-        DamageRelationsDisplay damageRelationsDisplay = new DamageRelationsDisplay();
-        StatsDisplay statsDisplay = new StatsDisplay();
-        dropDownMenu.setItems(FXCollections.observableArrayList(statsDisplay, moveDisplay, damageRelationsDisplay));
-        dropDownMenu.getSelectionModel().selectFirst();
-        dropDownMenu.getSelectionModel().selectedItemProperty().addListener(
-                (v, oldValue, newValue) -> setUpLowerContent());
     }
 
     public void search() {
         if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
             executor.execute(() -> {
                 searchBar.setDisable(true);
-                dropDownMenu.setDisable(true);
                 instruction.setText("The pokedex is searching. Please wait...");
                 beginProcessingPokemon();
                 Platform.runLater(() -> {
                     update();
                     instruction.setText(INSTRUCTION_STRING);
                     searchBar.setDisable(false);
-                    dropDownMenu.setDisable(false);
                 });
             });
         } else {
@@ -188,7 +171,6 @@ public class MainWindow extends Application {
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             setUpLowerContent();
-            startUpDisplay(false);
         }
     }
 
@@ -204,7 +186,9 @@ public class MainWindow extends Application {
     }
 
     private void setUpLowerContent() {
-        MenuDisplay currentLayout = dropDownMenu.getSelectionModel().getSelectedItem();
-        selectedItemDisplay.setContent(currentLayout.display(currentPokemon));
+        List<MenuDisplay> menuDisplays = List.of(new StatsDisplay(), new MoveDisplay(), new DamageRelationsDisplay());
+        for(int i = 0; i < tabMenu.getTabs().size(); i++) {
+            tabMenu.getTabs().get(i).setContent(menuDisplays.get(i).display(currentPokemon));
+        }
     }
 }
