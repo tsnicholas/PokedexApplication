@@ -48,7 +48,8 @@ public class Pokemon {
     private final List<Type> typeList;
     private final List<Move> moveList;
     private final Map<String, Integer> statsMap;
-    private final List<Ability> abilities;
+    private final List<Ability> abilities = new ArrayList<>();
+    private final List<Ability> hiddenAbilities = new ArrayList<>();
     private final List<String> eggGroups;
     private final String imageURL;
     private List<String> weaknesses = new ArrayList<>();
@@ -58,11 +59,24 @@ public class Pokemon {
     public Pokemon(Builder builder) {
         typeList = builder.typeList;
         moveList = builder.moveList;
-        abilities = builder.abilities;
         eggGroups = builder.eggGroups;
         statsMap = builder.statsMap;
         imageURL = builder.imageURL;
+        filterAbilities(builder.abilities);
         setDamageRelations();
+    }
+
+    private void filterAbilities(List<Ability> abilityList) {
+        if(abilityList != null) {
+            for(Ability ability: abilityList) {
+                if(ability.isHidden()) {
+                    hiddenAbilities.add(ability);
+                }
+                else {
+                    abilities.add(ability);
+                }
+            }
+        }
     }
 
     private void setDamageRelations() {
@@ -118,6 +132,10 @@ public class Pokemon {
 
     public List<Ability> getAbilities() {
         return abilities;
+    }
+
+    public List<Ability> getHiddenAbilities() {
+        return hiddenAbilities;
     }
 
     public List<String> getEggGroups() {
