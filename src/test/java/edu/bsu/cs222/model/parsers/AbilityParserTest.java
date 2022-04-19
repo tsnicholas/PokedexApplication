@@ -21,7 +21,7 @@ public class AbilityParserTest extends TestResourceConverter {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUpGenerationMap() {
         GenerationMapFactory generationMapFactory = new GenerationMapFactory();
         gen2 = Generation.withName("generation-ii").andID(2).andVersionGroups(null);
         Generation gen3 = Generation.withName("generation-iii").andID(3).andVersionGroups(null);
@@ -30,14 +30,14 @@ public class AbilityParserTest extends TestResourceConverter {
     }
 
     @Test
-    public void testAssertExistsInVersion_trueCase() {
+    public void testAssertExistsInVersion_levitateExistsInPokemonDiamond() {
         Version diamond = Version.withName(null).andGeneration(gen4).andGenerationMap(genMap)
                 .andVersionGroupMap(null);
         Assertions.assertTrue(abilityParser.assertExistsInVersion(levitate, diamond));
     }
 
     @Test
-    public void testAssertExistsInVersion_falseCase() {
+    public void testAssertExistsInVersion_levitateDoesNotExistInPokemonSilver() {
         Version silver = Version.withName(null).andGeneration(gen2).andGenerationMap(genMap)
                 .andVersionGroupMap(null);
         Assertions.assertFalse(abilityParser.assertExistsInVersion(levitate, silver));

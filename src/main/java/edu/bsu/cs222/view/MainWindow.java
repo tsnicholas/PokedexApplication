@@ -42,21 +42,13 @@ public class MainWindow extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        collectPokemonNames();
+        collectVersions();
     }
 
-    private void collectPokemonNames() {
-        try {
-            VersionListGenerator versionsListGenerator = new VersionListGenerator();
-            List<Version> versions = versionsListGenerator.getListOfAllVersions();
-            searchBar.setUpGameSelection(versions);
-        }
-        catch(UncheckedIOException initialNetworkError) {
-            ErrorWindow startUpNetworkError = new ErrorWindow("A network error has occurred. Shutting down.");
-            startUpNetworkError.display();
-            System.err.println("Error: \n" + initialNetworkError.getMessage());
-            Platform.exit();
-        }
+    private void collectVersions() {
+        VersionListGenerator versionsListGenerator = new VersionListGenerator();
+        List<Version> versions = versionsListGenerator.getListOfAllVersions();
+        searchBar.setUpGameSelection(versions);
     }
 
     @Override

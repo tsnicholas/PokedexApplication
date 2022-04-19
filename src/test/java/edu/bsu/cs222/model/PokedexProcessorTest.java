@@ -28,6 +28,25 @@ public class PokedexProcessorTest extends TestResourceConverter {
     }
 
     @Test
+    public void testConvertStatsToString() {
+        Map<String, Integer> input = createStatMap();
+        String actual = pokedexProcessor.convertStatsToString(input);
+        String expected = "hp 300\nattack 420\nspecial-attack 169\nspecial-defense 1000\ndefense 0\nspeed 50\n";
+        Assertions.assertEquals(expected, actual);
+    }
+
+    private Map<String, Integer> createStatMap() {
+        LinkedHashMap<String, Integer> statMap = new LinkedHashMap<>();
+        statMap.put("hp", 300);
+        statMap.put("attack", 420);
+        statMap.put("special-attack", 169);
+        statMap.put("special-defense", 1000);
+        statMap.put("defense", 0);
+        statMap.put("speed", 50);
+        return statMap;
+    }
+
+    @Test
     public void testConvertEggGroupsToString() {
         List<String> testValues = List.of("ditto", "no-eggs", "yu gi oh-card");
         Assertions.assertEquals("ditto, no eggs, yu gi oh card", pokedexProcessor.convertEggGroupsToString(testValues));
