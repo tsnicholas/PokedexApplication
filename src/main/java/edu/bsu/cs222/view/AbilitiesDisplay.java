@@ -3,6 +3,7 @@ package edu.bsu.cs222.view;
 import edu.bsu.cs222.model.Ability;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class AbilitiesDisplay implements MenuDisplay {
     public Parent display(Pokemon pokemon) {
+        ScrollPane scrollPane = new ScrollPane();
         VBox abilitiesRows = new VBox();
         abilitiesRows.getChildren().addAll(
                 createHeaderText("Abilities"),
@@ -19,7 +21,8 @@ public class AbilitiesDisplay implements MenuDisplay {
                 createHeaderText("Hidden Abilities"),
                 convertAbilitiesIntoText(pokemon.getHiddenAbilities())
         );
-        return abilitiesRows;
+        scrollPane.setContent(abilitiesRows);
+        return scrollPane;
     }
 
     private Text createHeaderText(String name) {
@@ -42,7 +45,8 @@ public class AbilitiesDisplay implements MenuDisplay {
     private Text createNameText(String abilityName) {
         String editedName = abilityName.replace("-", " ");
         Text text = new Text(editedName);
-        text.setFont(Font.font("Times New Roman", 25));
+        text.setFont(Font.font("Verdana", 25));
+        text.isUnderline();
         return text;
     }
 
@@ -50,11 +54,12 @@ public class AbilitiesDisplay implements MenuDisplay {
         String properEffectString = encodeStringInUTF8(effect);
         Text text = new Text(properEffectString);
         text.setFont(Font.font("Times New Roman", 15));
+        text.setWrappingWidth(750);
         return text;
     }
 
     private String encodeStringInUTF8(String effect) {
-        // Some of the effect's characters won't show up correctly unless we re-encode it in the UTF_8 charset
+        // Some of the effect's characters won't show up correctly unless we re-encode into the UTF_8 charset
         // For example: Pokémon will show up as PokÃ©mon
         byte[] stringBytes = effect.getBytes();
         return new String(stringBytes, StandardCharsets.UTF_8);
