@@ -5,15 +5,11 @@ import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
 
 public class MoveDisplay implements MenuDisplay {
-    private final String FONT_NAME = "Times New Roman";
-    private final int FONT_SIZE = 18;
     private final int NAME_COLUMN_INDEX = 0;
     private final int TYPE_COLUMN_INDEX = 1;
     private final int PP_COLUMN_INDEX = 2;
@@ -21,43 +17,55 @@ public class MoveDisplay implements MenuDisplay {
     private final int ACCURACY_COLUMN_INDEX = 4;
     private final int LEARN_METHOD_COLUMN_INDEX = 5;
 
-    private GridPane layout;
+    private GridPane moveLayout;
 
-    public Parent display(Pokemon pokemon) {
-        ScrollPane scrollpane = new ScrollPane();
-        layout = new GridPane();
-        layout.setHgap(40);
-        layout.setVgap(5);
+    public Parent getInitialDisplay() {
+        moveLayout = new GridPane();
+        moveLayout.setHgap(LARGE_SPACING);
+        moveLayout.setVgap(SMALL_SPACING);
         createMoveDataHeaders();
-        createMoveDataStrings(pokemon.getMoves());
-        scrollpane.setContent(layout);
-        return scrollpane;
+        return moveLayout;
     }
 
     private void createMoveDataHeaders() {
-        layout.addColumn(NAME_COLUMN_INDEX, createHeaderText("Name"));
-        layout.addColumn(TYPE_COLUMN_INDEX, createHeaderText("Type"));
-        layout.addColumn(PP_COLUMN_INDEX, createHeaderText("PP"));
-        layout.addColumn(POWER_COLUMN_INDEX, createHeaderText("Power"));
-        layout.addColumn(ACCURACY_COLUMN_INDEX, createHeaderText("Accuracy"));
-        layout.addColumn(LEARN_METHOD_COLUMN_INDEX, createHeaderText("Obtained By"));
+        moveLayout.addColumn(NAME_COLUMN_INDEX, createHeaderText("Name"));
+        moveLayout.addColumn(TYPE_COLUMN_INDEX, createHeaderText("Type"));
+        moveLayout.addColumn(PP_COLUMN_INDEX, createHeaderText("PP"));
+        moveLayout.addColumn(POWER_COLUMN_INDEX, createHeaderText("Power"));
+        moveLayout.addColumn(ACCURACY_COLUMN_INDEX, createHeaderText("Accuracy"));
+        moveLayout.addColumn(LEARN_METHOD_COLUMN_INDEX, createHeaderText("Obtained By"));
     }
 
     private Text createHeaderText(String header) {
         Text text = new Text(header);
-        text.setFont(Font.font(FONT_NAME, FontWeight.BOLD, FONT_SIZE));
+        text.setFont(HEADER_TEXT);
         return text;
+    }
+
+    public Parent display(Pokemon pokemon) {
+        moveLayout = new GridPane();
+        moveLayout.setHgap(LARGE_SPACING);
+        moveLayout.setVgap(SMALL_SPACING);
+        createMoveDataHeaders();
+        createMoveDataStrings(pokemon.getMoves());
+        return wrapAroundScrollPane();
+    }
+
+    private Parent wrapAroundScrollPane() {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(moveLayout);
+        return scrollPane;
     }
 
     private void createMoveDataStrings(List<Move> moveList) {
         for(int i = 0; i < moveList.size(); i++) {
             Move move = moveList.get(i);
-            layout.add(createText(nullCheck(move.getName())), NAME_COLUMN_INDEX, i + 1);
-            layout.add(createText(nullCheck(move.getType())), TYPE_COLUMN_INDEX, i + 1);
-            layout.add(createText(nullCheck(move.getPP())), PP_COLUMN_INDEX, i + 1);
-            layout.add(createText(nullCheck(move.getPower())), POWER_COLUMN_INDEX, i + 1);
-            layout.add(createText(nullCheck(move.getAccuracy())), ACCURACY_COLUMN_INDEX, i + 1);
-            layout.add(createText(obtainLearnMethods(move.getLearnMethods())), LEARN_METHOD_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(nullCheck(move.getName())), NAME_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(nullCheck(move.getType())), TYPE_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(nullCheck(move.getPP())), PP_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(nullCheck(move.getPower())), POWER_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(nullCheck(move.getAccuracy())), ACCURACY_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(obtainLearnMethods(move.getLearnMethods())), LEARN_METHOD_COLUMN_INDEX, i + 1);
         }
     }
 
@@ -79,12 +87,10 @@ public class MoveDisplay implements MenuDisplay {
 
     private Text createText(String name) {
         Text text = new Text(name);
-        text.setFont(Font.font(FONT_NAME, FONT_SIZE));
+        text.setFont(SIMPLE_TEXT);
         return text;
     }
 
-    // Without this, the name displayed in the drop-down menu is meaningless
-    @Override
     public String toString() {
         return "Move Set";
     }

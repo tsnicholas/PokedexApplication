@@ -4,29 +4,37 @@ import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
 
 public class DamageRelationsDisplay implements MenuDisplay {
-    private static final String FONT_NAME = "Times New Roman";
-    private static final int FONT_SIZE = 25;
+    private final static String IMMUNITIES = "Immunities: ";
+    private final static String RESISTANCES = "Resistances: ";
+    private final static String WEAKNESSES = "Weaknesses: ";
+
+    public Parent getInitialDisplay() {
+        VBox rows = new VBox(SMALL_SPACING);
+        rows.getChildren().addAll(
+                createDamageRelationName(IMMUNITIES),
+                createDamageRelationName(RESISTANCES),
+                createDamageRelationName(WEAKNESSES)
+        );
+        return rows;
+    }
 
     public Parent display(Pokemon pokemon) {
-        VBox rows = new VBox();
+        VBox rows = new VBox(SMALL_SPACING);
         rows.getChildren().addAll(
-            createDamageRelationRow("Immunities", pokemon.getImmunities()),
-            createDamageRelationRow("Resistances", pokemon.getResistances()),
-            createDamageRelationRow("Weaknesses", pokemon.getWeaknesses())
+            createDamageRelationRow(IMMUNITIES, pokemon.getImmunities()),
+            createDamageRelationRow(RESISTANCES, pokemon.getResistances()),
+            createDamageRelationRow(WEAKNESSES, pokemon.getWeaknesses())
         );
         return rows;
     }
 
     private Parent createDamageRelationRow(String damageRelation, List<String> damageRelationList) {
-        HBox damageRelationRow = new HBox();
-        damageRelationRow.setSpacing(5);
+        HBox damageRelationRow = new HBox(SMALL_SPACING);
         damageRelationRow.getChildren().addAll(
                 createDamageRelationName(damageRelation),
                 createDamageRelationData(damageRelationList)
@@ -35,8 +43,8 @@ public class DamageRelationsDisplay implements MenuDisplay {
     }
 
     private Text createDamageRelationName(String damageRelation) {
-        Text text = new Text(damageRelation + ": ");
-        text.setFont(Font.font(FONT_NAME, FontWeight.BOLD, FONT_SIZE));
+        Text text = new Text(damageRelation);
+        text.setFont(HEADER_TEXT);
         return text;
     }
 
@@ -51,12 +59,10 @@ public class DamageRelationsDisplay implements MenuDisplay {
 
     private Text createText(String type) {
         Text text = new Text(type);
-        text.setFont(Font.font(FONT_NAME, FONT_SIZE));
+        text.setFont(SIMPLE_TEXT);
         return text;
     }
 
-    // Without this, the name displayed in the drop-down menu is meaningless
-    @Override
     public String toString() {
         return "Damage Relations";
     }
