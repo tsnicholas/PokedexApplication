@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainWindow extends Application {
-    private final int SIZE_OF_WINDOW = 800;
+    private final int SIZE_OF_WINDOW = 800;    private final int SMALL_SPACING = 10;
     private final Pos DEFAULT_POSITION = Pos.TOP_CENTER;
     private final Font UPPER_FONT = Font.font("Verdana", 25);
     private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
@@ -30,10 +30,11 @@ public class MainWindow extends Application {
     private final Text instruction = new Text(INSTRUCTION_STRING);
     private final SearchBar searchBar = new SearchBar();
     private final Text types = new Text();
-    private final Text egg_groups = new Text();
     private final Text stats = new Text();
+    private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final TabPane tabMenu = new TabPane();
+
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private Pokemon currentPokemon;
 
@@ -85,7 +86,7 @@ public class MainWindow extends Application {
     private Parent createMainWindow() {
         VBox mainWindow = new VBox();
         mainWindow.setAlignment(DEFAULT_POSITION);
-        mainWindow.setSpacing(5);
+        mainWindow.setSpacing(SMALL_SPACING);
         mainWindow.getChildren().addAll(
                 instruction,
                 searchBar.getDisplay(),
@@ -98,10 +99,11 @@ public class MainWindow extends Application {
 
     private void setUpTabMenu() {
         tabMenu.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabMenu.setTabDragPolicy(TabPane.TabDragPolicy.REORDER);
         tabMenu.getTabs().addAll(
-                new Tab("Abilities"),
                 new Tab("Move Set"),
-                new Tab("Damage Relations")
+                new Tab("Damage Relations"),
+                new Tab("Abilities")
         );
     }
 
@@ -114,6 +116,17 @@ public class MainWindow extends Application {
                 createPokeFacts()
         );
         return upperPortion;
+    }
+
+    private Parent createPokeFacts() {
+        VBox pokeFacts = new VBox();
+        pokeFacts.setSpacing(SMALL_SPACING);
+        pokeFacts.getChildren().addAll(
+                types,
+                stats,
+                egg_groups
+        );
+        return pokeFacts;
     }
 
     public void search() {
@@ -159,25 +172,14 @@ public class MainWindow extends Application {
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
-            setUpLowerContent();
+            insertContentIntoTabs();
         }
     }
 
-    private Parent createPokeFacts() {
-        VBox pokeFacts = new VBox();
-        pokeFacts.setSpacing(10);
-        pokeFacts.getChildren().addAll(
-                types,
-                stats,
-                egg_groups
-        );
-        return pokeFacts;
-    }
-
-    private void setUpLowerContent() {
-        List<MenuDisplay> menuDisplays = List.of(new AbilitiesDisplay(), new MoveDisplay(), new DamageRelationsDisplay());
-        for(int i = 0; i < tabMenu.getTabs().size(); i++) {
-            tabMenu.getTabs().get(i).setContent(menuDisplays.get(i).display(currentPokemon));
+    private void insertContentIntoTabs() {
+        List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(), new AbilitiesDisplay());
+        for(int i = 0; i < menuDisplayList.size(); i++) {
+            tabMenu.getTabs().get(i).setContent(menuDisplayList.get(i).display(currentPokemon));
         }
     }
 }
