@@ -36,11 +36,11 @@ public class MainWindow extends Application {
     private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final TabPane tabMenu = new TabPane();
+    private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
 
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
             new AbilitiesDisplay());
-    private Pokemon currentPokemon;
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -61,6 +61,7 @@ public class MainWindow extends Application {
         setUpWindowBasics(primaryStage);
         setUpSizesAndFonts();
         searchBar.addListener(this::search);
+        pokemonForms.setVisible(false);
         primaryStage.show();
     }
 
@@ -81,6 +82,7 @@ public class MainWindow extends Application {
         instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
+        pokemonForms.setPrefWidth(300);
         types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
@@ -117,10 +119,26 @@ public class MainWindow extends Application {
         HBox upperPortion = new HBox(20);
         upperPortion.setAlignment(DEFAULT_POSITION);
         upperPortion.getChildren().addAll(
-                pokemonImage,
+                createPokemonImageDisplay(),
                 createBasicInformation()
         );
         return upperPortion;
+    }
+
+    public Parent createPokemonImageDisplay() {
+        VBox image = new VBox(5);
+        image.getChildren().addAll(
+                pokemonImage,
+                pokemonForms
+        );
+        setUpFormMenu();
+        return image;
+    }
+
+    private void setUpFormMenu() {
+        pokemonForms.hide();
+        pokemonForms.getSelectionModel().selectedItemProperty().addListener(
+                (v, oldValue, newValue) -> update());
     }
 
     private Parent createBasicInformation() {
@@ -135,11 +153,15 @@ public class MainWindow extends Application {
 
     public void search() {
         if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
+            pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
+            pokemonForms.hide();
             executor.execute(() -> {
                 searchBar.setDisable(true);
                 instruction.setText("The pokedex is searching. Please wait...");
                 beginProcessingPokemon();
                 Platform.runLater(() -> {
+                    pokemonForms.show();
+                    pokemonForms.getSelectionModel().selectFirst();
                     update();
                     instruction.setText(INSTRUCTION_STRING);
                     searchBar.setDisable(false);
@@ -153,7 +175,7 @@ public class MainWindow extends Application {
 
     private void beginProcessingPokemon() {
         try {
-            currentPokemon = pokedexProcessor.process(searchBar.getInput(), searchBar.getSelectedVersion());
+            pokemonForms.getItems().addAll(pokedexProcessor.process(searchBar.getInput(), searchBar.getSelectedVersion()));
         }
         catch(PokemonDoesNotExistInVersionException notInGame) {
             Platform.runLater(() -> {
@@ -171,16 +193,17 @@ public class MainWindow extends Application {
     }
 
     private void update() {
+        Pokemon currentPokemon = pokemonForms.getSelectionModel().getSelectedItem();
         if(currentPokemon != null) {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
-            insertContentIntoTabs();
+            insertContentIntoTabs(currentPokemon);
         }
     }
 
-    private void insertContentIntoTabs() {
+    private void insertContentIntoTabs(Pokemon currentPokemon) {
         for (int i = 0; i < menuDisplayList.size(); i++) {
             tabMenu.getTabs().get(i).setContent(menuDisplayList.get(i).display(currentPokemon));
         }
