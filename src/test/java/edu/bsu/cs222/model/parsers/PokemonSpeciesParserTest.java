@@ -8,6 +8,7 @@ import java.util.List;
 
 class PokemonSpeciesParserTest extends TestResourceConverter {
     private final PokemonSpeciesParser pokemonSpeciesParser = new PokemonSpeciesParser();
+    private final Object charmanderSpeciesJsonDocument = convertFileNameToObject("charmanderSpecies.json");
 
     @Test
     public void testParseForPokemonURL_Giratina() {
@@ -18,8 +19,14 @@ class PokemonSpeciesParserTest extends TestResourceConverter {
 
     @Test
     public void testParseForEggGroups_Charmander() {
-        Object charmanderSpeciesJsonDocument = convertFileNameToObject("charmanderSpecies.json");
+
         List<String> actual = pokemonSpeciesParser.parseForEggGroups(charmanderSpeciesJsonDocument);
         Assertions.assertEquals("dragon", actual.get(1));
+    }
+
+    @Test
+    public void testParseForEvolutionChain_CharmanderHasCorrectLink() {
+        Assertions.assertEquals("https://pokeapi.co/api/v2/evolution-chain/2/",
+                pokemonSpeciesParser.parseForEvolutionChain(charmanderSpeciesJsonDocument));
     }
 }

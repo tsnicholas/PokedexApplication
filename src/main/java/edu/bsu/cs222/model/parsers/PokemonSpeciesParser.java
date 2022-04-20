@@ -20,4 +20,8 @@ public class PokemonSpeciesParser {
         }
         return eggGroupList;
     }
+
+    public String parseForEvolutionChain(Object pokemonSpeciesJsonDocument) {
+        return JsonPath.read(pokemonSpeciesJsonDocument, "$.evolution_chain.url");
+    }
 }
