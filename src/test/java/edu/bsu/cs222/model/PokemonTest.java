@@ -9,12 +9,18 @@ import java.util.List;
 
 public class PokemonTest {
     private Pokemon quagsire;
+    private Ability waterAbsorb;
+    private Ability unaware;
 
     @BeforeEach
     public void setUpPokemon() {
         Type water = setUpWaterType();
         Type ground = setUpGroundType();
-        quagsire = Pokemon.withTypeList(List.of(water, ground)).andImageURL(null);
+        Ability damp = Ability.withName("damp").andIsHidden(false);
+        waterAbsorb = Ability.withName("water-absorb").andIsHidden(false);
+        unaware = Ability.withName("unaware").andIsHidden(true);
+        quagsire = Pokemon.withTypeList(List.of(water, ground)).andAbilities(List.of(damp, waterAbsorb, unaware))
+                .andImageURL(null);
     }
 
     private Type setUpWaterType() {
@@ -34,12 +40,12 @@ public class PokemonTest {
     }
 
     @Test
-    public void testPokemon_getFirstType() {
+    public void testPokemon_firstTypeIsWater() {
         Assertions.assertEquals("water", quagsire.getTypes().get(0).getName());
     }
 
     @Test
-    public void testPokemon_getSecondType() {
+    public void testPokemon_secondTypeIsGround() {
         Assertions.assertEquals("ground", quagsire.getTypes().get(1).getName());
     }
 
@@ -66,5 +72,30 @@ public class PokemonTest {
     @Test
     public void testPokemon_QuagsireIsNotResistantToWater() {
         Assertions.assertFalse(quagsire.getResistances().contains("water"));
+    }
+
+    @Test
+    public void testPokemon_QuagsireHasTwoNormalAbilities() {
+        Assertions.assertEquals(2, quagsire.getAbilities().size());
+    }
+
+    @Test
+    public void testPokemon_waterAbsorbIsNormalAbility() {
+        Assertions.assertTrue(quagsire.getAbilities().contains(waterAbsorb));
+    }
+
+    @Test
+    public void testPokemon_UnawareIsNotNormalAbility() {
+        Assertions.assertFalse(quagsire.getAbilities().contains(unaware));
+    }
+
+    @Test
+    public void testPokemon_UnawareIsHiddenAbility() {
+        Assertions.assertTrue(quagsire.getHiddenAbilities().contains(unaware));
+    }
+
+    @Test
+    public void testPokemon_waterAbsorbIsNotHiddenAbility() {
+        Assertions.assertFalse(quagsire.getHiddenAbilities().contains(waterAbsorb));
     }
 }

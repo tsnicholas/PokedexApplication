@@ -22,7 +22,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainWindow extends Application {
-    private final int SIZE_OF_WINDOW = 800;
+    private final int HEIGHT_OF_WINDOW = 800;
+    private final int WIDTH_OF_WINDOW = 800;
+    private final double SMALL_SPACING = 10;
     private final Pos DEFAULT_POSITION = Pos.TOP_CENTER;
     private final Font UPPER_FONT = Font.font("Verdana", 25);
     private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
@@ -30,11 +32,14 @@ public class MainWindow extends Application {
     private final Text instruction = new Text(INSTRUCTION_STRING);
     private final SearchBar searchBar = new SearchBar();
     private final Text types = new Text();
-    private final Text egg_groups = new Text();
     private final Text stats = new Text();
+    private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final TabPane tabMenu = new TabPane();
+
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
+    private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
+            new AbilitiesDisplay());
     private Pokemon currentPokemon;
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
@@ -42,21 +47,13 @@ public class MainWindow extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        collectPokemonNames();
+        collectVersions();
     }
 
-    private void collectPokemonNames() {
-        try {
-            VersionListGenerator versionsListGenerator = new VersionListGenerator();
-            List<Version> versions = versionsListGenerator.getListOfAllVersions();
-            searchBar.setUpGameSelection(versions);
-        }
-        catch(UncheckedIOException initialNetworkError) {
-            ErrorWindow startUpNetworkError = new ErrorWindow("A network error has occurred. Shutting down.");
-            startUpNetworkError.display();
-            System.err.println("Error: \n" + initialNetworkError.getMessage());
-            Platform.exit();
-        }
+    private void collectVersions() {
+        VersionListGenerator versionsListGenerator = new VersionListGenerator();
+        List<Version> versions = versionsListGenerator.getListOfAllVersions();
+        searchBar.setUpGameSelection(versions);
     }
 
     @Override
@@ -71,8 +68,8 @@ public class MainWindow extends Application {
         primaryStage.setTitle("Pokedex");
         primaryStage.getIcons().add(new Image("pokeball.png"));
         primaryStage.setScene(new Scene(createMainWindow()));
-        primaryStage.setHeight(SIZE_OF_WINDOW);
-        primaryStage.setWidth(SIZE_OF_WINDOW);
+        primaryStage.setHeight(HEIGHT_OF_WINDOW);
+        primaryStage.setWidth(WIDTH_OF_WINDOW);
         primaryStage.setOnCloseRequest(X -> {
             executor.shutdown();
             primaryStage.close();
@@ -87,13 +84,13 @@ public class MainWindow extends Application {
         types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
-        tabMenu.setPrefWidth(SIZE_OF_WINDOW);
+        tabMenu.setPrefWidth(WIDTH_OF_WINDOW) ;
+        tabMenu.setPrefHeight(HEIGHT_OF_WINDOW);
     }
 
     private Parent createMainWindow() {
-        VBox mainWindow = new VBox();
+        VBox mainWindow = new VBox(SMALL_SPACING);
         mainWindow.setAlignment(DEFAULT_POSITION);
-        mainWindow.setSpacing(5);
         mainWindow.getChildren().addAll(
                 instruction,
                 searchBar.getDisplay(),
@@ -106,22 +103,34 @@ public class MainWindow extends Application {
 
     private void setUpTabMenu() {
         tabMenu.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        tabMenu.getTabs().addAll(
-                new Tab("Abilities"),
-                new Tab("Move Set"),
-                new Tab("Damage Relations")
-        );
+        tabMenu.setTabDragPolicy(TabPane.TabDragPolicy.REORDER);
+        insertTabsIntoTabMenu();
+    }
+
+    private void insertTabsIntoTabMenu() {
+        for(MenuDisplay menuDisplay: menuDisplayList) {
+            tabMenu.getTabs().add(new Tab(menuDisplay.toString(), menuDisplay.getInitialDisplay()));
+        }
     }
 
     private Parent createUpperPortion() {
-        HBox upperPortion = new HBox();
+        HBox upperPortion = new HBox(20);
         upperPortion.setAlignment(DEFAULT_POSITION);
-        upperPortion.setSpacing(20);
         upperPortion.getChildren().addAll(
                 pokemonImage,
-                createPokeFacts()
+                createBasicInformation()
         );
         return upperPortion;
+    }
+
+    private Parent createBasicInformation() {
+        VBox pokeFacts = new VBox(SMALL_SPACING);
+        pokeFacts.getChildren().addAll(
+                types,
+                stats,
+                egg_groups
+        );
+        return pokeFacts;
     }
 
     public void search() {
@@ -167,25 +176,13 @@ public class MainWindow extends Application {
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
-            setUpLowerContent();
+            insertContentIntoTabs();
         }
     }
 
-    private Parent createPokeFacts() {
-        VBox pokeFacts = new VBox();
-        pokeFacts.setSpacing(10);
-        pokeFacts.getChildren().addAll(
-                types,
-                stats,
-                egg_groups
-        );
-        return pokeFacts;
-    }
-
-    private void setUpLowerContent() {
-        List<MenuDisplay> menuDisplays = List.of(new AbilitiesDisplay(), new MoveDisplay(), new DamageRelationsDisplay());
-        for(int i = 0; i < tabMenu.getTabs().size(); i++) {
-            tabMenu.getTabs().get(i).setContent(menuDisplays.get(i).display(currentPokemon));
+    private void insertContentIntoTabs() {
+        for (int i = 0; i < menuDisplayList.size(); i++) {
+            tabMenu.getTabs().get(i).setContent(menuDisplayList.get(i).display(currentPokemon));
         }
     }
 }
