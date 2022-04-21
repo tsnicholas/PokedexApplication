@@ -4,12 +4,12 @@ import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PokemonSpeciesParser {
-    public String parseForPokemonURL(Object pokemonSpeciesJsonDocument) {
-        JSONArray varietiesArray = JsonPath.read(pokemonSpeciesJsonDocument, "$.varieties[?(@.is_default == true)].pokemon.url");
-        return varietiesArray.get(0).toString();
+    public List<String> parseForPokemonURL(Object pokemonSpeciesJsonDocument) {
+        return new LinkedList<>(JsonPath.read(pokemonSpeciesJsonDocument, "$..pokemon.url"));
     }
 
     public List<String> parseForEggGroups(Object pokemonSpeciesJsonDocument) {

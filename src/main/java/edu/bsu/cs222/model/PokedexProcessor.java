@@ -3,6 +3,7 @@ package edu.bsu.cs222.model;
 import edu.bsu.cs222.model.parsers.PokemonSpeciesParser;
 import edu.bsu.cs222.model.parsers.PokemonParser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ public class PokedexProcessor {
     private final URLProcessor urlProcessor;
     private final NationalPokedex nationalPokedex;
     private final PokemonParser pokemonParser = new PokemonParser();
+    private final PokemonSpeciesParser pokemonSpeciesParser = new PokemonSpeciesParser();
 
     public PokedexProcessor() {
         NationalPokedexFactory nationalPokedexFactory = new NationalPokedexFactory();
@@ -28,21 +30,42 @@ public class PokedexProcessor {
         return nationalPokedex.containsPokemon(pokemonEdited);
     }
 
-    public Pokemon process(String pokemon, Version version) throws PokemonDoesNotExistInVersionException {
-        PokemonSpeciesParser pokemonSpeciesParser = new PokemonSpeciesParser();
+    public List<Pokemon> process(String pokemon, Version version) throws PokemonDoesNotExistInVersionException {
         Object pokemonSpeciesJsonDocument = urlProcessor.getPokemonSpeciesJsonObject(pokemon);
-        String pokemonURL = pokemonSpeciesParser.parseForPokemonURL(pokemonSpeciesJsonDocument);
-        Object pokemonJsonDocument = urlProcessor.convertStringToObject(pokemonURL);
-        if (pokemonExistsInVersion(pokemonJsonDocument, version)) {
-            return Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
-                    .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
-                    .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument, version))
-                    .andEggGroups(pokemonSpeciesParser.parseForEggGroups(pokemonSpeciesJsonDocument))
-                    .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
-                    .andImageURL(pokemonParser.parseForImage(pokemonJsonDocument, version));
+        List<String> pokemonURLs = pokemonSpeciesParser.parseForPokemonURL(pokemonSpeciesJsonDocument);
+        List<Object> pokemonJsonDocuments = obtainAllValidPokemonDocuments(pokemonURLs, version);
+        if(pokemonJsonDocuments.size() > 0) {
+            return createPokemonList(pokemonJsonDocuments, pokemonSpeciesJsonDocument, version);
         } else {
             throw new PokemonDoesNotExistInVersionException();
         }
+    }
+
+    private List<Object> obtainAllValidPokemonDocuments(List<String> pokemonURLs, Version version) {
+        List<Object> pokemonJsonDocuments = new ArrayList<>();
+        for(String url: pokemonURLs) {
+            Object pokemonJsonDocument = urlProcessor.convertStringToObject(url);
+            if(pokemonExistsInVersion(pokemonJsonDocument, version)) {
+                pokemonJsonDocuments.add(pokemonJsonDocument);
+            }
+        }
+        return pokemonJsonDocuments;
+    }
+
+    private List<Pokemon> createPokemonList(List<Object> pokemonJsonDocuments, Object speciesJsonDocument, Version version) {
+        List<Pokemon> pokemonFormList = new ArrayList<>();
+        for(Object pokemonJsonDocument: pokemonJsonDocuments) {
+            pokemonFormList.add(
+                    Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
+                            .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
+                            .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
+                            .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument, version))
+                            .andEggGroups(pokemonSpeciesParser.parseForEggGroups(speciesJsonDocument))
+                            .andName(pokemonParser.parseName(pokemonJsonDocument))
+                            .andImageURL(pokemonParser.parseForImage(pokemonJsonDocument, version))
+            );
+        }
+        return pokemonFormList;
     }
 
     private boolean pokemonExistsInVersion(Object pokemonJsonObject, Version version) {

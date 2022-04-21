@@ -9,6 +9,7 @@ public class Pokemon {
 
     public static final class Builder {
         private final List<Type> typeList;
+        private String name;
         private List<Move> moveList;
         private Map<String, Integer> statsMap;
         private List<Ability> abilities;
@@ -17,6 +18,11 @@ public class Pokemon {
 
         public Builder (List<Type> typeList) {
             this.typeList = typeList;
+        }
+
+        public Builder andName(String name) {
+            this.name = name;
+            return this;
         }
 
         public Builder andStatsMap(Map<String, Integer> statsMap) {
@@ -46,6 +52,7 @@ public class Pokemon {
     }
 
     private final List<Type> typeList;
+    private final String name;
     private final List<Move> moveList;
     private final Map<String, Integer> statsMap;
     private final List<Ability> abilities = new ArrayList<>();
@@ -58,6 +65,7 @@ public class Pokemon {
 
     public Pokemon(Builder builder) {
         typeList = builder.typeList;
+        name = builder.name;
         moveList = builder.moveList;
         eggGroups = builder.eggGroups;
         statsMap = builder.statsMap;
@@ -156,5 +164,9 @@ public class Pokemon {
 
     public List<String> getImmunities() {
         return immunities;
+    }
+
+    public String toString() {
+        return name;
     }
 }

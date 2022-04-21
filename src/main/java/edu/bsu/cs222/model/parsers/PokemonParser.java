@@ -29,6 +29,10 @@ public class PokemonParser {
         return 0 != gameIndices.size();
     }
 
+    public String parseName(Object pokemonJsonDocument) {
+        return JsonPath.read(pokemonJsonDocument, "$.name");
+    }
+
     public List<Type> parseForTypes(Object pokemonJsonDocument, Version version) {
         List<Type> typeList = new LinkedList<>();
         DamageRelationsParser damageRelationsParser = new DamageRelationsParser();

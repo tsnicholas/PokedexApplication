@@ -10,12 +10,12 @@ public class PokedexProcessorTest extends TestResourceConverter {
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor(testURLProcessor);
 
     @Test
-    public void testPokemonExistsInNationalPokedex_TrueCase() {
+    public void testPokemonExistsInNationalPokedex_MrMimeExists() {
         Assertions.assertTrue(pokedexProcessor.pokemonExistsInNationalPokedex("mr. mime"));
     }
 
     @Test
-    public void testPokemonExistsInNationalPokedex_FalseCase() {
+    public void testPokemonExistsInNationalPokedex_DarkMagicianDoesNotExist() {
         Assertions.assertFalse(pokedexProcessor.pokemonExistsInNationalPokedex("dark magician"));
     }
 
