@@ -61,7 +61,6 @@ public class MainWindow extends Application {
         setUpWindowBasics(primaryStage);
         setUpSizesAndFonts();
         searchBar.addListener(this::search);
-        pokemonForms.setVisible(false);
         primaryStage.show();
     }
 
@@ -119,13 +118,13 @@ public class MainWindow extends Application {
         HBox upperPortion = new HBox(20);
         upperPortion.setAlignment(DEFAULT_POSITION);
         upperPortion.getChildren().addAll(
-                createPokemonImageDisplay(),
+                createPokemonImageAndFormMenu(),
                 createBasicInformation()
         );
         return upperPortion;
     }
 
-    public Parent createPokemonImageDisplay() {
+    public Parent createPokemonImageAndFormMenu() {
         VBox image = new VBox(5);
         image.getChildren().addAll(
                 pokemonImage,
@@ -136,7 +135,7 @@ public class MainWindow extends Application {
     }
 
     private void setUpFormMenu() {
-        pokemonForms.hide();
+        pokemonForms.setVisible(false);
         pokemonForms.getSelectionModel().selectedItemProperty().addListener(
                 (v, oldValue, newValue) -> update());
     }
@@ -154,14 +153,14 @@ public class MainWindow extends Application {
     public void search() {
         if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
             pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
-            pokemonForms.hide();
             executor.execute(() -> {
                 searchBar.setDisable(true);
+                pokemonForms.setVisible(false);
                 instruction.setText("The pokedex is searching. Please wait...");
                 beginProcessingPokemon();
                 Platform.runLater(() -> {
-                    pokemonForms.show();
                     pokemonForms.getSelectionModel().selectFirst();
+                    pokemonForms.setVisible(true);
                     update();
                     instruction.setText(INSTRUCTION_STRING);
                     searchBar.setDisable(false);

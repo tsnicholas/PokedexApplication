@@ -13,13 +13,13 @@ class PokemonSpeciesParserTest extends TestResourceConverter {
     @Test
     public void testParseForPokemonURL_Giratina() {
         Object giratinaSpeciesJsonDocument = convertFileNameToObject("giratinaSpecies.json");
-        Assertions.assertEquals("https://pokeapi.co/api/v2/pokemon/487/",
-                pokemonSpeciesParser.parseForPokemonURL(giratinaSpeciesJsonDocument));
+        List<String> pokemonURLs = pokemonSpeciesParser.parseForPokemonURL(giratinaSpeciesJsonDocument);
+        Assertions.assertEquals(List.of("https://pokeapi.co/api/v2/pokemon/487/", "https://pokeapi.co/api/v2/pokemon/10007/"),
+                pokemonURLs);
     }
 
     @Test
     public void testParseForEggGroups_Charmander() {
-
         List<String> actual = pokemonSpeciesParser.parseForEggGroups(charmanderSpeciesJsonDocument);
         Assertions.assertEquals("dragon", actual.get(1));
     }
