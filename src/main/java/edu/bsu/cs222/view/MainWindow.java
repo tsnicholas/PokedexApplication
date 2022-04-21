@@ -85,6 +85,7 @@ public class MainWindow extends Application {
         types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
+        egg_groups.setWrappingWidth(300);
         tabMenu.setPrefWidth(WIDTH_OF_WINDOW) ;
         tabMenu.setPrefHeight(HEIGHT_OF_WINDOW);
     }
@@ -152,15 +153,14 @@ public class MainWindow extends Application {
 
     public void search() {
         if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
+            pokemonForms.setVisible(false);
             pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
             executor.execute(() -> {
                 searchBar.setDisable(true);
-                pokemonForms.setVisible(false);
                 instruction.setText("The pokedex is searching. Please wait...");
                 beginProcessingPokemon();
                 Platform.runLater(() -> {
                     pokemonForms.getSelectionModel().selectFirst();
-                    pokemonForms.setVisible(true);
                     update();
                     instruction.setText(INSTRUCTION_STRING);
                     searchBar.setDisable(false);
@@ -199,6 +199,7 @@ public class MainWindow extends Application {
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
             insertContentIntoTabs(currentPokemon);
+            pokemonForms.setVisible(true);
         }
     }
 

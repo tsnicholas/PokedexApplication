@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class AbilitiesDisplay implements MenuDisplay {
+
     public Parent getInitialDisplay() {
         VBox abilitiesRows = new VBox(SMALL_SPACING);
         abilitiesRows.getChildren().addAll(
@@ -53,7 +54,7 @@ public class AbilitiesDisplay implements MenuDisplay {
     private Text createNameText(String abilityName) {
         String editedName = abilityName.replace("-", " ");
         Text text = new Text(editedName);
-        text.setFont(SIMPLE_TEXT);
+        text.setFont(HEADER_TEXT);
         return text;
     }
 

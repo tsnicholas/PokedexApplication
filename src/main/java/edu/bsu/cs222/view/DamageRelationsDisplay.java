@@ -12,9 +12,9 @@ public class DamageRelationsDisplay implements MenuDisplay {
     private final static String IMMUNITIES = "Immunities: ";
     private final static String RESISTANCES = "Resistances: ";
     private final static String WEAKNESSES = "Weaknesses: ";
+    private final VBox rows = new VBox(SMALL_SPACING);
 
     public Parent getInitialDisplay() {
-        VBox rows = new VBox(SMALL_SPACING);
         rows.getChildren().addAll(
                 createDamageRelationName(IMMUNITIES),
                 createDamageRelationName(RESISTANCES),
@@ -24,7 +24,7 @@ public class DamageRelationsDisplay implements MenuDisplay {
     }
 
     public Parent display(Pokemon pokemon) {
-        VBox rows = new VBox(SMALL_SPACING);
+        rows.getChildren().remove(0, rows.getChildren().size());
         rows.getChildren().addAll(
             createDamageRelationRow(IMMUNITIES, pokemon.getImmunities()),
             createDamageRelationRow(RESISTANCES, pokemon.getResistances()),
