@@ -122,8 +122,10 @@ public class PokemonParser {
             spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.versions." +
                     version.getGeneration().getGenerationName() +
                     "." + version.getVersionName() + ".front_default");
+        } else {
+            spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.front_default");
         }
-        else {
+        if (spriteURL == null) {
             spriteURL = JsonPath.read(pokemonJsonDocument, "$.sprites.front_default");
         }
         return spriteURL;
