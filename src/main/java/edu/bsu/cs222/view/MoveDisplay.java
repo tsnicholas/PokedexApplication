@@ -10,12 +10,12 @@ import javafx.scene.text.Text;
 import java.util.List;
 
 public class MoveDisplay implements MenuDisplay {
-    private final int NAME_COLUMN_INDEX = 0;
-    private final int TYPE_COLUMN_INDEX = 1;
-    private final int PP_COLUMN_INDEX = 2;
-    private final int POWER_COLUMN_INDEX = 3;
-    private final int ACCURACY_COLUMN_INDEX = 4;
-    private final int LEARN_METHOD_COLUMN_INDEX = 5;
+    private final int NAME_COLUMN_INDEX = 1;
+    private final int TYPE_COLUMN_INDEX = 2;
+    private final int PP_COLUMN_INDEX = 3;
+    private final int POWER_COLUMN_INDEX = 4;
+    private final int ACCURACY_COLUMN_INDEX = 5;
+    private final int LEARN_METHOD_COLUMN_INDEX = 6;
 
     private GridPane moveLayout;
 
