@@ -5,6 +5,7 @@ plugins {
     id "org.beryx.jlink" version '2.25.0'
 }
 
+
 javafx {
     version = "17"
     modules = [ 'javafx.controls']

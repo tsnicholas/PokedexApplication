@@ -191,4 +191,5 @@ public class MainWindow extends Application {
             tabMenu.getTabs().get(i).setContent(menuDisplays.get(i).display(currentPokemon));
         }
     }
+
 }

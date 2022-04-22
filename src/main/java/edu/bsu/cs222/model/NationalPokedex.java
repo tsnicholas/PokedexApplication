@@ -10,6 +10,10 @@ public class NationalPokedex {
         this.pokemonNames = pokemonNames;
     }
 
+    public List<String> getPokemonNames() {
+        return pokemonNames;
+    }
+
     public boolean containsPokemon(String pokemonName) {
         return this.pokemonNames.contains(pokemonName);
     }
