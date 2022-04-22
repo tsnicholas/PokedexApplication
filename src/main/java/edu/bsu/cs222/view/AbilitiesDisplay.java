@@ -11,9 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class AbilitiesDisplay implements MenuDisplay {
+    private final VBox abilitiesRows = new VBox(SMALL_SPACING);
 
     public Parent getInitialDisplay() {
-        VBox abilitiesRows = new VBox(SMALL_SPACING);
         abilitiesRows.getChildren().addAll(
                 createHeaderText("Abilities"),
                 createHeaderText("Hidden Abilities")
@@ -23,7 +23,7 @@ public class AbilitiesDisplay implements MenuDisplay {
 
     public Parent display(Pokemon pokemon) {
         ScrollPane scrollPane = new ScrollPane();
-        VBox abilitiesRows = new VBox(SMALL_SPACING);
+        abilitiesRows.getChildren().remove(0, abilitiesRows.getChildren().size());
         abilitiesRows.getChildren().addAll(
                 createHeaderText("Abilities"),
                 convertAbilitiesIntoText(pokemon.getAbilities()),
