@@ -30,4 +30,9 @@ public class EvolutionChainParser {
         }
         return speciesNames;
     }
+
+    public String parseForEvolutionTrigger( Object evolutionChainJson) {
+        JSONArray triggerNames = JsonPath.read(evolutionChainJson,"$.chain.evolves_to[0]..trigger.name");
+        return triggerNames.get(0).toString();
+    }
 }
