@@ -16,7 +16,10 @@ public class AbilityParserTest extends TestResourceConverter {
 
     @Test
     public void testParseEffect() {
-        Assertions.assertEquals("This Pokémon is immune to ground-type moves, spikes, toxic spikes, and arena trap.\n\nThis ability is disabled during gravity or ingrain, or while holding an iron ball.  This ability is not disabled during roost.",
+        // the extra \n is in the description we get from PokeAPI, removing it causes the test to fail
+        Assertions.assertEquals("This Pokémon is immune to ground-type moves, spikes, toxic spikes, " +
+                        "and arena trap.\n\nThis ability is disabled during gravity or ingrain, or while holding an " +
+                        "iron ball.  This ability is not disabled during roost.",
                 abilityParser.parseEffect(levitate));
     }
 

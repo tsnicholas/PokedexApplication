@@ -11,6 +11,12 @@ java {
     }
 }
 
+/**
+ * The following argument ensures TextFields's AutoCompletionBinding works with TextField.
+ * Taken from https://github.com/controlsfx/controlsfx/wiki/Using-ControlsFX-with-JDK-9-and-above#autocompletionbinding
+ */
+applicationDefaultJvmArgs = ["--add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls"]
+
 javafx {
     version = "17"
     modules = ['javafx.controls']

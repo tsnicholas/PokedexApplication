@@ -15,7 +15,7 @@ public class PokemonSpeciesParser {
     public List<String> parseForEggGroups(Object pokemonSpeciesJsonDocument) {
         JSONArray eggGroupArray = JsonPath.read(pokemonSpeciesJsonDocument, "$.egg_groups");
         List<String> eggGroupList = new ArrayList<>();
-        for(int i = 0; i < eggGroupArray.size(); i++) {
+        for (int i = 0; i < eggGroupArray.size(); i++) {
             eggGroupList.add(JsonPath.read(eggGroupArray, "$.[" + i + "].name"));
         }
         return eggGroupList;
