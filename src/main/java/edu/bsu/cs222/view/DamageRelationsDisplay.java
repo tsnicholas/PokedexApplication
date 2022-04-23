@@ -26,9 +26,9 @@ public class DamageRelationsDisplay implements MenuDisplay {
     public Parent display(Pokemon pokemon) {
         rows.getChildren().remove(0, rows.getChildren().size());
         rows.getChildren().addAll(
-            createDamageRelationRow(IMMUNITIES, pokemon.getImmunities()),
-            createDamageRelationRow(RESISTANCES, pokemon.getResistances()),
-            createDamageRelationRow(WEAKNESSES, pokemon.getWeaknesses())
+                createDamageRelationRow(IMMUNITIES, pokemon.getImmunities()),
+                createDamageRelationRow(RESISTANCES, pokemon.getResistances()),
+                createDamageRelationRow(WEAKNESSES, pokemon.getWeaknesses())
         );
         return rows;
     }
@@ -50,7 +50,7 @@ public class DamageRelationsDisplay implements MenuDisplay {
 
     private Text createDamageRelationData(List<String> damageRelationList) {
         StringBuilder output = new StringBuilder();
-        for(String listValue: damageRelationList) {
+        for (String listValue : damageRelationList) {
             output.append(listValue);
             output.append(" ");
         }

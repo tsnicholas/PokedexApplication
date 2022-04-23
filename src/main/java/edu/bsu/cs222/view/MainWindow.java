@@ -6,7 +6,9 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -86,7 +88,7 @@ public class MainWindow extends Application {
         stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
         egg_groups.setWrappingWidth(300);
-        tabMenu.setPrefWidth(WIDTH_OF_WINDOW) ;
+        tabMenu.setPrefWidth(WIDTH_OF_WINDOW);
         tabMenu.setPrefHeight(HEIGHT_OF_WINDOW);
     }
 
@@ -110,7 +112,7 @@ public class MainWindow extends Application {
     }
 
     private void insertTabsIntoTabMenu() {
-        for(MenuDisplay menuDisplay: menuDisplayList) {
+        for (MenuDisplay menuDisplay : menuDisplayList) {
             tabMenu.getTabs().add(new Tab(menuDisplay.toString(), menuDisplay.getInitialDisplay()));
         }
     }
@@ -175,14 +177,12 @@ public class MainWindow extends Application {
     private void beginProcessingPokemon() {
         try {
             pokemonForms.getItems().addAll(pokedexProcessor.process(searchBar.getInput(), searchBar.getSelectedVersion()));
-        }
-        catch(PokemonDoesNotExistInVersionException notInGame) {
+        } catch (PokemonDoesNotExistInVersionException notInGame) {
             Platform.runLater(() -> {
                 ErrorWindow doesNotExistWindow = new ErrorWindow(searchBar.getInput() + " does not exist in " + searchBar.getSelectedVersion());
                 doesNotExistWindow.display();
             });
-        }
-        catch(UncheckedIOException networkError) {
+        } catch (UncheckedIOException networkError) {
             Platform.runLater(() -> {
                 ErrorWindow networkErrorWindow = new ErrorWindow("A network error has occurred!");
                 networkErrorWindow.display();
@@ -193,7 +193,7 @@ public class MainWindow extends Application {
 
     private void update() {
         Pokemon currentPokemon = pokemonForms.getSelectionModel().getSelectedItem();
-        if(currentPokemon != null) {
+        if (currentPokemon != null) {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));

@@ -5,9 +5,15 @@ plugins {
     id "org.beryx.jlink" version '2.25.0'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 javafx {
     version = "17"
-    modules = [ 'javafx.controls']
+    modules = ['javafx.controls']
 }
 
 application {
