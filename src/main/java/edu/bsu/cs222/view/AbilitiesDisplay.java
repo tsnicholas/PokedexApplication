@@ -4,7 +4,6 @@ import edu.bsu.cs222.model.Ability;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -21,8 +20,7 @@ public class AbilitiesDisplay implements MenuDisplay {
                 createHeaderText("Abilities"),
                 createHeaderText("Hidden Abilities")
         );
-        AnchorPane.setLeftAnchor(abilitiesRows, SMALL_SPACING);
-        AnchorPane.setRightAnchor(abilitiesRows, SMALL_SPACING);
+        abilitiesRows.setPadding(DEFAULT_INSETS);
         return abilitiesRows;
     }
 
@@ -35,10 +33,7 @@ public class AbilitiesDisplay implements MenuDisplay {
                 createHeaderText("Hidden Abilities"),
                 convertAbilitiesIntoText(pokemon.getHiddenAbilities())
         );
-        AnchorPane.setLeftAnchor(abilitiesRows, SMALL_SPACING);
-        AnchorPane.setRightAnchor(abilitiesRows, SMALL_SPACING);
         scrollPane.setContent(abilitiesRows);
-        scrollPane.fitToWidthProperty();
         return scrollPane;
     }
 

@@ -20,6 +20,7 @@ public class DamageRelationsDisplay implements MenuDisplay {
                 createDamageRelationName(RESISTANCES),
                 createDamageRelationName(WEAKNESSES)
         );
+        rows.setPadding(DEFAULT_INSETS);
         return rows;
     }
 
