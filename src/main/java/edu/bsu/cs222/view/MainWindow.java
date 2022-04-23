@@ -200,10 +200,17 @@ public class MainWindow extends Application {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
-            pokemonImage.setImage(new Image(currentPokemon.getImageURL()));
+            pokemonImage.setImage(retrievePokemonImage(currentPokemon));
             insertContentIntoTabs(currentPokemon);
             pokemonForms.setVisible(true);
         }
+    }
+
+    private Image retrievePokemonImage(Pokemon currentPokemon) {
+        if (currentPokemon.getImageURL() != null) {
+            return new Image(currentPokemon.getImageURL());
+        }
+        return new Image("MissingNo..jpg");
     }
 
     private void insertContentIntoTabs(Pokemon currentPokemon) {
