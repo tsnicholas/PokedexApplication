@@ -17,8 +17,9 @@ javafx {
 }
 
 application {
-    mainClassName = "edu.bsu.cs222.view.MainWindow"
-    mainModule = 'edu.bsu.cs222.module-info'
+    getMainClass().set("edu.bsu.cs222.view.MainWindow")
+    getMainModule().set("edu.bsu.cs222.module-info")
+    applicationDefaultJvmArgs = ['-Dgreeting.language=en']
 }
 
 group 'org.example'
