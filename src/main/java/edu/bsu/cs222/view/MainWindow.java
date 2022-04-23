@@ -34,7 +34,6 @@ public class MainWindow extends Application {
 
     private final BorderPane borderPane = new BorderPane();
     private final Text instruction = new Text(INSTRUCTION_STRING);
-    private final SearchBar searchBar = new SearchBar();
     private final Text types = new Text();
     private final Text stats = new Text();
     private final Text egg_groups = new Text();
@@ -43,6 +42,7 @@ public class MainWindow extends Application {
     private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
 
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
+    private final SearchBar searchBar = new SearchBar(pokedexProcessor);
     private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
             new AbilitiesDisplay());
 

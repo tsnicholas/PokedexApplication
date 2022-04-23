@@ -1,5 +1,6 @@
 package edu.bsu.cs222.view;
 
+import edu.bsu.cs222.model.PokedexProcessor;
 import edu.bsu.cs222.model.Version;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -8,6 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ public class SearchBar {
     private final Button searchButton = new Button("Search");
     private final List<SearchBarListener> listeners = new ArrayList<>();
 
-    public SearchBar() {
+    public SearchBar(PokedexProcessor pokedexProcessor) {
+        TextFields.bindAutoCompletion(searchInput, pokedexProcessor.getNationalPokedex().getPokemonNames());
         searchInput.setPrefWidth(400);
         setUpEventTriggers();
     }
@@ -33,7 +36,7 @@ public class SearchBar {
     }
 
     private void fireSearch() {
-        for(SearchBarListener listener: listeners) {
+        for (SearchBarListener listener : listeners) {
             listener.onSearchRequest();
         }
     }
