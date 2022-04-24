@@ -39,11 +39,10 @@ public class MainWindow extends Application {
     private final StackPane stackPane = new StackPane();
     private final Text instruction = new Text(INSTRUCTION_STRING);
     private final SearchBar searchBar = new SearchBar(pokedexProcessor);
-    private final Text types = new Text();
+    private final HBox typeImages = new HBox(SMALL_SPACING);
     private final Text stats = new Text();
     private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
-    private final HBox typeImages = new HBox();
     private final TabPane tabMenu = new TabPane();
     private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
 
@@ -91,7 +90,6 @@ public class MainWindow extends Application {
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         pokemonForms.setPrefWidth(300);
-        types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
         egg_groups.setWrappingWidth(300);
@@ -203,7 +201,6 @@ public class MainWindow extends Application {
     private void update() {
         Pokemon currentPokemon = pokemonForms.getSelectionModel().getSelectedItem();
         if (currentPokemon != null) {
-            types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
             retrieveTypeImage(currentPokemon.getTypes());
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
