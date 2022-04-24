@@ -1,5 +1,7 @@
 package edu.bsu.cs222.model;
 
+import javafx.stage.Stage;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,5 +46,9 @@ public class Type {
 
     public List<String> getImmuneTo() {
         return damageRelations.get("Immunities");
+    }
+
+    public String typeToPicture(String type) {
+        return type + ".png";
     }
 }

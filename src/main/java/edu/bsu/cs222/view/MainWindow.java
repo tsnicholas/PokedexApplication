@@ -43,6 +43,7 @@ public class MainWindow extends Application {
     private final Text stats = new Text();
     private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
+    private final HBox typeImages = new HBox();
     private final TabPane tabMenu = new TabPane();
     private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
 
@@ -144,6 +145,7 @@ public class MainWindow extends Application {
         return image;
     }
 
+
     private void setUpFormMenu() {
         pokemonForms.setVisible(false);
         pokemonForms.getSelectionModel().selectedItemProperty().addListener(
@@ -153,7 +155,7 @@ public class MainWindow extends Application {
     private Parent createBasicInformation() {
         VBox pokeFacts = new VBox(SMALL_SPACING);
         pokeFacts.getChildren().addAll(
-                types,
+                typeImages,
                 stats,
                 egg_groups
         );
@@ -202,12 +204,21 @@ public class MainWindow extends Application {
         Pokemon currentPokemon = pokemonForms.getSelectionModel().getSelectedItem();
         if (currentPokemon != null) {
             types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
+            retrieveTypeImage(currentPokemon.getTypes());
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(retrievePokemonImage(currentPokemon));
             insertContentIntoTabs(currentPokemon);
             pokemonForms.setVisible(true);
         }
+    }
+
+    private void retrieveTypeImage(List<Type> typeList) {
+        typeImages.getChildren().remove(0, typeImages.getChildren().size());
+        for (Type type:typeList) {
+            typeImages.getChildren().add(new ImageView(new Image(type.typeToPicture(type.getName()))));
+        }
+
     }
 
     private Image retrievePokemonImage(Pokemon currentPokemon) {
