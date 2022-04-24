@@ -36,18 +36,10 @@ public class PokemonParser {
     }
 
     public List<Type> parseForTypes(Object pokemonJsonDocument, Version version) {
-        List<Type> typeList = new LinkedList<>();
-        DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
         pokemonJsonDocument = makeTypeJsonPath(pokemonJsonDocument, version);
         List<String> typeNames = JsonPath.read(pokemonJsonDocument, "$.types..name");
         List<String> typeURLs = JsonPath.read(pokemonJsonDocument, "$.types..url");
-        for (int i = 0; i < typeNames.size(); i++) {
-            Object typeJsonObject = urlProcessor.convertStringToObject(typeURLs.get(i));
-            HashMap<String, List<String>> damageRelations = damageRelationsParser
-                    .parseForDamageRelations(typeJsonObject, version);
-            typeList.add(Type.withName(typeNames.get(i)).andDamageRelations(damageRelations));
-        }
-        return typeList;
+        return createTypeList(typeNames, typeURLs, version);
     }
 
     private Object makeTypeJsonPath(Object PokemonJsonDocument, Version version) {
@@ -62,12 +54,28 @@ public class PokemonParser {
         return PokemonJsonDocument;
     }
 
+    private List<Type> createTypeList(List<String> typeNames, List<String> typeURLs, Version version) {
+        List<Type> typeList = new LinkedList<>();
+        DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
+        for (int i = 0; i < typeNames.size(); i++) {
+            Object typeJsonObject = urlProcessor.convertStringToObject(typeURLs.get(i));
+            HashMap<String, List<String>> damageRelations = damageRelationsParser
+                    .parseForDamageRelations(typeJsonObject, version);
+            typeList.add(Type.withName(typeNames.get(i)).andDamageRelations(damageRelations));
+        }
+        return typeList;
+    }
+
     public Map<String, Integer> parseForStats(Object pokemonJsonDocument) {
-        Map<String, Integer> statMap = new LinkedHashMap<>();
         JSONArray stats = JsonPath.read(pokemonJsonDocument, "$.stats");
         List<String> statNames = JsonPath.read(stats, "$..stat.name");
         List<Integer> baseStats = JsonPath.read(stats, "$..base_stat");
-        for (int i = 0; i < stats.size(); i++) {
+        return createStatMap(statNames, baseStats);
+    }
+
+    private Map<String, Integer> createStatMap(List<String> statNames, List<Integer> baseStats) {
+        Map<String, Integer> statMap = new LinkedHashMap<>();
+        for (int i = 0; i < statNames.size(); i++) {
             statMap.put(statNames.get(i), baseStats.get(i));
         }
         return statMap;
