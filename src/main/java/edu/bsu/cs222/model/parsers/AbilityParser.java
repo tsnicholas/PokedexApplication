@@ -9,7 +9,10 @@ public class AbilityParser {
     public String parseEffect(Object abilityJsonDocument) {
         List<String> effectDescription = JsonPath.read(abilityJsonDocument,
                 "$.effect_entries[?(@.language.name == 'en')].effect");
-        return effectDescription.get(0);
+        if (effectDescription.size() > 0) {
+            return effectDescription.get(0);
+        }
+        return " ";
     }
 
     public boolean assertExistsInVersion(Object abilityJsonDocument, Version version) {
