@@ -5,8 +5,6 @@ import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.nio.charset.StandardCharsets;
@@ -15,12 +13,15 @@ import java.util.List;
 public class AbilitiesDisplay implements MenuDisplay {
     private final VBox abilitiesRows = new VBox(SMALL_SPACING);
 
+    public AbilitiesDisplay() {
+        abilitiesRows.setPadding(DEFAULT_INSETS);
+    }
+
     public Parent getInitialDisplay() {
         abilitiesRows.getChildren().addAll(
                 createHeaderText("Abilities"),
                 createHeaderText("Hidden Abilities")
         );
-        abilitiesRows.setPadding(DEFAULT_INSETS);
         return abilitiesRows;
     }
 
@@ -39,7 +40,7 @@ public class AbilitiesDisplay implements MenuDisplay {
 
     private Text createHeaderText(String name) {
         Text text = new Text(name);
-        text.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
+        text.setFont(BIG_HEADER_TEXT);
         return text;
     }
 

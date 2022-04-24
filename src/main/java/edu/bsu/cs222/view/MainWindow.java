@@ -32,8 +32,13 @@ public class MainWindow extends Application {
     private final Font UPPER_FONT = Font.font("Verdana", 25);
     private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
 
+    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
+    private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
+            new AbilitiesDisplay());
+
     private final StackPane stackPane = new StackPane();
     private final Text instruction = new Text(INSTRUCTION_STRING);
+    private final SearchBar searchBar = new SearchBar(pokedexProcessor);
     private final Text types = new Text();
     private final Text stats = new Text();
     private final Text egg_groups = new Text();
@@ -41,12 +46,11 @@ public class MainWindow extends Application {
     private final TabPane tabMenu = new TabPane();
     private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
 
-    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
-    private final SearchBar searchBar = new SearchBar(pokedexProcessor);
-    private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
-            new AbilitiesDisplay());
-
     private final ExecutorService executor = Executors.newCachedThreadPool();
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void init() throws Exception {

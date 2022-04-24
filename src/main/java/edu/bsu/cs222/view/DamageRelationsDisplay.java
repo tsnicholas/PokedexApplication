@@ -14,13 +14,16 @@ public class DamageRelationsDisplay implements MenuDisplay {
     private final static String WEAKNESSES = "Weaknesses: ";
     private final VBox rows = new VBox(SMALL_SPACING);
 
+    public DamageRelationsDisplay() {
+        rows.setPadding(DEFAULT_INSETS);
+    }
+
     public Parent getInitialDisplay() {
         rows.getChildren().addAll(
-                createDamageRelationName(IMMUNITIES),
-                createDamageRelationName(RESISTANCES),
-                createDamageRelationName(WEAKNESSES)
+                createHeaderText(IMMUNITIES),
+                createHeaderText(RESISTANCES),
+                createHeaderText(WEAKNESSES)
         );
-        rows.setPadding(DEFAULT_INSETS);
         return rows;
     }
 
@@ -37,13 +40,13 @@ public class DamageRelationsDisplay implements MenuDisplay {
     private Parent createDamageRelationRow(String damageRelation, List<String> damageRelationList) {
         HBox damageRelationRow = new HBox(SMALL_SPACING);
         damageRelationRow.getChildren().addAll(
-                createDamageRelationName(damageRelation),
+                createHeaderText(damageRelation),
                 createDamageRelationData(damageRelationList)
         );
         return damageRelationRow;
     }
 
-    private Text createDamageRelationName(String damageRelation) {
+    private Text createHeaderText(String damageRelation) {
         Text text = new Text(damageRelation);
         text.setFont(HEADER_TEXT);
         return text;
@@ -51,10 +54,10 @@ public class DamageRelationsDisplay implements MenuDisplay {
 
     private Text createDamageRelationData(List<String> damageRelationList) {
         StringBuilder output = new StringBuilder();
-        for (String listValue : damageRelationList) {
+        damageRelationList.forEach((listValue) -> {
             output.append(listValue);
             output.append(" ");
-        }
+        });
         return createText(output.toString());
     }
 

@@ -60,20 +60,13 @@ public class MoveDisplay implements MenuDisplay {
     private void createMoveDataStrings(List<Move> moveList) {
         for (int i = 0; i < moveList.size(); i++) {
             Move move = moveList.get(i);
-            moveLayout.add(createText(nullCheck(move.getName())), NAME_COLUMN_INDEX, i + 1);
-            moveLayout.add(createText(nullCheck(move.getType())), TYPE_COLUMN_INDEX, i + 1);
-            moveLayout.add(createText(nullCheck(move.getPP())), PP_COLUMN_INDEX, i + 1);
-            moveLayout.add(createText(nullCheck(move.getPower())), POWER_COLUMN_INDEX, i + 1);
-            moveLayout.add(createText(nullCheck(move.getAccuracy())), ACCURACY_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(move.getName()), NAME_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(move.getType()), TYPE_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(move.getPP()), PP_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(move.getPower()), POWER_COLUMN_INDEX, i + 1);
+            moveLayout.add(createText(move.getAccuracy()), ACCURACY_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(obtainLearnMethods(move.getLearnMethods())), LEARN_METHOD_COLUMN_INDEX, i + 1);
         }
-    }
-
-    private String nullCheck(String data) {
-        if (data == null) {
-            return "--";
-        }
-        return data;
     }
 
     private String obtainLearnMethods(List<String> learnMethods) {
@@ -86,9 +79,17 @@ public class MoveDisplay implements MenuDisplay {
     }
 
     private Text createText(String name) {
-        Text text = new Text(name);
+        String outputString = nullCheck(name);
+        Text text = new Text(outputString);
         text.setFont(SIMPLE_TEXT);
         return text;
+    }
+
+    private String nullCheck(String data) {
+        if (data == null) {
+            return "--";
+        }
+        return data;
     }
 
     public String toString() {
