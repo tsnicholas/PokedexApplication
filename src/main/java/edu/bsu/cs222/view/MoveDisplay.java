@@ -58,7 +58,7 @@ public class MoveDisplay implements MenuDisplay {
     }
 
     private void createMoveDataStrings(List<Move> moveList) {
-        for(int i = 0; i < moveList.size(); i++) {
+        for (int i = 0; i < moveList.size(); i++) {
             Move move = moveList.get(i);
             moveLayout.add(createText(nullCheck(move.getName())), NAME_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(nullCheck(move.getType())), TYPE_COLUMN_INDEX, i + 1);
@@ -70,7 +70,7 @@ public class MoveDisplay implements MenuDisplay {
     }
 
     private String nullCheck(String data) {
-        if(data == null) {
+        if (data == null) {
             return "--";
         }
         return data;
@@ -78,7 +78,7 @@ public class MoveDisplay implements MenuDisplay {
 
     private String obtainLearnMethods(List<String> learnMethods) {
         StringBuilder output = new StringBuilder();
-        for(String learnMethod: learnMethods) {
+        for (String learnMethod : learnMethods) {
             output.append(learnMethod);
             output.append(", ");
         }

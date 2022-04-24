@@ -34,7 +34,7 @@ public class PokedexProcessor {
         Object pokemonSpeciesJsonDocument = urlProcessor.getPokemonSpeciesJsonObject(pokemon);
         List<String> pokemonURLs = pokemonSpeciesParser.parseForPokemonURL(pokemonSpeciesJsonDocument);
         List<Object> pokemonJsonDocuments = obtainAllValidPokemonDocuments(pokemonURLs, version);
-        if(pokemonJsonDocuments.size() > 0) {
+        if (pokemonJsonDocuments.size() > 0) {
             return createPokemonList(pokemonJsonDocuments, pokemonSpeciesJsonDocument, version);
         } else {
             throw new PokemonDoesNotExistInVersionException();
@@ -43,9 +43,9 @@ public class PokedexProcessor {
 
     private List<Object> obtainAllValidPokemonDocuments(List<String> pokemonURLs, Version version) {
         List<Object> pokemonJsonDocuments = new ArrayList<>();
-        for(String url: pokemonURLs) {
+        for (String url : pokemonURLs) {
             Object pokemonJsonDocument = urlProcessor.convertStringToObject(url);
-            if(pokemonExistsInVersion(pokemonJsonDocument, version)) {
+            if (pokemonExistsInVersion(pokemonJsonDocument, version)) {
                 pokemonJsonDocuments.add(pokemonJsonDocument);
             }
         }
@@ -54,7 +54,7 @@ public class PokedexProcessor {
 
     private List<Pokemon> createPokemonList(List<Object> pokemonJsonDocuments, Object speciesJsonDocument, Version version) {
         List<Pokemon> pokemonFormList = new ArrayList<>();
-        for(Object pokemonJsonDocument: pokemonJsonDocuments) {
+        for (Object pokemonJsonDocument : pokemonJsonDocuments) {
             pokemonFormList.add(
                     Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
                             .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
@@ -94,7 +94,7 @@ public class PokedexProcessor {
 
     public String convertEggGroupsToString(List<String> eggGroups) {
         StringBuilder output = new StringBuilder();
-        for(String eggGroup: eggGroups) {
+        for (String eggGroup : eggGroups) {
             output.append(eggGroup.replace("-", " "));
             output.append(", ");
         }
@@ -106,5 +106,9 @@ public class PokedexProcessor {
             return output;
         }
         return output.substring(0, output.length() - 2);
+    }
+
+    public NationalPokedex getNationalPokedex() {
+        return nationalPokedex;
     }
 }

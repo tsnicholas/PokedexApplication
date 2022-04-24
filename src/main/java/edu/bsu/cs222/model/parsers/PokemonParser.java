@@ -24,8 +24,10 @@ public class PokemonParser {
     }
 
     public boolean assertPokemonExistsInGame(Object pokemonJsonDocument, Version version) {
-        JSONArray gameIndices = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
-                "contains \"" + version.getVersionGroup().getVersionGroupName() + "\")]");
+        JSONArray gameIndices = JsonPath.read(pokemonJsonDocument,
+                "$.moves[?(@.version_group_details..version_group.name contains \"" +
+                        version.getVersionGroup().getVersionGroupName() +
+                        "\")]");
         return 0 != gameIndices.size();
     }
 
@@ -100,7 +102,7 @@ public class PokemonParser {
             Integer levelLearnedAt = JsonPath.read(occurrence, "$.level_learned_at");
             return "LV " + levelLearnedAt.toString();
         }
-        if(method.equals("machine")) {
+        if (method.equals("machine")) {
             return "TM";
         }
         return method;
@@ -151,7 +153,7 @@ public class PokemonParser {
         for (Object ability : abilitiesArray) {
             String abilityURL = JsonPath.read(ability, "$.ability.url");
             Object abilityJsonDocument = urlProcessor.convertStringToObject(abilityURL);
-            if(abilityParser.assertExistsInVersion(abilityJsonDocument, version)) {
+            if (abilityParser.assertExistsInVersion(abilityJsonDocument, version)) {
                 abilities.add(createAbility(ability, abilityJsonDocument));
             }
         }

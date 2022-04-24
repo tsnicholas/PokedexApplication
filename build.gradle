@@ -5,17 +5,32 @@ plugins {
     id "org.beryx.jlink" version '2.25.0'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 javafx {
     version = "17"
-    modules = [ 'javafx.controls']
+    modules = ['javafx.controls']
 }
 
 application {
-    mainClassName = "edu.bsu.cs222.view.MainWindow"
-    mainModule = 'edu.bsu.cs222.module-info'
+    getMainClass().set("edu.bsu.cs222.view.MainWindow")
+    getMainModule().set("edu.bsu.cs222.module-info")
+    applicationDefaultJvmArgs = [
+            '-Dgreeting.language=en',
+            /**
+             * The following argument ensures TextFields's AutoCompletionBinding works with TextField.
+             * Taken from https://github.com/controlsfx/controlsfx/wiki/Using-ControlsFX-with-JDK-9-and-above#autocompletionbinding
+             */
+            "--add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls"
+    ]
 }
 
 group 'org.example'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -23,9 +38,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.controlsfx:controlsfx:11.1.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    implementation 'com.github.PokeAPI:pokekotlin:2.3.1'
     implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.7.0'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.36'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
