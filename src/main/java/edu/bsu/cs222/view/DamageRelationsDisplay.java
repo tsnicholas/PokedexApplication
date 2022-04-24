@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class DamageRelationsDisplay implements MenuDisplay {
+public class DamageRelationsDisplay extends TextCreator implements MenuDisplay {
     private final static String IMMUNITIES = "Immunities: ";
     private final static String RESISTANCES = "Resistances: ";
     private final static String WEAKNESSES = "Weaknesses: ";
@@ -20,9 +20,9 @@ public class DamageRelationsDisplay implements MenuDisplay {
 
     public Parent getInitialDisplay() {
         rows.getChildren().addAll(
-                createHeaderText(IMMUNITIES),
-                createHeaderText(RESISTANCES),
-                createHeaderText(WEAKNESSES)
+                createText(IMMUNITIES, HEADER_FONT),
+                createText(RESISTANCES, HEADER_FONT),
+                createText(WEAKNESSES, HEADER_FONT)
         );
         return rows;
     }
@@ -40,31 +40,19 @@ public class DamageRelationsDisplay implements MenuDisplay {
     private Parent createDamageRelationRow(String damageRelation, List<String> damageRelationList) {
         HBox damageRelationRow = new HBox(SMALL_SPACING);
         damageRelationRow.getChildren().addAll(
-                createHeaderText(damageRelation),
+                createText(damageRelation, HEADER_FONT),
                 createDamageRelationData(damageRelationList)
         );
         return damageRelationRow;
     }
 
-    private Text createHeaderText(String damageRelation) {
-        Text text = new Text(damageRelation);
-        text.setFont(HEADER_TEXT);
-        return text;
-    }
-
     private Text createDamageRelationData(List<String> damageRelationList) {
         StringBuilder output = new StringBuilder();
-        damageRelationList.forEach((listValue) -> {
+        for (String listValue : damageRelationList) {
             output.append(listValue);
             output.append(" ");
-        });
-        return createText(output.toString());
-    }
-
-    private Text createText(String type) {
-        Text text = new Text(type);
-        text.setFont(SIMPLE_TEXT);
-        return text;
+        }
+        return createText(output.toString(), DEFAULT_FONT);
     }
 
     public String toString() {

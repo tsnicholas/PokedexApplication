@@ -96,7 +96,7 @@ public class Pokemon {
         }
         obtainBaseDamageRelations();
         weaknesses.removeIf(resistances::remove);
-        getRidOfDuplicates();
+        removeAllDuplicates();
         removeSharedTypesWithImmunities();
     }
 
@@ -108,7 +108,7 @@ public class Pokemon {
         }
     }
 
-    private void getRidOfDuplicates() {
+    private void removeAllDuplicates() {
         immunities = eliminateDuplicates(immunities);
         weaknesses = eliminateDuplicates(weaknesses);
         resistances = eliminateDuplicates(resistances);
