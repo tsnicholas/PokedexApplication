@@ -26,6 +26,8 @@ public class PokedexProcessor {
     }
 
     public boolean pokemonExistsInNationalPokedex(String pokemon) {
+        // The edited string is converting the name into the url format
+        // For example: mr. mime is converted into mr-mime
         String pokemonEdited = pokemon.replace(" ", "-").replace(".", "");
         return nationalPokedex.containsPokemon(pokemonEdited);
     }
