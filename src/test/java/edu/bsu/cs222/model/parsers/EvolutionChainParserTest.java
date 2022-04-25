@@ -5,6 +5,7 @@ import edu.bsu.cs222.model.TestResourceConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class EvolutionChainParserTest extends TestResourceConverter {
@@ -37,13 +38,13 @@ public class EvolutionChainParserTest extends TestResourceConverter {
     }
 
     @Test
-    public void testParseEvolutionChain_CharmanderEvolvesByLevelUp() {
+    public void testParseEvolutionChain_charmanderEvolvesByLevelUp() {
         EvolutionChain actual = evolutionChainParser.parseForEvolutionChain(charmanderEvolutionChain);
         Assertions.assertEquals(List.of("level-up", "level-up"), actual.getEvolutionTriggers());
     }
 
     @Test
-    public void testParseEvolutionChain_EeveeEvolutionTriggers() {
+    public void testParseEvolutionChain_eeveeEvolutionTriggers() {
         EvolutionChain actual = evolutionChainParser.parseForEvolutionChain(eeveeEvolutionChain);
         Assertions.assertEquals(
                 List.of("use-item", "use-item", "use-item", "level-up", "level-up", "use-item", "use-item", "level-up"),
@@ -52,8 +53,18 @@ public class EvolutionChainParserTest extends TestResourceConverter {
     }
 
     @Test
-    public void testParseEvolutionChain_CharmanderEvolutionDetails() {
+    public void testParseEvolutionChain_charmeleonEvolutionDetails() {
         EvolutionChain actual = evolutionChainParser.parseForEvolutionChain(charmanderEvolutionChain);
-        Assertions.assertTrue(actual.getEvolutionDetails().get(0).containsKey("min_level"));
+        LinkedHashMap<String, Object> charmeleonDetails = actual.getEvolutionDetails().get(0);
+
+        LinkedHashMap<String, String> triggerExpected = new LinkedHashMap<>();
+        triggerExpected.put("name", "level-up");
+        triggerExpected.put("url", "https://pokeapi.co/api/v2/evolution-trigger/1/");
+
+        Assertions.assertEquals(16, charmeleonDetails.get("min_level"));
+        Assertions.assertEquals(false, charmeleonDetails.get("needs_overworld_rain"));
+        Assertions.assertEquals("", charmeleonDetails.get("time_of_day"));
+        Assertions.assertEquals(triggerExpected, charmeleonDetails.get("trigger"));
+        Assertions.assertEquals(false, charmeleonDetails.get("turn_upside_down"));
     }
 }
