@@ -11,7 +11,7 @@ public class Version {
         private final String versionName;
         private VersionGroup versionGroup;
         private Generation generation;
-        private GenerationMap generationMap;
+        private HashMap<String, Integer> generationMap;
         private HashMap<String, Integer> versionGroupMap;
 
         public Builder(String versionName) {
@@ -28,7 +28,7 @@ public class Version {
             return this;
         }
 
-        public Builder andGenerationMap(GenerationMap generationMap) {
+        public Builder andGenerationMap(HashMap<String, Integer> generationMap) {
             this.generationMap = generationMap;
             return this;
         }
@@ -42,7 +42,7 @@ public class Version {
     private final String versionName;
     private final VersionGroup versionGroup;
     private final Generation generation;
-    private final GenerationMap generationMap;
+    private final HashMap<String, Integer> generationMap;
     private final HashMap<String, Integer> versionGroupMap;
 
     private Version(Builder builder) {
@@ -61,7 +61,7 @@ public class Version {
         return generation;
     }
 
-    public GenerationMap getGenerationMap() {
+    public HashMap<String, Integer> getGenerationMap() {
         return generationMap;
     }
 

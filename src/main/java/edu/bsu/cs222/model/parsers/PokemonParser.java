@@ -46,7 +46,7 @@ public class PokemonParser {
         JSONArray pastTypesDetailsArray = JsonPath.read(PokemonJsonDocument, "$.past_types");
         for (Object pastTypeDetails : pastTypesDetailsArray) {
             String generationName = JsonPath.read(pastTypeDetails, "$.generation.name");
-            int generationID = version.getGenerationMap().getIdOf(generationName);
+            int generationID = version.getGenerationMap().get(generationName);
             if (version.getGeneration().getGenerationID() <= generationID) {
                 return pastTypeDetails;
             }
@@ -159,8 +159,7 @@ public class PokemonParser {
         JSONArray abilitiesArray = JsonPath.read(pokeJsonDocument, "$.abilities");
         List<Ability> abilities = new ArrayList<>();
         for (Object ability : abilitiesArray) {
-            String abilityURL = JsonPath.read(ability, "$.ability.url");
-            Object abilityJsonDocument = urlProcessor.convertStringToObject(abilityURL);
+            Object abilityJsonDocument = urlProcessor.convertStringToObject(JsonPath.read(ability, "$.ability.url"));
             if (abilityParser.assertExistsInVersion(abilityJsonDocument, version)) {
                 abilities.add(createAbility(ability, abilityJsonDocument));
             }

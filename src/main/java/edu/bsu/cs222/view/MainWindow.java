@@ -59,7 +59,7 @@ public class MainWindow extends Application {
     }
 
     private void collectVersions() {
-        VersionListGenerator versionsListGenerator = new VersionListGenerator();
+        GameInformationGenerator versionsListGenerator = new GameInformationGenerator();
         List<Version> versions = versionsListGenerator.getListOfAllVersions();
         searchBar.setUpGameSelection(versions);
     }

@@ -17,7 +17,7 @@ public class AbilityParser {
 
     public boolean assertExistsInVersion(Object abilityJsonDocument, Version version) {
         String generationName = JsonPath.read(abilityJsonDocument, "$.generation.name");
-        int abilityGenerationID = version.getGenerationMap().getIdOf(generationName);
+        int abilityGenerationID = version.getGenerationMap().get(generationName);
         return abilityGenerationID <= version.getGeneration().getGenerationID();
     }
 }
