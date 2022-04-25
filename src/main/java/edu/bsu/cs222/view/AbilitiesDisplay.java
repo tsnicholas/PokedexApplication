@@ -5,66 +5,52 @@ import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class AbilitiesDisplay implements MenuDisplay {
+public class AbilitiesDisplay extends TextCreator implements MenuDisplay {
     private final VBox abilitiesRows = new VBox(SMALL_SPACING);
+
+    public AbilitiesDisplay() {
+        abilitiesRows.setPadding(DEFAULT_INSETS);
+    }
 
     public Parent getInitialDisplay() {
         abilitiesRows.getChildren().addAll(
-                createHeaderText("Abilities"),
-                createHeaderText("Hidden Abilities")
+                createText("Abilities", BIG_HEADER_FONT),
+                createText("Hidden Abilities", BIG_HEADER_FONT)
         );
-        abilitiesRows.setPadding(DEFAULT_INSETS);
         return abilitiesRows;
     }
 
     public Parent display(Pokemon pokemon) {
-        ScrollPane scrollPane = new ScrollPane();
         abilitiesRows.getChildren().remove(0, abilitiesRows.getChildren().size());
         abilitiesRows.getChildren().addAll(
-                createHeaderText("Abilities"),
+                createText("Abilities", BIG_HEADER_FONT),
                 convertAbilitiesIntoText(pokemon.getAbilities()),
-                createHeaderText("Hidden Abilities"),
+                createText("Hidden Abilities", BIG_HEADER_FONT),
                 convertAbilitiesIntoText(pokemon.getHiddenAbilities())
         );
-        scrollPane.setContent(abilitiesRows);
-        return scrollPane;
-    }
-
-    private Text createHeaderText(String name) {
-        Text text = new Text(name);
-        text.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
-        return text;
+        return warpAroundScrollPane();
     }
 
     private Parent convertAbilitiesIntoText(List<Ability> abilities) {
         VBox abilityText = new VBox();
         for (Ability ability : abilities) {
             abilityText.getChildren().addAll(
-                    createNameText(ability.getAbilityName()),
+                    createText(ability.getAbilityName(), HEADER_FONT),
                     createEffectText(ability.getEffect())
             );
         }
         return abilityText;
     }
 
-    private Text createNameText(String abilityName) {
-        String editedName = abilityName.replace("-", " ");
-        Text text = new Text(editedName);
-        text.setFont(HEADER_TEXT);
-        return text;
-    }
-
     private Text createEffectText(String effect) {
         String properEffectString = encodeStringInUTF8(effect);
         Text text = new Text(properEffectString);
-        text.setFont(SIMPLE_TEXT);
+        text.setFont(DEFAULT_FONT);
         text.setWrappingWidth(750);
         return text;
     }
@@ -74,6 +60,12 @@ public class AbilitiesDisplay implements MenuDisplay {
         // For example: Pokémon will show up as PokÃ©mon
         byte[] stringBytes = effect.getBytes();
         return new String(stringBytes, StandardCharsets.UTF_8);
+    }
+
+    private Parent warpAroundScrollPane() {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(abilitiesRows);
+        return scrollPane;
     }
 
     public String toString() {

@@ -18,7 +18,7 @@ public class DamageRelationsParser {
         JSONArray pastDamageRelationsArray = JsonPath.read(typeJsonDocument, "$.past_damage_relations");
         for (Object pastDamageRelation : pastDamageRelationsArray) {
             String generationName = JsonPath.read(pastDamageRelation, "$.generation.name");
-            int generationID = version.getGenerationMap().getIdOf(generationName);
+            int generationID = version.getGenerationMap().get(generationName);
             if (version.getGeneration().getGenerationID() <= generationID) {
                 return JsonPath.read(pastDamageRelation, "$.damage_relations");
             }

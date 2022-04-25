@@ -77,13 +77,17 @@ public class Pokemon {
     private void filterAbilities(List<Ability> abilityList) {
         if(abilityList != null) {
             for(Ability ability: abilityList) {
-                if(ability.isHidden()) {
-                    hiddenAbilities.add(ability);
-                }
-                else {
-                    abilities.add(ability);
-                }
+                addAbility(ability);
             }
+        }
+    }
+
+    private void addAbility(Ability ability) {
+        if(ability.isHidden()) {
+            hiddenAbilities.add(ability);
+        }
+        else {
+            abilities.add(ability);
         }
     }
 
@@ -96,7 +100,7 @@ public class Pokemon {
         }
         obtainBaseDamageRelations();
         weaknesses.removeIf(resistances::remove);
-        getRidOfDuplicates();
+        removeAllDuplicates();
         removeSharedTypesWithImmunities();
     }
 
@@ -108,7 +112,7 @@ public class Pokemon {
         }
     }
 
-    private void getRidOfDuplicates() {
+    private void removeAllDuplicates() {
         immunities = eliminateDuplicates(immunities);
         weaknesses = eliminateDuplicates(weaknesses);
         resistances = eliminateDuplicates(resistances);

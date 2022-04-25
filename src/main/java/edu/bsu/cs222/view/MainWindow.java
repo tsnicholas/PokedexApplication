@@ -32,20 +32,19 @@ public class MainWindow extends Application {
     private final Font UPPER_FONT = Font.font("Verdana", 25);
     private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
 
+    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
+    private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
+            new AbilitiesDisplay());
+
     private final StackPane stackPane = new StackPane();
     private final Text instruction = new Text(INSTRUCTION_STRING);
-    private final Text types = new Text();
+    private final SearchBar searchBar = new SearchBar(pokedexProcessor);
+    private final HBox typeImages = new HBox(SMALL_SPACING);
     private final Text stats = new Text();
     private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
-    private final HBox typeImages = new HBox();
     private final TabPane tabMenu = new TabPane();
     private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
-
-    private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
-    private final SearchBar searchBar = new SearchBar(pokedexProcessor);
-    private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
-            new AbilitiesDisplay());
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -56,7 +55,7 @@ public class MainWindow extends Application {
     }
 
     private void collectVersions() {
-        VersionListGenerator versionsListGenerator = new VersionListGenerator();
+        GameInformationGenerator versionsListGenerator = new GameInformationGenerator();
         List<Version> versions = versionsListGenerator.getListOfAllVersions();
         searchBar.setUpGameSelection(versions);
     }
@@ -87,7 +86,6 @@ public class MainWindow extends Application {
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         pokemonForms.setPrefWidth(300);
-        types.setFont(UPPER_FONT);
         stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
         egg_groups.setWrappingWidth(300);
@@ -132,7 +130,7 @@ public class MainWindow extends Application {
     }
 
     public Parent createPokemonImageAndFormMenu() {
-        VBox image = new VBox(5);
+        VBox image = new VBox();
         image.getChildren().addAll(
                 pokemonImage,
                 pokemonForms
@@ -158,25 +156,33 @@ public class MainWindow extends Application {
         return pokeFacts;
     }
 
-    public void search() {
+    private void search() {
         if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
-            pokemonForms.setVisible(false);
-            pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
-            executor.execute(() -> {
-                searchBar.setDisable(true);
-                instruction.setText("The pokedex is searching. Please wait...");
-                beginProcessingPokemon();
-                Platform.runLater(() -> {
-                    pokemonForms.getSelectionModel().selectFirst();
-                    update();
-                    instruction.setText(INSTRUCTION_STRING);
-                    searchBar.setDisable(false);
-                });
-            });
+            resetPokemonForms();
+            fireExecutor();
         } else {
             ErrorWindow doesNotExist = new ErrorWindow(searchBar.getInput() + " does not exist!");
             doesNotExist.display();
         }
+    }
+
+    private void resetPokemonForms() {
+        pokemonForms.setVisible(false);
+        pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
+    }
+
+    private void fireExecutor() {
+        executor.execute(() -> {
+            searchBar.setDisable(true);
+            instruction.setText("The pokedex is searching. Please wait...");
+            beginProcessingPokemon();
+            Platform.runLater(() -> {
+                pokemonForms.getSelectionModel().selectFirst();
+                update();
+                instruction.setText(INSTRUCTION_STRING);
+                searchBar.setDisable(false);
+            });
+        });
     }
 
     private void beginProcessingPokemon() {
@@ -184,8 +190,8 @@ public class MainWindow extends Application {
             pokemonForms.getItems().addAll(pokedexProcessor.process(searchBar.getInput(), searchBar.getSelectedVersion()));
         } catch (PokemonDoesNotExistInVersionException notInGame) {
             Platform.runLater(() -> {
-                ErrorWindow doesNotExistWindow = new ErrorWindow(searchBar.getInput() + " does not exist in " + searchBar.getSelectedVersion());
-                doesNotExistWindow.display();
+                ErrorWindow notInVersion = new ErrorWindow(searchBar.getInput() + " does not exist in " + searchBar.getSelectedVersion());
+                notInVersion.display();
             });
         } catch (UncheckedIOException networkError) {
             Platform.runLater(() -> {
@@ -199,8 +205,7 @@ public class MainWindow extends Application {
     private void update() {
         Pokemon currentPokemon = pokemonForms.getSelectionModel().getSelectedItem();
         if (currentPokemon != null) {
-            types.setText(pokedexProcessor.convertTypesToString(currentPokemon.getTypes()));
-            retrieveTypeImage(currentPokemon.getTypes());
+            retrieveTypeImages(currentPokemon.getTypes());
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(retrievePokemonImage(currentPokemon));
@@ -209,12 +214,11 @@ public class MainWindow extends Application {
         }
     }
 
-    private void retrieveTypeImage(List<Type> typeList) {
+    private void retrieveTypeImages(List<Type> typeList) {
         typeImages.getChildren().remove(0, typeImages.getChildren().size());
         for (Type type:typeList) {
-            typeImages.getChildren().add(new ImageView(new Image(type.typeToPicture(type.getName()))));
+            typeImages.getChildren().add(new ImageView(new Image(type.getImageString())));
         }
-
     }
 
     private Image retrievePokemonImage(Pokemon currentPokemon) {

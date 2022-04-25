@@ -1,7 +1,7 @@
 package edu.bsu.cs222.model;
 
-import edu.bsu.cs222.model.parsers.PokemonSpeciesParser;
 import edu.bsu.cs222.model.parsers.PokemonParser;
+import edu.bsu.cs222.model.parsers.PokemonSpeciesParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,8 @@ public class PokedexProcessor {
     }
 
     public boolean pokemonExistsInNationalPokedex(String pokemon) {
+        // The edited string is converting the name into the url format
+        // For example: mr. mime is converted into mr-mime
         String pokemonEdited = pokemon.replace(" ", "-").replace(".", "");
         return nationalPokedex.containsPokemon(pokemonEdited);
     }
@@ -98,10 +100,10 @@ public class PokedexProcessor {
             output.append(eggGroup.replace("-", " "));
             output.append(", ");
         }
-        return getRidOfEndingComma(output.toString());
+        return removeLastComma(output.toString());
     }
 
-    private String getRidOfEndingComma(String output) {
+    private String removeLastComma(String output) {
         if (output.length() == 0) {
             return output;
         }

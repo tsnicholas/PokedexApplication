@@ -8,17 +8,17 @@ import java.util.List;
 
 public class EvolutionChainParserTest extends TestResourceConverter {
     private final EvolutionChainParser evolutionChainParser = new EvolutionChainParser();
+    private final Object charmanderEvolutionChain = convertFileNameToObject("evolution-chain2.json");
+    private final Object eeveeEvolutionChain = convertFileNameToObject("evolution-chain67.json");
 
     @Test
     public void testParseEvolutionChain_getCharmanderChain() {
-        Object charmanderEvolutionChain = convertFileNameToObject("evolution-chain2.json");
         Assertions.assertEquals(List.of("charmander", "charmeleon", "charizard"),
                 evolutionChainParser.parseForEvolutionNames(charmanderEvolutionChain));
     }
 
     @Test
     public void testParseEvolutionChain_getEeveeChain() {
-        Object eeveeEvolutionChain = convertFileNameToObject("evolution-chain67.json");
         Assertions.assertEquals(List.of("eevee", "vaporeon", "jolteon", "flareon", "espeon", "umbreon",
                 "leafeon", "glaceon", "sylveon"),
                 evolutionChainParser.parseForEvolutionNames(eeveeEvolutionChain));
@@ -29,5 +29,16 @@ public class EvolutionChainParserTest extends TestResourceConverter {
         Object giratinaEvolutionChain = convertFileNameToObject("evolution-chain248.json");
         Assertions.assertEquals(List.of("giratina"),
                 evolutionChainParser.parseForEvolutionNames(giratinaEvolutionChain));
+    }
+
+    @Test
+    public void testParseEvolutionChain_CharmanderEvolvesByLevelUp() {
+        Assertions.assertEquals("level-up", evolutionChainParser
+                .parseForEvolutionTrigger(charmanderEvolutionChain));
+    }
+    @Test
+    public void testParseEvolutionChain_EeveeEvolvesByStone() {
+        Assertions.assertEquals("use-item", evolutionChainParser
+                .parseForEvolutionTrigger(eeveeEvolutionChain));
     }
 }

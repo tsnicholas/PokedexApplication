@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class PokemonParserTest extends TestResourceConverter {
     private final TestURLProcessor testURLProcessor = new TestURLProcessor();
@@ -16,7 +18,7 @@ class PokemonParserTest extends TestResourceConverter {
     private final Generation genOne = makeGenOne();
     private final Generation genThree = makeGenThree();
     private final Generation genFive = makeGenFive();
-    private final GenerationMap generationMap = makeGenOneAndGenFiveMap();
+    private final HashMap<String, Integer> generationMap = makeGenOneAndGenFiveMap();
 
     private Generation makeGenOne() {
         return Generation.withName("generation-i").andID(1).andVersionGroups(null);
@@ -30,9 +32,13 @@ class PokemonParserTest extends TestResourceConverter {
         return Generation.withName("generation-v").andID(5).andVersionGroups(null);
     }
 
-    private GenerationMap makeGenOneAndGenFiveMap() {
-        GenerationMapFactory generationMapFactory = new GenerationMapFactory();
-        return generationMapFactory.createGenerationMap(List.of(genOne, genThree, genFive));
+    private HashMap<String, Integer> makeGenOneAndGenFiveMap() {
+        List<Generation> generationList = List.of(genOne, genThree, genFive);
+        HashMap<String, Integer> generationMap = new HashMap<>();
+        for (Generation generation : generationList) {
+            generationMap.put(generation.getGenerationName(), generation.getGenerationID());
+        }
+        return generationMap;
     }
 
     @Test

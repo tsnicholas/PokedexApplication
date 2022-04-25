@@ -36,11 +36,27 @@ public class PokemonParser {
     }
 
     public List<Type> parseForTypes(Object pokemonJsonDocument, Version version) {
-        List<Type> typeList = new LinkedList<>();
-        DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
         pokemonJsonDocument = makeTypeJsonPath(pokemonJsonDocument, version);
         List<String> typeNames = JsonPath.read(pokemonJsonDocument, "$.types..name");
         List<String> typeURLs = JsonPath.read(pokemonJsonDocument, "$.types..url");
+        return createTypeList(typeNames, typeURLs, version);
+    }
+
+    private Object makeTypeJsonPath(Object PokemonJsonDocument, Version version) {
+        JSONArray pastTypesDetailsArray = JsonPath.read(PokemonJsonDocument, "$.past_types");
+        for (Object pastTypeDetails : pastTypesDetailsArray) {
+            String generationName = JsonPath.read(pastTypeDetails, "$.generation.name");
+            int generationID = version.getGenerationMap().get(generationName);
+            if (version.getGeneration().getGenerationID() <= generationID) {
+                return pastTypeDetails;
+            }
+        }
+        return PokemonJsonDocument;
+    }
+
+    private List<Type> createTypeList(List<String> typeNames, List<String> typeURLs, Version version) {
+        List<Type> typeList = new LinkedList<>();
+        DamageRelationsParser damageRelationsParser = new DamageRelationsParser();
         for (int i = 0; i < typeNames.size(); i++) {
             Object typeJsonObject = urlProcessor.convertStringToObject(typeURLs.get(i));
             HashMap<String, List<String>> damageRelations = damageRelationsParser
@@ -50,24 +66,16 @@ public class PokemonParser {
         return typeList;
     }
 
-    private Object makeTypeJsonPath(Object PokemonJsonDocument, Version version) {
-        JSONArray pastTypesDetailsArray = JsonPath.read(PokemonJsonDocument, "$.past_types");
-        for (Object pastTypeDetails : pastTypesDetailsArray) {
-            String generationName = JsonPath.read(pastTypeDetails, "$.generation.name");
-            int generationID = version.getGenerationMap().getIdOf(generationName);
-            if (version.getGeneration().getGenerationID() <= generationID) {
-                return pastTypeDetails;
-            }
-        }
-        return PokemonJsonDocument;
-    }
-
     public Map<String, Integer> parseForStats(Object pokemonJsonDocument) {
-        Map<String, Integer> statMap = new LinkedHashMap<>();
         JSONArray stats = JsonPath.read(pokemonJsonDocument, "$.stats");
         List<String> statNames = JsonPath.read(stats, "$..stat.name");
         List<Integer> baseStats = JsonPath.read(stats, "$..base_stat");
-        for (int i = 0; i < stats.size(); i++) {
+        return createStatMap(statNames, baseStats);
+    }
+
+    private Map<String, Integer> createStatMap(List<String> statNames, List<Integer> baseStats) {
+        Map<String, Integer> statMap = new LinkedHashMap<>();
+        for (int i = 0; i < statNames.size(); i++) {
             statMap.put(statNames.get(i), baseStats.get(i));
         }
         return statMap;
@@ -79,10 +87,9 @@ public class PokemonParser {
         JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
                 "contains \"" + version.getVersionGroup().getVersionGroupName() + "\")]");
         for (Object moveObject : moveArray) {
-            String moveURL = JsonPath.read(moveObject, "$.move.url");
             JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
             List<String> learnMethods = parseLearnMethods(moveVersionDetailsArray);
-            Object moveJsonDocument = urlProcessor.convertStringToObject(moveURL);
+            Object moveJsonDocument = urlProcessor.convertStringToObject(JsonPath.read(moveObject, "$.move.url"));
             moveList.add(createMove(moveJsonDocument, learnMethods, version));
         }
         return moveList;
@@ -151,8 +158,7 @@ public class PokemonParser {
         JSONArray abilitiesArray = JsonPath.read(pokeJsonDocument, "$.abilities");
         List<Ability> abilities = new ArrayList<>();
         for (Object ability : abilitiesArray) {
-            String abilityURL = JsonPath.read(ability, "$.ability.url");
-            Object abilityJsonDocument = urlProcessor.convertStringToObject(abilityURL);
+            Object abilityJsonDocument = urlProcessor.convertStringToObject(JsonPath.read(ability, "$.ability.url"));
             if (abilityParser.assertExistsInVersion(abilityJsonDocument, version)) {
                 abilities.add(createAbility(ability, abilityJsonDocument));
             }
@@ -163,7 +169,9 @@ public class PokemonParser {
     private Ability createAbility(Object ability, Object abilityJsonDocument) {
         String abilityName = JsonPath.read(ability, "$.ability.name");
         boolean isHidden = JsonPath.read(ability, "$.is_hidden");
-        return Ability.withName(abilityName).andEffect(abilityParser.parseEffect(abilityJsonDocument)).andIsHidden(isHidden);
+        return Ability.withName(abilityName)
+                .andEffect(abilityParser.parseEffect(abilityJsonDocument))
+                .andIsHidden(isHidden);
     }
 
 }

@@ -9,7 +9,7 @@ public class VersionListGeneratorTest {
     @Test
     public void testGetListOfAllVersions_justGenOne_sizeIs3() {
         TestURLProcessor testURLProcessor = new TestURLProcessor();
-        VersionListGenerator versionListGenerator = new VersionListGenerator(testURLProcessor);
+        GameInformationGenerator versionListGenerator = new GameInformationGenerator(testURLProcessor);
         List<Version> genOneVersionList = versionListGenerator.getListOfAllVersions();
         Assertions.assertEquals(3, genOneVersionList.size());
     }

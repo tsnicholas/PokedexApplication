@@ -1,7 +1,5 @@
 package edu.bsu.cs222.model;
 
-import javafx.stage.Stage;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,15 +23,25 @@ public class Type {
     }
 
     private final String name;
+    private final String imageString;
     private final HashMap<String, List<String>> damageRelations;
 
     public Type(Builder builder) {
         this.name = builder.name;
         this.damageRelations = builder.damageRelations;
+        imageString = convertNameToImageString(name);
+    }
+
+    private String convertNameToImageString(String type) {
+        return type + ".png";
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getImageString() {
+        return imageString;
     }
 
     public List<String> getWeakTo() {
@@ -46,9 +54,5 @@ public class Type {
 
     public List<String> getImmuneTo() {
         return damageRelations.get("Immunities");
-    }
-
-    public String typeToPicture(String type) {
-        return type + ".png";
     }
 }

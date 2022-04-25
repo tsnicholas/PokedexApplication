@@ -32,8 +32,10 @@ public class ProductionURLProcessor implements URLProcessor {
         return convertStringToObject(urlString);
     }
 
-    // The edited string solves the problem with mr. mime and other pokemon with similar problems
+
     private String getPokemonSpeciesURLString(String name) {
+        // The edited string converts the name into the format used by the url
+        // For example: mr. mime is converted into mr-mine
         String nameEdited = name.replace(" ", "-").replace(".", "");
         String nameEncoded = URLEncoder.encode(nameEdited, Charset.defaultCharset());
         return String.format("https://pokeapi.co/api/v2/pokemon-species/%s", nameEncoded);

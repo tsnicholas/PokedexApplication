@@ -49,9 +49,4 @@ public class VersionGroup {
     public List<String> getVersionNames() {
         return versionNames;
     }
-
-    @Override
-    public String toString() {
-        return versionGroupName;
-    }
 }

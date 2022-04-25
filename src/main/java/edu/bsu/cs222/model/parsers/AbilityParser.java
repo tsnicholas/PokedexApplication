@@ -12,12 +12,12 @@ public class AbilityParser {
         if (effectDescription.size() > 0) {
             return effectDescription.get(0);
         }
-        return " ";
+        return "";
     }
 
     public boolean assertExistsInVersion(Object abilityJsonDocument, Version version) {
         String generationName = JsonPath.read(abilityJsonDocument, "$.generation.name");
-        int abilityGenerationID = version.getGenerationMap().getIdOf(generationName);
+        int abilityGenerationID = version.getGenerationMap().get(generationName);
         return abilityGenerationID <= version.getGeneration().getGenerationID();
     }
 }
