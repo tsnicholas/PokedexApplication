@@ -12,7 +12,7 @@ public class AbilityParser {
         if (effectDescription.size() > 0) {
             return effectDescription.get(0);
         }
-        return " ";
+        return "";
     }
 
     public boolean assertExistsInVersion(Object abilityJsonDocument, Version version) {

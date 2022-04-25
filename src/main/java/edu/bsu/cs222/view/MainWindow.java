@@ -130,7 +130,7 @@ public class MainWindow extends Application {
     }
 
     public Parent createPokemonImageAndFormMenu() {
-        VBox image = new VBox(5);
+        VBox image = new VBox();
         image.getChildren().addAll(
                 pokemonImage,
                 pokemonForms
@@ -156,25 +156,33 @@ public class MainWindow extends Application {
         return pokeFacts;
     }
 
-    public void search() {
+    private void search() {
         if (pokedexProcessor.pokemonExistsInNationalPokedex(searchBar.getInput())) {
-            pokemonForms.setVisible(false);
-            pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
-            executor.execute(() -> {
-                searchBar.setDisable(true);
-                instruction.setText("The pokedex is searching. Please wait...");
-                beginProcessingPokemon();
-                Platform.runLater(() -> {
-                    pokemonForms.getSelectionModel().selectFirst();
-                    update();
-                    instruction.setText(INSTRUCTION_STRING);
-                    searchBar.setDisable(false);
-                });
-            });
+            resetPokemonForms();
+            fireExecutor();
         } else {
             ErrorWindow doesNotExist = new ErrorWindow(searchBar.getInput() + " does not exist!");
             doesNotExist.display();
         }
+    }
+
+    private void resetPokemonForms() {
+        pokemonForms.setVisible(false);
+        pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
+    }
+
+    private void fireExecutor() {
+        executor.execute(() -> {
+            searchBar.setDisable(true);
+            instruction.setText("The pokedex is searching. Please wait...");
+            beginProcessingPokemon();
+            Platform.runLater(() -> {
+                pokemonForms.getSelectionModel().selectFirst();
+                update();
+                instruction.setText(INSTRUCTION_STRING);
+                searchBar.setDisable(false);
+            });
+        });
     }
 
     private void beginProcessingPokemon() {
@@ -182,8 +190,8 @@ public class MainWindow extends Application {
             pokemonForms.getItems().addAll(pokedexProcessor.process(searchBar.getInput(), searchBar.getSelectedVersion()));
         } catch (PokemonDoesNotExistInVersionException notInGame) {
             Platform.runLater(() -> {
-                ErrorWindow doesNotExistWindow = new ErrorWindow(searchBar.getInput() + " does not exist in " + searchBar.getSelectedVersion());
-                doesNotExistWindow.display();
+                ErrorWindow notInVersion = new ErrorWindow(searchBar.getInput() + " does not exist in " + searchBar.getSelectedVersion());
+                notInVersion.display();
             });
         } catch (UncheckedIOException networkError) {
             Platform.runLater(() -> {
