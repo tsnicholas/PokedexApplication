@@ -4,11 +4,10 @@ import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class DamageRelationsDisplay extends TextCreator implements MenuDisplay {
+public class DamageRelationsDisplay extends DisplayCreator implements MenuDisplay {
     private final static String IMMUNITIES = "Immunities: ";
     private final static String RESISTANCES = "Resistances: ";
     private final static String WEAKNESSES = "Weaknesses: ";
@@ -41,18 +40,17 @@ public class DamageRelationsDisplay extends TextCreator implements MenuDisplay {
         HBox damageRelationRow = new HBox(SMALL_SPACING);
         damageRelationRow.getChildren().addAll(
                 createText(damageRelation, HEADER_FONT),
-                createDamageRelationData(damageRelationList)
+                createDamageRelationImages(damageRelationList)
         );
         return damageRelationRow;
     }
 
-    private Text createDamageRelationData(List<String> damageRelationList) {
-        StringBuilder output = new StringBuilder();
-        for (String listValue : damageRelationList) {
-            output.append(listValue);
-            output.append(" ");
+    private Parent createDamageRelationImages(List<String> damageRelationList) {
+        HBox typeImages = new HBox(SMALL_SPACING);
+        for(String type: damageRelationList) {
+            typeImages.getChildren().add(createImage(type + ".png"));
         }
-        return createText(output.toString(), DEFAULT_FONT);
+        return typeImages;
     }
 
     public String toString() {

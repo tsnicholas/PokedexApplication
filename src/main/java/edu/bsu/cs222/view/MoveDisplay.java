@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 
 import java.util.List;
 
-public class MoveDisplay extends TextCreator implements MenuDisplay {
+public class MoveDisplay extends DisplayCreator implements MenuDisplay {
     private final int NAME_COLUMN_INDEX = 1;
     private final int TYPE_COLUMN_INDEX = 2;
     private final int PP_COLUMN_INDEX = 3;
@@ -27,12 +27,12 @@ public class MoveDisplay extends TextCreator implements MenuDisplay {
     }
 
     private void createMoveDataHeaders() {
-        moveLayout.addColumn(NAME_COLUMN_INDEX, createText("Name", HEADER_FONT));
-        moveLayout.addColumn(TYPE_COLUMN_INDEX, createText("Type", HEADER_FONT));
-        moveLayout.addColumn(PP_COLUMN_INDEX, createText("PP", HEADER_FONT));
-        moveLayout.addColumn(POWER_COLUMN_INDEX, createText("Power", HEADER_FONT));
-        moveLayout.addColumn(ACCURACY_COLUMN_INDEX, createText("Accuracy", HEADER_FONT));
-        moveLayout.addColumn(LEARN_METHOD_COLUMN_INDEX, createText("Obtained By", HEADER_FONT));
+        moveLayout.add(createText("Name", HEADER_FONT), NAME_COLUMN_INDEX, 1);
+        moveLayout.add(createText("Type", HEADER_FONT), TYPE_COLUMN_INDEX, 1);
+        moveLayout.add(createText("PP", HEADER_FONT), PP_COLUMN_INDEX, 1);
+        moveLayout.add(createText("Power", HEADER_FONT), POWER_COLUMN_INDEX, 1);
+        moveLayout.add(createText("Accuracy", HEADER_FONT), ACCURACY_COLUMN_INDEX, 1);
+        moveLayout.add(createText("Obtained By", HEADER_FONT), LEARN_METHOD_COLUMN_INDEX, 1);
     }
 
     public Parent display(Pokemon pokemon) {
@@ -51,10 +51,10 @@ public class MoveDisplay extends TextCreator implements MenuDisplay {
     }
 
     private void createMoveDataStrings(List<Move> moveList) {
-        for (int i = 0; i < moveList.size(); i++) {
+        for (int i = 1; i < moveList.size(); i++) {
             Move move = moveList.get(i);
             moveLayout.add(createText(move.getName(), DEFAULT_FONT), NAME_COLUMN_INDEX, i + 1);
-            moveLayout.add(createText(move.getType(), DEFAULT_FONT), TYPE_COLUMN_INDEX, i + 1);
+            moveLayout.add(createImage(move.getType() + ".png"), TYPE_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(move.getPP(), DEFAULT_FONT), PP_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(move.getPower(), DEFAULT_FONT), POWER_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(move.getAccuracy(), DEFAULT_FONT), ACCURACY_COLUMN_INDEX, i + 1);

@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class AbilitiesDisplay extends TextCreator implements MenuDisplay {
+public class AbilitiesDisplay extends DisplayCreator implements MenuDisplay {
     private final VBox abilitiesRows = new VBox(SMALL_SPACING);
 
     public AbilitiesDisplay() {

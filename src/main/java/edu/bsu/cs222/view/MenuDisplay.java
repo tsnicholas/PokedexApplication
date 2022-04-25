@@ -10,7 +10,7 @@ public interface MenuDisplay {
     Font BIG_HEADER_FONT = Font.font("Times New Roman", FontWeight.BOLD, 22);
     Font HEADER_FONT = Font.font("Times New Roman", FontWeight.BOLD, 18);
     Font DEFAULT_FONT = Font.font("Times New Roman", 18);
-    Insets DEFAULT_INSETS = new Insets(0, 40, 0, 20);
+    Insets DEFAULT_INSETS = new Insets(10, 40, 0, 20);
     double SMALL_SPACING = 10;
     double LARGE_SPACING = 40;
 

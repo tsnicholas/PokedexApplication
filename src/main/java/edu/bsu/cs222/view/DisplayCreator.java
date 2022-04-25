@@ -1,9 +1,13 @@
 package edu.bsu.cs222.view;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public abstract class TextCreator {
+import java.util.Objects;
+
+public abstract class DisplayCreator {
     public Text createText(String input, Font font) {
         String outputString = processStringIntoFormat(input);
         Text text = new Text(outputString);
@@ -16,5 +20,14 @@ public abstract class TextCreator {
             return "--";
         }
         return input.replace("-", " ");
+    }
+
+    public ImageView createImage(String imageString) {
+        if(imageString == null) {
+            imageString = "unknown.png";
+        }
+        return new ImageView(new Image(
+                Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream(imageString)))
+        );
     }
 }
