@@ -11,7 +11,6 @@ import java.util.List;
 public class GameInformationGenerator {
     private final URLProcessor urlProcessor;
     private final GenerationParser generationParser = new GenerationParser();
-
     private final HashMap<String, Integer> versionGroupMap = new HashMap<>();
 
     public GameInformationGenerator() {

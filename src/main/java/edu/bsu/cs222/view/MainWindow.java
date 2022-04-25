@@ -48,10 +48,6 @@ public class MainWindow extends Application {
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
     public void init() throws Exception {
         super.init();
@@ -201,7 +197,7 @@ public class MainWindow extends Application {
     private void update() {
         Pokemon currentPokemon = pokemonForms.getSelectionModel().getSelectedItem();
         if (currentPokemon != null) {
-            retrieveTypeImage(currentPokemon.getTypes());
+            retrieveTypeImages(currentPokemon.getTypes());
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(retrievePokemonImage(currentPokemon));
@@ -210,12 +206,11 @@ public class MainWindow extends Application {
         }
     }
 
-    private void retrieveTypeImage(List<Type> typeList) {
+    private void retrieveTypeImages(List<Type> typeList) {
         typeImages.getChildren().remove(0, typeImages.getChildren().size());
         for (Type type:typeList) {
-            typeImages.getChildren().add(new ImageView(new Image(type.typeToPicture(type.getName()))));
+            typeImages.getChildren().add(new ImageView(new Image(type.getImageString())));
         }
-
     }
 
     private Image retrievePokemonImage(Pokemon currentPokemon) {
