@@ -1,17 +1,25 @@
 package edu.bsu.cs222.model.parsers;
 
 import com.jayway.jsonpath.JsonPath;
+import edu.bsu.cs222.model.EvolutionChain;
 import net.minidev.json.JSONArray;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EvolutionChainParser {
-    public List<String> parseForEvolutionNames(Object evolutionChainJsonDocument) {
-        List<String> speciesNames = new ArrayList<>();
+    private List<String> speciesNames;
+    private List<String> evolutionTriggers;
+    private List<LinkedHashMap<String, Object>> evolutionDetails;
+
+    public EvolutionChain parseForEvolutionChain(Object evolutionChainJsonDocument) {
+        speciesNames = new LinkedList<>();
+        evolutionTriggers = new LinkedList<>();
+        evolutionDetails = new LinkedList<>();
         Object chain = JsonPath.read(evolutionChainJsonDocument, "$.chain");
         speciesNames.add(parseForSpeciesName(chain));
-        return parseThroughEvolvesToArray(parseForEvolvesToArray(chain), speciesNames);
+        return parseThroughEvolvesToArray(parseForEvolvesToArray(chain));
     }
 
     private String parseForSpeciesName(Object evolvesTo) {
@@ -22,17 +30,28 @@ public class EvolutionChainParser {
         return JsonPath.read(chain, "$.evolves_to");
     }
 
-    private List<String> parseThroughEvolvesToArray(JSONArray evolvesToArray, List<String> speciesNames) {
+    private EvolutionChain parseThroughEvolvesToArray(JSONArray evolvesToArray) {
         for (Object evolvesTo : evolvesToArray) {
             speciesNames.add(parseForSpeciesName(evolvesTo));
+            evolutionTriggers.add(parseEvolutionTriggers(evolvesTo));
+            evolutionDetails.add(parseEvolutionDetails(evolvesTo));
             evolvesToArray = parseForEvolvesToArray(evolvesTo);
-            parseThroughEvolvesToArray(evolvesToArray, speciesNames);
+            parseThroughEvolvesToArray(evolvesToArray);
         }
-        return speciesNames;
+        return EvolutionChain.withNames(speciesNames)
+                .andEvolutionDetails(evolutionDetails)
+                .andEvolutionTriggers(evolutionTriggers);
     }
 
-    public String parseForEvolutionTrigger( Object evolutionChainJson) {
-        JSONArray triggerNames = JsonPath.read(evolutionChainJson,"$.chain.evolves_to[0]..trigger.name");
-        return triggerNames.get(0).toString();
+    private String parseEvolutionTriggers(Object evolvesToJson) {
+        int size = JsonPath.read(evolvesToJson, "$.evolution_details.size()");
+        size--;
+        return JsonPath.read(evolvesToJson, "$.evolution_details[" + size + "].trigger.name");
+    }
+
+    private LinkedHashMap<String, Object> parseEvolutionDetails(Object evolvesToJson) {
+        LinkedHashMap<String, Object> test = JsonPath.read(evolvesToJson, "$.evolution_details[0]");
+        test.entrySet().removeIf(item -> item.getValue() == null);
+        return test;
     }
 }
