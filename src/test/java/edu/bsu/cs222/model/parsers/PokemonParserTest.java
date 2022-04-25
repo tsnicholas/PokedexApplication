@@ -121,4 +121,13 @@ class PokemonParserTest extends TestResourceConverter {
         List<Ability> actualAbilities = pokemonParser.parseForAbilities(dittoDocument, yellow);
         Assertions.assertEquals(0, actualAbilities.size());
     }
+
+    @Test
+    public void testParseEvolutionChain_charmanderSpeciesNames() {
+        Object charmander = convertFileNameToObject("charmanderSpecies.json");
+        EvolutionChain expected = EvolutionChain.withNames(List.of("charmander", "charmeleon", "charizard"))
+                .andEvolutionTriggers(null);
+        EvolutionChain actual = pokemonParser.parseForEvolutionChain(charmander);
+        Assertions.assertEquals(expected.getSpeciesNames(), actual.getSpeciesNames());
+    }
 }

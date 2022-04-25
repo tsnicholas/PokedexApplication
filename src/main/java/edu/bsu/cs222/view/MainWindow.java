@@ -230,7 +230,8 @@ public class MainWindow extends Application {
         if (currentPokemon.getImageURL() != null) {
             return new Image(currentPokemon.getImageURL());
         }
-        return new Image(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("missingno..jpg")));
+        return new Image(Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("missingno..jpg")));
     }
 
     private void insertContentIntoTabs(Pokemon currentPokemon) {

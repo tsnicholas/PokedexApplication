@@ -19,6 +19,7 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
 
     public Parent getInitialDisplay() {
         moveLayout = makeNewGridPane();
+        createMoveDataHeaders();
         return moveLayout;
     }
 
@@ -26,7 +27,6 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(LARGE_SPACING);
         gridPane.setVgap(SMALL_SPACING);
-        createMoveDataHeaders();
         return gridPane;
     }
 
@@ -41,6 +41,7 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
 
     public Parent display(Pokemon pokemon) {
         moveLayout = makeNewGridPane();
+        createMoveDataHeaders();
         createMoveDataStrings(pokemon.getMoves());
         return wrapAroundScrollPane(moveLayout);
     }
