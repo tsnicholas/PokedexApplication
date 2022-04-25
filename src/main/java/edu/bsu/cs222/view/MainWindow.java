@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -70,7 +71,9 @@ public class MainWindow extends Application {
 
     private void setUpWindowBasics(Stage primaryStage) {
         primaryStage.setTitle("Pokedex");
-        primaryStage.getIcons().add(new Image("pokeball.png"));
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("pokeball.png")))
+        );
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(HEIGHT_OF_WINDOW);
         primaryStage.setWidth(WIDTH_OF_WINDOW);
@@ -217,7 +220,9 @@ public class MainWindow extends Application {
     private void retrieveTypeImages(List<Type> typeList) {
         typeImages.getChildren().remove(0, typeImages.getChildren().size());
         for (Type type:typeList) {
-            typeImages.getChildren().add(new ImageView(new Image(type.getImageString())));
+            typeImages.getChildren().add(new ImageView(new Image(
+                    Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream(type.getImageString())))
+            ));
         }
     }
 
@@ -225,7 +230,7 @@ public class MainWindow extends Application {
         if (currentPokemon.getImageURL() != null) {
             return new Image(currentPokemon.getImageURL());
         }
-        return new Image("MissingNo..jpg");
+        return new Image(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("missingno..jpg")));
     }
 
     private void insertContentIntoTabs(Pokemon currentPokemon) {
