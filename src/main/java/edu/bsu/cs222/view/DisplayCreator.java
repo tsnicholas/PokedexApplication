@@ -1,5 +1,7 @@
 package edu.bsu.cs222.view;
 
+import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -29,5 +31,11 @@ public abstract class DisplayCreator {
         return new ImageView(new Image(
                 Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream(imageString)))
         );
+    }
+
+    public Parent wrapAroundScrollPane(Parent input) {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(input);
+        return scrollPane;
     }
 }

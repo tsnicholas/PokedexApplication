@@ -3,7 +3,6 @@ package edu.bsu.cs222.view;
 import edu.bsu.cs222.model.Move;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
@@ -19,11 +18,16 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
     private GridPane moveLayout;
 
     public Parent getInitialDisplay() {
-        moveLayout = new GridPane();
-        moveLayout.setHgap(LARGE_SPACING);
-        moveLayout.setVgap(SMALL_SPACING);
-        createMoveDataHeaders();
+        moveLayout = makeNewGridPane();
         return moveLayout;
+    }
+
+    private GridPane makeNewGridPane() {
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(LARGE_SPACING);
+        gridPane.setVgap(SMALL_SPACING);
+        createMoveDataHeaders();
+        return gridPane;
     }
 
     private void createMoveDataHeaders() {
@@ -36,18 +40,9 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
     }
 
     public Parent display(Pokemon pokemon) {
-        moveLayout = new GridPane();
-        moveLayout.setHgap(LARGE_SPACING);
-        moveLayout.setVgap(SMALL_SPACING);
-        createMoveDataHeaders();
+        moveLayout = makeNewGridPane();
         createMoveDataStrings(pokemon.getMoves());
-        return wrapAroundScrollPane();
-    }
-
-    private Parent wrapAroundScrollPane() {
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(moveLayout);
-        return scrollPane;
+        return wrapAroundScrollPane(moveLayout);
     }
 
     private void createMoveDataStrings(List<Move> moveList) {

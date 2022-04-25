@@ -3,7 +3,6 @@ package edu.bsu.cs222.view;
 import edu.bsu.cs222.model.Ability;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -33,7 +32,7 @@ public class AbilitiesDisplay extends DisplayCreator implements MenuDisplay {
                 createText("Hidden Abilities", BIG_HEADER_FONT),
                 convertAbilitiesIntoText(pokemon.getHiddenAbilities())
         );
-        return warpAroundScrollPane();
+        return wrapAroundScrollPane(abilitiesRows);
     }
 
     private Parent convertAbilitiesIntoText(List<Ability> abilities) {
@@ -60,12 +59,6 @@ public class AbilitiesDisplay extends DisplayCreator implements MenuDisplay {
         // For example: Pokémon will show up as PokÃ©mon
         byte[] stringBytes = effect.getBytes();
         return new String(stringBytes, StandardCharsets.UTF_8);
-    }
-
-    private Parent warpAroundScrollPane() {
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(abilitiesRows);
-        return scrollPane;
     }
 
     public String toString() {
