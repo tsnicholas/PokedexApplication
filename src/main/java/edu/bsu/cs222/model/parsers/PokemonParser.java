@@ -87,10 +87,9 @@ public class PokemonParser {
         JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
                 "contains \"" + version.getVersionGroup().getVersionGroupName() + "\")]");
         for (Object moveObject : moveArray) {
-            String moveURL = JsonPath.read(moveObject, "$.move.url");
             JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
             List<String> learnMethods = parseLearnMethods(moveVersionDetailsArray);
-            Object moveJsonDocument = urlProcessor.convertStringToObject(moveURL);
+            Object moveJsonDocument = urlProcessor.convertStringToObject(JsonPath.read(moveObject, "$.move.url"));
             moveList.add(createMove(moveJsonDocument, learnMethods, version));
         }
         return moveList;
@@ -170,7 +169,9 @@ public class PokemonParser {
     private Ability createAbility(Object ability, Object abilityJsonDocument) {
         String abilityName = JsonPath.read(ability, "$.ability.name");
         boolean isHidden = JsonPath.read(ability, "$.is_hidden");
-        return Ability.withName(abilityName).andEffect(abilityParser.parseEffect(abilityJsonDocument)).andIsHidden(isHidden);
+        return Ability.withName(abilityName)
+                .andEffect(abilityParser.parseEffect(abilityJsonDocument))
+                .andIsHidden(isHidden);
     }
 
 }
