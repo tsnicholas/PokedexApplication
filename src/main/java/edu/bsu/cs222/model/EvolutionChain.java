@@ -28,13 +28,13 @@ public class EvolutionChain {
         }
     }
     private final List<String> speciesNames;
-    private final List<LinkedHashMap<String, Object>> evolutionDetails;
     private final List<String> evolutionTriggers;
+    private final List<LinkedHashMap<String, Object>> evolutionDetails;
 
     public EvolutionChain(Builder builder) {
         this.speciesNames = builder.speciesNames;
-        this.evolutionDetails = builder.evolutionDetails;
         this.evolutionTriggers = builder.evolutionTriggers;
+        this.evolutionDetails = builder.evolutionDetails;
     }
 
     public List<String> getSpeciesNames() {

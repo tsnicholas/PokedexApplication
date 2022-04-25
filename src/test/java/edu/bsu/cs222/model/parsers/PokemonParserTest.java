@@ -15,6 +15,7 @@ class PokemonParserTest extends TestResourceConverter {
     private final PokemonParser pokemonParser = new PokemonParser(testURLProcessor);
     private final Object charizardDocument = convertFileNameToObject("charizard.json");
     private final Object dittoDocument = convertFileNameToObject("ditto.json");
+    private final Object charmanderSpeciesDocument = convertFileNameToObject("charmanderSpecies.json");
     private final Generation genOne = makeGenOne();
     private final Generation genThree = makeGenThree();
     private final Generation genFive = makeGenFive();
@@ -44,10 +45,8 @@ class PokemonParserTest extends TestResourceConverter {
     @Test
     public void testParseForTypes_pastType_genOneIsNormal() {
         Object clefableDocument = convertFileNameToObject("clefable.json");
-
         List<Type> actual = pokemonParser.parseForTypes(clefableDocument, Version.withName(null).
                 andGeneration(genOne).andGenerationMap(generationMap).andVersionGroupMap(null));
-
         Assertions.assertEquals("normal", actual.get(0).getName());
     }
 
@@ -80,10 +79,8 @@ class PokemonParserTest extends TestResourceConverter {
         Move actualMove = pokemonParser.parseForMoves(dittoDocument, Version.withName("yellow")
                 .andVersionGroup(VersionGroup.withName("yellow").andVersionNames(null))
                 .andVersionGroupMap(null)).get(0);
-
         HashMap<String, String> expected = makeMoveDataMap(expectedMove);
         HashMap<String, String> actual = makeMoveDataMap(actualMove);
-
         Assertions.assertEquals(expected.get(key), actual.get(key));
     }
 
@@ -124,10 +121,35 @@ class PokemonParserTest extends TestResourceConverter {
 
     @Test
     public void testParseEvolutionChain_charmanderSpeciesNames() {
-        Object charmander = convertFileNameToObject("charmanderSpecies.json");
         EvolutionChain expected = EvolutionChain.withNames(List.of("charmander", "charmeleon", "charizard"))
                 .andEvolutionTriggers(null);
-        EvolutionChain actual = pokemonParser.parseForEvolutionChain(charmander);
+        EvolutionChain actual = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
         Assertions.assertEquals(expected.getSpeciesNames(), actual.getSpeciesNames());
+    }
+
+    @Test
+    public void testParseEvolutionChain_charmanderEvolutionTriggers() {
+        EvolutionChain expected = EvolutionChain.withNames(null)
+                .andEvolutionTriggers(List.of("level-up", "level-up"));
+        EvolutionChain actual = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
+        Assertions.assertEquals(expected.getEvolutionTriggers(), actual.getEvolutionTriggers());
+    }
+
+    @Test
+    public void testParseEvolutionChain_charmanderEvolvesByLevelSixteen() {
+        EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
+        Assertions.assertEquals(16, charmander.getEvolutionDetails().get(0).get("min_level"));
+    }
+
+    @Test
+    public void testParseEvolutionChain_charmanderDoesNotEvolveBasedOnTimeOfDay() {
+        EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
+        Assertions.assertEquals("", charmander.getEvolutionDetails().get(0).get("time_of_day"));
+    }
+
+    @Test
+    public void testParseEvolutionChain_charmeleonEvolvesByLevelThirtySix() {
+        EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
+        Assertions.assertEquals(36, charmander.getEvolutionDetails().get(1).get("min_level"));
     }
 }
