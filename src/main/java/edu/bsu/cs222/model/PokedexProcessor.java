@@ -1,5 +1,6 @@
 package edu.bsu.cs222.model;
 
+import com.jayway.jsonpath.JsonPath;
 import edu.bsu.cs222.model.parsers.PokemonParser;
 import edu.bsu.cs222.model.parsers.PokemonSpeciesParser;
 
@@ -35,6 +36,9 @@ public class PokedexProcessor {
 
     public List<Pokemon> process(String pokemon, Version version) throws PokemonDoesNotExistInVersionException {
         Object pokemonSpeciesJsonDocument = urlProcessor.getPokemonSpeciesJsonObject(pokemon);
+        if (!pokemonSpeciesExistsInVersion(pokemonSpeciesJsonDocument, version)) {
+            throw new PokemonDoesNotExistInVersionException();
+        }
         List<String> pokemonURLs = pokemonSpeciesParser.parseForPokemonURL(pokemonSpeciesJsonDocument);
         List<Object> pokemonJsonDocuments = obtainAllValidPokemonDocuments(pokemonURLs, version);
         if (pokemonJsonDocuments.size() > 0) {
@@ -42,6 +46,11 @@ public class PokedexProcessor {
         } else {
             throw new PokemonDoesNotExistInVersionException();
         }
+    }
+
+    private boolean pokemonSpeciesExistsInVersion(Object pokemonSpeciesJsonDocument, Version version) {
+        String pokemonSpeciesFirstGen = JsonPath.read(pokemonSpeciesJsonDocument, "$.generation.name");
+        return (version.getGenerationMap().get(pokemonSpeciesFirstGen) <= version.getGeneration().getGenerationID());
     }
 
     private List<Object> obtainAllValidPokemonDocuments(List<String> pokemonURLs, Version version) {
