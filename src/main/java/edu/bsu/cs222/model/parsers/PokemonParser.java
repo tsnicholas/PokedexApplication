@@ -86,11 +86,11 @@ public class PokemonParser {
         Filter learnMethodFilter = filter(where("version_group.name").is(version.getVersionGroup().getVersionGroupName()));
         JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
                 "contains \"" + version.getVersionGroup().getVersionGroupName() + "\")]");
+        int startIndex = "https://pokeapi.co/api/v2/move/".length();
         for (Object moveObject : moveArray) {
             JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
             List<String> learnMethods = parseLearnMethods(moveVersionDetailsArray);
             String moveUrl = JsonPath.read(moveObject, "$.move.url");
-            int startIndex = "https://pokeapi.co/api/v2/move/".length();
             if (moveCache.containsKey(moveUrl.substring(startIndex))) {
                 moveList.add(moveCache.get(moveUrl.substring(startIndex)));
             } else {
