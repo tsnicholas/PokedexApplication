@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,6 +30,7 @@ public class MainWindow extends Application {
     private final int WIDTH_OF_WINDOW = 800;
     private final double SMALL_SPACING = 10;
     private final Pos DEFAULT_POSITION = Pos.TOP_CENTER;
+    private final Font INSTRUCTION_FONT = Font.font("Verdana", FontWeight.BOLD, 15);
     private final Font UPPER_FONT = Font.font("Verdana", 25);
     private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
 
@@ -43,9 +45,9 @@ public class MainWindow extends Application {
     private final Text stats = new Text();
     private final Text egg_groups = new Text();
     private final ImageView pokemonImage = new ImageView();
-    private final TabPane tabMenu = new TabPane();
+    private final Text pokemonFormInstruction = new Text("Select a form:");
     private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
-
+    private final TabPane tabMenu = new TabPane();
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     @Override
@@ -70,7 +72,9 @@ public class MainWindow extends Application {
 
     private void setUpWindowBasics(Stage primaryStage) {
         primaryStage.setTitle("Pokedex");
-        primaryStage.getIcons().add(new Image("pokeball.png"));
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("pokeball.png")))
+        );
         primaryStage.setScene(new Scene(createMainWindow()));
         primaryStage.setHeight(HEIGHT_OF_WINDOW);
         primaryStage.setWidth(WIDTH_OF_WINDOW);
@@ -82,9 +86,10 @@ public class MainWindow extends Application {
     }
 
     private void setUpSizesAndFonts() {
-        instruction.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+        instruction.setFont(INSTRUCTION_FONT);
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
+        pokemonFormInstruction.setFont(INSTRUCTION_FONT);
         pokemonForms.setPrefWidth(300);
         stats.setFont(UPPER_FONT);
         egg_groups.setFont(UPPER_FONT);
@@ -133,6 +138,7 @@ public class MainWindow extends Application {
         VBox image = new VBox();
         image.getChildren().addAll(
                 pokemonImage,
+                pokemonFormInstruction,
                 pokemonForms
         );
         setUpFormMenu();
@@ -141,6 +147,7 @@ public class MainWindow extends Application {
 
 
     private void setUpFormMenu() {
+        pokemonFormInstruction.setVisible(false);
         pokemonForms.setVisible(false);
         pokemonForms.getSelectionModel().selectedItemProperty().addListener(
                 (v, oldValue, newValue) -> update());
@@ -167,6 +174,7 @@ public class MainWindow extends Application {
     }
 
     private void resetPokemonForms() {
+        pokemonFormInstruction.setVisible(false);
         pokemonForms.setVisible(false);
         pokemonForms.getItems().remove(0, pokemonForms.getItems().size());
     }
@@ -210,6 +218,7 @@ public class MainWindow extends Application {
             egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(retrievePokemonImage(currentPokemon));
             insertContentIntoTabs(currentPokemon);
+            pokemonFormInstruction.setVisible(true);
             pokemonForms.setVisible(true);
         }
     }
@@ -217,7 +226,9 @@ public class MainWindow extends Application {
     private void retrieveTypeImages(List<Type> typeList) {
         typeImages.getChildren().remove(0, typeImages.getChildren().size());
         for (Type type:typeList) {
-            typeImages.getChildren().add(new ImageView(new Image(type.getImageString())));
+            typeImages.getChildren().add(new ImageView(new Image(
+                    Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream(type.getImageString())))
+            ));
         }
     }
 
@@ -225,7 +236,8 @@ public class MainWindow extends Application {
         if (currentPokemon.getImageURL() != null) {
             return new Image(currentPokemon.getImageURL());
         }
-        return new Image("MissingNo..jpg");
+        return new Image(Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("missingno..jpg")));
     }
 
     private void insertContentIntoTabs(Pokemon currentPokemon) {
