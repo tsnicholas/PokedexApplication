@@ -81,7 +81,7 @@ public class PokemonParser {
         return statMap;
     }
 
-    public List<Move> parseForMoves(Object pokemonJsonDocument, Version version) {
+    public List<Move> parseForMoves(Object pokemonJsonDocument, Version version, HashMap<String, Move> moveCache) {
         List<Move> moveList = new LinkedList<>();
         Filter learnMethodFilter = filter(where("version_group.name").is(version.getVersionGroup().getVersionGroupName()));
         JSONArray moveArray = JsonPath.read(pokemonJsonDocument, "$.moves[?(@.version_group_details..version_group.name " +
@@ -89,8 +89,15 @@ public class PokemonParser {
         for (Object moveObject : moveArray) {
             JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
             List<String> learnMethods = parseLearnMethods(moveVersionDetailsArray);
-            Object moveJsonDocument = urlProcessor.convertStringToObject(JsonPath.read(moveObject, "$.move.url"));
-            moveList.add(createMove(moveJsonDocument, learnMethods, version));
+            String moveUrl = JsonPath.read(moveObject, "$.move.url");
+            if (moveCache.containsKey(moveUrl)) {
+                moveList.add(moveCache.get(moveUrl));
+            } else {
+                Object moveJsonDocument = urlProcessor.convertStringToObject(moveUrl);
+                Move move = createMove(moveJsonDocument, learnMethods, version);
+                moveCache.put(moveUrl, move);
+                moveList.add(move);
+            }
         }
         return moveList;
     }
