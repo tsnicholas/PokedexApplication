@@ -47,8 +47,8 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
     }
 
     private void createMoveDataStrings(List<Move> moveList) {
-        for (int i = 1; i < moveList.size(); i++) {
-            Move move = moveList.get(i);
+        int i = 1;
+        for (Move move : moveList) {
             moveLayout.add(createText(move.getName(), DEFAULT_FONT), NAME_COLUMN_INDEX, i + 1);
             moveLayout.add(createImage(move.getType() + ".png"), TYPE_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(move.getPP(), DEFAULT_FONT), PP_COLUMN_INDEX, i + 1);
@@ -56,6 +56,7 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
             moveLayout.add(createText(move.getAccuracy(), DEFAULT_FONT), ACCURACY_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(obtainLearnMethods(move.getLearnMethods()), DEFAULT_FONT),
                     LEARN_METHOD_COLUMN_INDEX, i + 1);
+            i++;
         }
     }
 

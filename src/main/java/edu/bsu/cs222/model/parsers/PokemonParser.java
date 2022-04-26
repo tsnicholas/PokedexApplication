@@ -90,12 +90,13 @@ public class PokemonParser {
             JSONArray moveVersionDetailsArray = parse(moveObject).read("$.version_group_details[?]", learnMethodFilter);
             List<String> learnMethods = parseLearnMethods(moveVersionDetailsArray);
             String moveUrl = JsonPath.read(moveObject, "$.move.url");
-            if (moveCache.containsKey(moveUrl)) {
-                moveList.add(moveCache.get(moveUrl));
+            int startIndex = "https://pokeapi.co/api/v2/move/".length();
+            if (moveCache.containsKey(moveUrl.substring(startIndex))) {
+                moveList.add(moveCache.get(moveUrl.substring(startIndex)));
             } else {
                 Object moveJsonDocument = urlProcessor.convertStringToObject(moveUrl);
                 Move move = createMove(moveJsonDocument, learnMethods, version);
-                moveCache.put(moveUrl, move);
+                moveCache.put(moveUrl.substring(startIndex), move);
                 moveList.add(move);
             }
         }
