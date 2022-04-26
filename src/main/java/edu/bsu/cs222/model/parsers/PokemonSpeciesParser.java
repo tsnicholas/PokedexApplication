@@ -1,6 +1,7 @@
 package edu.bsu.cs222.model.parsers;
 
 import com.jayway.jsonpath.JsonPath;
+import edu.bsu.cs222.model.Version;
 import net.minidev.json.JSONArray;
 
 import java.util.ArrayList;
@@ -10,6 +11,11 @@ import java.util.List;
 public class PokemonSpeciesParser {
     public List<String> parseForPokemonURL(Object pokemonSpeciesJsonDocument) {
         return new LinkedList<>(JsonPath.read(pokemonSpeciesJsonDocument, "$..pokemon.url"));
+    }
+
+    public boolean pokemonSpeciesExistsInVersion(Object pokemonSpeciesJsonDocument, Version version) {
+        String pokemonSpeciesFirstGen = JsonPath.read(pokemonSpeciesJsonDocument, "$.generation.name");
+        return (version.getGenerationMap().get(pokemonSpeciesFirstGen) <= version.getGeneration().getGenerationID());
     }
 
     public List<String> parseForEggGroups(Object pokemonSpeciesJsonDocument) {

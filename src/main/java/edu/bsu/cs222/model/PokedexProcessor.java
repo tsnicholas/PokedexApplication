@@ -4,6 +4,7 @@ import edu.bsu.cs222.model.parsers.PokemonParser;
 import edu.bsu.cs222.model.parsers.PokemonSpeciesParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,9 @@ public class PokedexProcessor {
 
     public List<Pokemon> process(String pokemon, Version version) throws PokemonDoesNotExistInVersionException {
         Object pokemonSpeciesJsonDocument = urlProcessor.getPokemonSpeciesJsonObject(pokemon);
+        if (!pokemonSpeciesParser.pokemonSpeciesExistsInVersion(pokemonSpeciesJsonDocument, version)) {
+            throw new PokemonDoesNotExistInVersionException();
+        }
         List<String> pokemonURLs = pokemonSpeciesParser.parseForPokemonURL(pokemonSpeciesJsonDocument);
         List<Object> pokemonJsonDocuments = obtainAllValidPokemonDocuments(pokemonURLs, version);
         if (pokemonJsonDocuments.size() > 0) {
@@ -56,10 +60,11 @@ public class PokedexProcessor {
 
     private List<Pokemon> createPokemonList(List<Object> pokemonJsonDocuments, Object speciesJsonDocument, Version version) {
         List<Pokemon> pokemonFormList = new ArrayList<>();
+        HashMap<String, Move> moveCache = new HashMap<>();
         for (Object pokemonJsonDocument : pokemonJsonDocuments) {
             pokemonFormList.add(
                     Pokemon.withTypeList(pokemonParser.parseForTypes(pokemonJsonDocument, version))
-                            .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version))
+                            .andMoveList(pokemonParser.parseForMoves(pokemonJsonDocument, version, moveCache))
                             .andStatsMap(pokemonParser.parseForStats(pokemonJsonDocument))
                             .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument, version))
                             .andEggGroups(pokemonSpeciesParser.parseForEggGroups(speciesJsonDocument))

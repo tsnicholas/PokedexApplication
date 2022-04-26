@@ -78,7 +78,7 @@ class PokemonParserTest extends TestResourceConverter {
                 .andLearnMethods(List.of("LV 1"));
         Move actualMove = pokemonParser.parseForMoves(dittoDocument, Version.withName("yellow")
                 .andVersionGroup(VersionGroup.withName("yellow").andVersionNames(null))
-                .andVersionGroupMap(null)).get(0);
+                .andVersionGroupMap(null), new HashMap<>()).get(0);
         HashMap<String, String> expected = makeMoveDataMap(expectedMove);
         HashMap<String, String> actual = makeMoveDataMap(actualMove);
         Assertions.assertEquals(expected.get(key), actual.get(key));
