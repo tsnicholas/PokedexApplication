@@ -120,22 +120,6 @@ class PokemonParserTest extends TestResourceConverter {
     }
 
     @Test
-    public void testParseEvolutionChain_charmanderSpeciesNames() {
-        EvolutionChain expected = EvolutionChain.withNames(List.of("charmander", "charmeleon", "charizard"))
-                .andEvolutionTriggers(null);
-        EvolutionChain actual = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
-        Assertions.assertEquals(expected.getSpeciesNames(), actual.getSpeciesNames());
-    }
-
-    @Test
-    public void testParseEvolutionChain_charmanderEvolutionTriggers() {
-        EvolutionChain expected = EvolutionChain.withNames(null)
-                .andEvolutionTriggers(List.of("level-up", "level-up"));
-        EvolutionChain actual = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
-        Assertions.assertEquals(expected.getEvolutionTriggers(), actual.getEvolutionTriggers());
-    }
-
-    @Test
     public void testParseEvolutionChain_charmanderEvolvesByLevelSixteen() {
         EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
         Assertions.assertEquals(16, charmander.getEvolutionDetails().get(0).get("min_level"));

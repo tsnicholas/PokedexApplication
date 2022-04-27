@@ -36,7 +36,7 @@ public class MainWindow extends Application {
 
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
-            new AbilitiesDisplay());
+            new AbilitiesDisplay(), new EvolutionDisplay());
 
     private final StackPane stackPane = new StackPane();
     private final Text instruction = new Text(INSTRUCTION_STRING);

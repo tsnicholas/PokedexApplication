@@ -38,21 +38,6 @@ public class EvolutionChainParserTest extends TestResourceConverter {
     }
 
     @Test
-    public void testParseEvolutionChain_charmanderEvolvesByLevelUp() {
-        EvolutionChain actual = evolutionChainParser.parseForEvolutionChain(charmanderEvolutionChain);
-        Assertions.assertEquals(List.of("level-up", "level-up"), actual.getEvolutionTriggers());
-    }
-
-    @Test
-    public void testParseEvolutionChain_eeveeEvolutionTriggers() {
-        EvolutionChain actual = evolutionChainParser.parseForEvolutionChain(eeveeEvolutionChain);
-        Assertions.assertEquals(
-                List.of("use-item", "use-item", "use-item", "level-up", "level-up", "use-item", "use-item", "level-up"),
-                actual.getEvolutionTriggers()
-        );
-    }
-
-    @Test
     public void testParseEvolutionChain_charmeleonEvolutionDetails() {
         EvolutionChain actual = evolutionChainParser.parseForEvolutionChain(charmanderEvolutionChain);
         LinkedHashMap<String, Object> charmeleonDetails = actual.getEvolutionDetails().get(0);
