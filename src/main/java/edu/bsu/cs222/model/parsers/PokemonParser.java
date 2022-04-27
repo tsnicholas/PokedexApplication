@@ -120,7 +120,7 @@ public class PokemonParser {
         if (method.equals("machine")) {
             return "TM";
         }
-        return method;
+        return method.toUpperCase();
     }
 
     private Move createMove(Object moveJsonDocument, List<String> learnMethods, Version version) {
