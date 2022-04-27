@@ -3,7 +3,9 @@ package edu.bsu.cs222.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PokedexProcessorTest extends TestResourceConverter {
     private final TestURLProcessor testURLProcessor = new TestURLProcessor();
@@ -31,7 +33,7 @@ public class PokedexProcessorTest extends TestResourceConverter {
     public void testConvertStatsToString() {
         Map<String, Integer> input = createStatMap();
         String actual = pokedexProcessor.convertStatsToString(input);
-        String expected = "hp 300\nattack 420\nspecial-attack 169\nspecial-defense 1000\ndefense 0\nspeed 50\n";
+        String expected = "hp 300\nattack 420\nspecial attack 169\nspecial defense 1000\ndefense 0\nspeed 50\n";
         Assertions.assertEquals(expected, actual);
     }
 
