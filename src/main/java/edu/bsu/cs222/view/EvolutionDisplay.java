@@ -1,6 +1,7 @@
 package edu.bsu.cs222.view;
 
 import edu.bsu.cs222.model.EvolutionChain;
+import edu.bsu.cs222.model.EvolutionDetailsValues;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
@@ -41,14 +42,11 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay{
         }
     }
 
-    private String convertEvolutionDetails(LinkedHashMap<String, Object> evolutionDetails) {
+    private String convertEvolutionDetails(LinkedHashMap<String, EvolutionDetailsValues> evolutionDetails) {
         StringBuilder evolutionStringBuilder = new StringBuilder();
         for (String key : evolutionDetails.keySet()) {
-            Object value = evolutionDetails.get(key);
-            if(value.getClass() == LinkedHashMap.class) {
-                value = ((LinkedHashMap<?, ?>) value).get("name");
-            }
-            evolutionStringBuilder.append(convertToEnglish(key)).append(": ").append(value.toString()).append("\n");
+            String value = evolutionDetails.get(key).toString();
+            evolutionStringBuilder.append(convertToEnglish(key)).append(": ").append(value).append("\n");
         }
         return evolutionStringBuilder.toString();
     }
