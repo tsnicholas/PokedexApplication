@@ -183,6 +183,6 @@ public class Pokemon {
     }
 
     public String toString() {
-        return name;
+        return name.replace("-", " ");
     }
 }
