@@ -53,7 +53,7 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay{
 
     private void addBasePokemon(EvolutionChain evolutionChain) {
         evolutionRows.add(createText(evolutionChain.getSpeciesNames().get(0), DEFAULT_FONT), POKEMON_COLUMN_INDEX, 1);
-        evolutionRows.add(createText("base pokemon", DEFAULT_FONT), EVOLUTION_METHOD_COLUMN_INDEX, 1);
+        evolutionRows.add(createText("level up to LV 1", DEFAULT_FONT), EVOLUTION_METHOD_COLUMN_INDEX, 1);
     }
 
     private String convertEvolutionDetails(LinkedHashMap<String, EvolutionDetailsValues> evolutionDetails) {
@@ -66,28 +66,32 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay{
     }
 
     // We want to take the keys given by the API and use them to create a readable sentence
+    // The base information given would be difficult for causal pokemon fans to understand
     private String convertKeyToEnglish(String key) {
         return key.replace("trigger", "")
                 .replace("gender", "as a")
                 .replace("held_item", "and holding")
                 .replace("item", "")
+                .replace("known_move", "knows")
+                .replace("known_move_type", "knowing a move of type")
                 .replace("location", "at")
                 .replace("min_affection", "at affection level")
                 .replace("min_beauty", "at beauty level")
                 .replace("min_happiness", "at happiness level")
-                .replace("min_level", "to")
-                .replace("time_of_day", "")
-                .replace("needs_overworld_rain", "")
-                .replace("turn_upside_down", "")
+                .replace("min_level", "to LV")
+                .replace("time_of_day", "during")
+                .replace("needs_overworld_rain", "when raining in the overworld")
+                .replace("turn_upside_down", "when turned upside down")
                 .replace("_", " ");
     }
 
     // Same thing with the values
     private String convertValueToEnglish(String value) {
         return value.replace("use-item", "use a")
-                .replace("night", "during night time")
-                .replace("day", "during day time")
-                .replace("false", "");
+                .replace("night", "night time")
+                .replace("day", "day time")
+                .replace("true", "")
+                .replace("-", " ");
     }
 
     public String toString() {
