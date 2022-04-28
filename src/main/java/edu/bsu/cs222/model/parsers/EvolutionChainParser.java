@@ -42,25 +42,36 @@ public class EvolutionChainParser {
     private LinkedHashMap<String, EvolutionDetailsValues> parseEvolutionDetails(Object evolvesToJson) {
         int size = JsonPath.read(evolvesToJson, "$.evolution_details.size()");
         size--;
+
         LinkedHashMap<String, ?> jsonHashMap = JsonPath.read(evolvesToJson, "$.evolution_details[" + size + "]");
+        removeNullKeyAndValuePairs(jsonHashMap);
+
         LinkedHashMap<String, EvolutionDetailsValues> evolutionDetailMap = new LinkedHashMap<>();
-        jsonHashMap.entrySet().removeIf(item -> item.getValue() == null);
         evolutionDetailMap.put("trigger", getValueType(jsonHashMap.get("trigger")));
+
         jsonHashMap.remove("trigger");
         jsonHashMap.forEach((key, value) -> evolutionDetailMap.put(key, getValueType(value)));
+
+        removeNullKeyAndValuePairs(evolutionDetailMap);
+
         return evolutionDetailMap;
     }
 
     private EvolutionDetailsValues getValueType(Object value) {
         if (value instanceof Integer) {
             return new EvolutionDetailInteger((Integer) value);
-        } else if (value instanceof String) {
+        } else if (value instanceof String && !value.equals("")) {
             return new EvolutionDetailString((String) value);
         } else if (value instanceof LinkedHashMap<?, ?>) {
             return new EvolutionDetailLinkedHashMap((LinkedHashMap<?, ?>) value);
-        } else {
+        } else if (value instanceof Boolean && (Boolean) value) {
             return new EvolutionDetailBoolean((Boolean) value);
+        } else {
+            return null;
         }
+    }
 
+    private void removeNullKeyAndValuePairs(LinkedHashMap<?, ?> linkedHashMap) {
+        linkedHashMap.entrySet().removeIf(item -> item.getValue() == null);
     }
 }

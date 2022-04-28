@@ -44,9 +44,6 @@ public class EvolutionChainParserTest extends TestResourceConverter {
         LinkedHashMap<String, EvolutionDetailsValues> charmeleonDetails = actual.getEvolutionDetails().get(0);
 
         Assertions.assertEquals("16", charmeleonDetails.get("min_level").toString());
-        Assertions.assertEquals("false", charmeleonDetails.get("needs_overworld_rain").toString());
-        Assertions.assertEquals("", charmeleonDetails.get("time_of_day").toString());
         Assertions.assertEquals("level-up", charmeleonDetails.get("trigger").toString());
-        Assertions.assertEquals("false", charmeleonDetails.get("turn_upside_down").toString());
     }
 }
