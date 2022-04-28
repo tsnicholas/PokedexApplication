@@ -12,7 +12,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -31,14 +30,13 @@ public class MainWindow extends Application {
     private final double SMALL_SPACING = 10;
     private final Pos DEFAULT_POSITION = Pos.TOP_CENTER;
     private final Font INSTRUCTION_FONT = Font.font("Verdana", FontWeight.BOLD, 15);
-    private final Font UPPER_FONT = Font.font("Verdana", 25);
+    private final Font UPPER_TEXT_FONT = Font.font("Verdana", 25);
     private final String INSTRUCTION_STRING = "Enter a name of a Pokemon";
 
     private final PokedexProcessor pokedexProcessor = new PokedexProcessor();
     private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
             new AbilitiesDisplay(), new EvolutionDisplay());
 
-    private final StackPane stackPane = new StackPane();
     private final Text instruction = new Text(INSTRUCTION_STRING);
     private final SearchBar searchBar = new SearchBar(pokedexProcessor);
     private final HBox typeImages = new HBox(SMALL_SPACING);
@@ -91,8 +89,8 @@ public class MainWindow extends Application {
         pokemonImage.setFitWidth(300);
         pokemonFormInstruction.setFont(INSTRUCTION_FONT);
         pokemonForms.setPrefWidth(300);
-        stats.setFont(UPPER_FONT);
-        egg_groups.setFont(UPPER_FONT);
+        stats.setFont(UPPER_TEXT_FONT);
+        egg_groups.setFont(UPPER_TEXT_FONT);
         egg_groups.setWrappingWidth(300);
         tabMenu.setPrefWidth(WIDTH_OF_WINDOW);
         tabMenu.setPrefHeight(HEIGHT_OF_WINDOW);
@@ -100,7 +98,6 @@ public class MainWindow extends Application {
 
     private Parent createMainWindow() {
         VBox mainWindow = new VBox(SMALL_SPACING);
-        stackPane.getChildren().add(mainWindow);
         mainWindow.setAlignment(DEFAULT_POSITION);
         mainWindow.getChildren().addAll(
                 instruction,
@@ -109,7 +106,7 @@ public class MainWindow extends Application {
                 tabMenu
         );
         setUpTabMenu();
-        return stackPane;
+        return mainWindow;
     }
 
     private void setUpTabMenu() {
