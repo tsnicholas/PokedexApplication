@@ -128,7 +128,7 @@ class PokemonParserTest extends TestResourceConverter {
     @Test
     public void testParseEvolutionChain_charmanderDoesNotEvolveBasedOnTimeOfDay() {
         EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
-        Assertions.assertEquals("", charmander.getEvolutionDetails().get(0).get("time_of_day").toString());
+        Assertions.assertNull(charmander.getEvolutionDetails().get(0).get("time_of_day"));
     }
 
     @Test
