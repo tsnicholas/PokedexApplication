@@ -122,18 +122,18 @@ class PokemonParserTest extends TestResourceConverter {
     @Test
     public void testParseEvolutionChain_charmanderEvolvesByLevelSixteen() {
         EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
-        Assertions.assertEquals(16, charmander.getEvolutionDetails().get(0).get("min_level"));
+        Assertions.assertEquals("16", charmander.getEvolutionDetails().get(0).get("min_level").toString());
     }
 
     @Test
     public void testParseEvolutionChain_charmanderDoesNotEvolveBasedOnTimeOfDay() {
         EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
-        Assertions.assertEquals("", charmander.getEvolutionDetails().get(0).get("time_of_day"));
+        Assertions.assertEquals("", charmander.getEvolutionDetails().get(0).get("time_of_day").toString());
     }
 
     @Test
     public void testParseEvolutionChain_charmeleonEvolvesByLevelThirtySix() {
         EvolutionChain charmander = pokemonParser.parseForEvolutionChain(charmanderSpeciesDocument);
-        Assertions.assertEquals(36, charmander.getEvolutionDetails().get(1).get("min_level"));
+        Assertions.assertEquals("36", charmander.getEvolutionDetails().get(1).get("min_level").toString());
     }
 }

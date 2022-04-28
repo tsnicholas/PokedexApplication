@@ -10,19 +10,20 @@ public class EvolutionChain {
 
     public static final class Builder {
         private final List<String> speciesNames;
-        private List<LinkedHashMap<String, Object>> evolutionDetails;
+        private List<LinkedHashMap<String, EvolutionDetailsValues>> evolutionDetails;
 
         public Builder(List<String> speciesNames) {
             this.speciesNames = speciesNames;
         }
 
-        public EvolutionChain andEvolutionDetails(List<LinkedHashMap<String, Object>> evolutionDetails) {
+        public EvolutionChain andEvolutionDetails(List<LinkedHashMap<String, EvolutionDetailsValues>> evolutionDetails) {
             this.evolutionDetails = evolutionDetails;
             return new EvolutionChain(this);
         }
     }
+
     private final List<String> speciesNames;
-    private final List<LinkedHashMap<String, Object>> evolutionDetails;
+    private final List<LinkedHashMap<String, EvolutionDetailsValues>> evolutionDetails;
 
     public EvolutionChain(Builder builder) {
         this.speciesNames = builder.speciesNames;
@@ -33,7 +34,7 @@ public class EvolutionChain {
         return speciesNames;
     }
 
-    public List<LinkedHashMap<String, Object>> getEvolutionDetails() {
+    public List<LinkedHashMap<String, EvolutionDetailsValues>> getEvolutionDetails() {
         return evolutionDetails;
     }
 }

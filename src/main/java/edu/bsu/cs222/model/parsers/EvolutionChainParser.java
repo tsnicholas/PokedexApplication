@@ -1,7 +1,7 @@
 package edu.bsu.cs222.model.parsers;
 
 import com.jayway.jsonpath.JsonPath;
-import edu.bsu.cs222.model.EvolutionChain;
+import edu.bsu.cs222.model.*;
 import net.minidev.json.JSONArray;
 
 import java.util.LinkedHashMap;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EvolutionChainParser {
     private List<String> speciesNames;
-    private List<LinkedHashMap<String, Object>> evolutionDetails;
+    private List<LinkedHashMap<String, EvolutionDetailsValues>> evolutionDetails;
 
     public EvolutionChain parseForEvolutionChain(Object evolutionChainJsonDocument) {
         speciesNames = new LinkedList<>();
@@ -39,11 +39,28 @@ public class EvolutionChainParser {
                 .andEvolutionDetails(evolutionDetails);
     }
 
-    private LinkedHashMap<String, Object> parseEvolutionDetails(Object evolvesToJson) {
+    private LinkedHashMap<String, EvolutionDetailsValues> parseEvolutionDetails(Object evolvesToJson) {
         int size = JsonPath.read(evolvesToJson, "$.evolution_details.size()");
         size--;
-        LinkedHashMap<String, Object> test = JsonPath.read(evolvesToJson, "$.evolution_details[" + size + "]");
-        test.entrySet().removeIf(item -> item.getValue() == null);
-        return test;
+        LinkedHashMap<String, ?> jsonHashMap = JsonPath.read(evolvesToJson, "$.evolution_details[" + size + "]");
+        LinkedHashMap<String, EvolutionDetailsValues> evolutionDetailMap = new LinkedHashMap<>();
+        jsonHashMap.entrySet().removeIf(item -> item.getValue() == null);
+        evolutionDetailMap.put("trigger", getValueType(jsonHashMap.get("trigger")));
+        jsonHashMap.remove("trigger");
+        jsonHashMap.forEach((key, value) -> evolutionDetailMap.put(key, getValueType(value)));
+        return evolutionDetailMap;
+    }
+
+    private EvolutionDetailsValues getValueType(Object value) {
+        if (value instanceof Integer) {
+            return new EvolutionDetailInteger((Integer) value);
+        } else if (value instanceof String) {
+            return new EvolutionDetailString((String) value);
+        } else if (value instanceof LinkedHashMap<?, ?>) {
+            return new EvolutionDetailLinkedHashMap((LinkedHashMap<?, ?>) value);
+        } else {
+            return new EvolutionDetailBoolean((Boolean) value);
+        }
+
     }
 }

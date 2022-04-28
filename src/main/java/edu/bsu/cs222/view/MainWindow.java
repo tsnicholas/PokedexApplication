@@ -186,7 +186,6 @@ public class MainWindow extends Application {
             beginProcessingPokemon();
             Platform.runLater(() -> {
                 pokemonForms.getSelectionModel().selectFirst();
-                update();
                 instruction.setText(INSTRUCTION_STRING);
                 searchBar.setDisable(false);
             });
