@@ -67,6 +67,10 @@ public class Evolution {
         return timeOfDay;
     }
 
+    public void setTimeOfDay(String timeOfDay) {
+        this.timeOfDay = timeOfDay;
+    }
+
     public String getEvolutionTrigger() {
         return evolutionTrigger;
     }
@@ -136,6 +140,10 @@ public class Evolution {
         return heldItem;
     }
 
+    public boolean hasHeldItem() {
+        return heldItem != null;
+    }
+
     public void setUsedItem(String usedItem) {
         this.usedItem = usedItem;
     }
@@ -144,16 +152,32 @@ public class Evolution {
         return usedItem;
     }
 
-    public void setKnownMove(String known_move) {
-        knownMove = known_move;
+    public boolean hasUsedItem() {
+        return usedItem != null;
+    }
+
+    public String getKnownMove() {
+        return knownMove;
     }
 
     public String getKnownMoveType() {
         return knownMoveType;
     }
 
+    public void setKnownMove(String known_move) {
+        knownMove = known_move;
+    }
+
+    public boolean hasKnownMoveType() {
+        return knownMoveType != null;
+    }
+
     public void setKnownMoveType(String knownMoveType) {
         this.knownMoveType = knownMoveType;
+    }
+
+    public boolean hasKnownMove() {
+        return knownMove != null;
     }
 
     public PokemonSpecies getTradeSpecies() {
@@ -164,20 +188,12 @@ public class Evolution {
         this.tradeSpecies = tradeSpecies;
     }
 
-    public String getKnownMove() {
-        return knownMove;
-    }
-
     public Integer getRelativePhysicalStats() {
         return relativePhysicalStats;
     }
 
     public void setRelativePhysicalStats(Integer relativePhysicalStats) {
         this.relativePhysicalStats = relativePhysicalStats;
-    }
-
-    public void setTimeOfDay(String timeOfDay) {
-        this.timeOfDay = timeOfDay;
     }
 
     public PokemonSpecies getPartySpecies() {
