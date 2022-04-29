@@ -1,15 +1,14 @@
 package edu.bsu.cs222.view;
 
-import edu.bsu.cs222.model.EvolutionChain;
-import edu.bsu.cs222.model.EvolutionDetailsValues;
+import edu.bsu.cs222.model.Evolution;
 import edu.bsu.cs222.model.Pokemon;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 
-
-public class EvolutionDisplay extends DisplayCreator implements MenuDisplay{
+public class EvolutionDisplay extends DisplayCreator implements MenuDisplay {
     private static final int POKEMON_COLUMN_INDEX = 1;
     private static final int EVOLUTION_METHOD_COLUMN_INDEX = 2;
 
@@ -37,61 +36,60 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay{
     public Parent display(Pokemon pokemon) {
         evolutionRows = createNewGridPane();
         createHeaders();
-        EvolutionChain evolutionChain = pokemon.getEvolutionChain();
-        createEvolutionRows(evolutionChain);
+        createEvolutionMethods(pokemon.getEvolutionChain());
         return wrapAroundScrollPane(evolutionRows);
     }
 
-    private void createEvolutionRows(EvolutionChain evolutionChain) {
-        addBasePokemon(evolutionChain);
-        for (int i = 1; i < evolutionChain.getSpeciesNames().size(); i++) {
-            evolutionRows.add(createText(evolutionChain.getSpeciesNames().get(i), DEFAULT_FONT), POKEMON_COLUMN_INDEX, i + 1);
-            evolutionRows.add(createText(convertEvolutionDetails(evolutionChain.getEvolutionDetails().get(i - 1)),
-                    DEFAULT_FONT), EVOLUTION_METHOD_COLUMN_INDEX, i + 1);
+    private void createEvolutionMethods(List<Evolution> evolutions) {
+        for (int i = 0; i < evolutions.size(); i++) {
+            Evolution evolution = evolutions.get(i);
+            evolutionRows.add(createText(evolution.getSpeciesName(), DEFAULT_FONT), POKEMON_COLUMN_INDEX, i + 1);
+            evolutionRows.add(createEvolutionChart(evolution), EVOLUTION_METHOD_COLUMN_INDEX, i + 1);
         }
     }
 
-    private void addBasePokemon(EvolutionChain evolutionChain) {
-        evolutionRows.add(createText(evolutionChain.getSpeciesNames().get(0), DEFAULT_FONT), POKEMON_COLUMN_INDEX, 1);
-        evolutionRows.add(createText("level up to LV 1", DEFAULT_FONT), EVOLUTION_METHOD_COLUMN_INDEX, 1);
+    private Text createEvolutionChart(Evolution evolution) {
+        String evolutionMethodChart = "Trigger: " + evolution.getEvolutionTrigger() + "\n" +
+                "Minimum Level: " + evolution.getMinimumLevel() + "\n" +
+                "Used Item: " + evolution.getUsedItem() + "\n" +
+                "Held Item: " + evolution.getHeldItem() + "\n" +
+                "Time of Day: " + evolution.getTimeOfDay() + "\n" +
+                "Location: " + evolution.getLocation() + "\n" +
+                "Gender: " + evolution.getGender() + "\n" +
+                "Known Move: " + evolution.getKnownMove() + "\n" +
+                "Known Move Type: " + evolution.getKnownMoveType() + "\n" +
+                getOutlierCases(evolution) +
+                getConditionalCases(evolution);
+        return createText(evolutionMethodChart, DEFAULT_FONT);
     }
 
-    private String convertEvolutionDetails(LinkedHashMap<String, EvolutionDetailsValues> evolutionDetails) {
-        StringBuilder evolutionSentence = new StringBuilder();
-        for (String key : evolutionDetails.keySet()) {
-            String value = evolutionDetails.get(key).toString();
-            evolutionSentence.append(convertKeyToEnglish(key)).append(" ").append(convertValueToEnglish(value)).append(" ");
+    // More cases will be added later
+    private String getOutlierCases(Evolution evolution) {
+        StringBuilder output = new StringBuilder();
+        if(evolution.getEvolutionTrigger().equals("shed")) {
+            output.append("This pokemon will be included in your party automatically when the base pokemon has evolved.").append("\n");
         }
-        return evolutionSentence.toString();
+        return output.toString();
     }
 
-    // We want to take the keys given by the API and use them to create a readable sentence
-    // The base information given would be difficult for causal pokemon fans to understand
-    private String convertKeyToEnglish(String key) {
-        return key.replace("trigger", "")
-                .replace("gender", "as a")
-                .replace("held_item", "and holding")
-                .replace("item", "")
-                .replace("known_move", "knows")
-                .replace("known_move_type", "knowing a move of type")
-                .replace("location", "at")
-                .replace("min_affection", "at affection level")
-                .replace("min_beauty", "at beauty level")
-                .replace("min_happiness", "at happiness level")
-                .replace("min_level", "to LV")
-                .replace("time_of_day", "during")
-                .replace("needs_overworld_rain", "when raining in the overworld")
-                .replace("turn_upside_down", "when turned upside down")
-                .replace("_", " ");
-    }
-
-    // Same thing with the values
-    private String convertValueToEnglish(String value) {
-        return value.replace("use-item", "use a")
-                .replace("night", "night time")
-                .replace("day", "day time")
-                .replace("true", "")
-                .replace("-", " ");
+    private String getConditionalCases(Evolution evolution) {
+        StringBuilder output = new StringBuilder();
+        if (evolution.isHappyEvolution()) {
+            output.append("Requires High Happiness!").append("\n");
+        }
+        if (evolution.isAffectionEvolution()) {
+            output.append("Requires High Affection!").append("\n");
+        }
+        if (evolution.isBeautyEvolution()) {
+            output.append("Requires High Beauty!").append("\n");
+        }
+        if (evolution.needsOverworldRain()) {
+            output.append("Requires Overworld Rain!").append("\n");
+        }
+        if (evolution.needsToBeUpsideDown()) {
+            output.append("Requires the Switch to be held upside in handheld mode!").append("\n");
+        }
+        return output.toString();
     }
 
     public String toString() {

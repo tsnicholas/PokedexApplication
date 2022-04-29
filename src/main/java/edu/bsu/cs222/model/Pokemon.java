@@ -14,7 +14,7 @@ public class Pokemon {
         private Map<String, Integer> statsMap;
         private List<Ability> abilities;
         private List<String> eggGroups;
-        private EvolutionChain evolutionChain;
+        private List<Evolution> evolutionChain;
         private String imageURL;
 
         public Builder (List<Type> typeList) {
@@ -46,7 +46,7 @@ public class Pokemon {
             return this;
         }
 
-        public Builder andEvolutionChain(EvolutionChain evolutionChain) {
+        public Builder andEvolutionChain(List<Evolution> evolutionChain) {
             this.evolutionChain = evolutionChain;
             return this;
         }
@@ -64,7 +64,7 @@ public class Pokemon {
     private final List<Ability> abilities = new ArrayList<>();
     private final List<Ability> hiddenAbilities = new ArrayList<>();
     private final List<String> eggGroups;
-    private final EvolutionChain evolutionChain;
+    private final List<Evolution> evolutionChain;
     private final String imageURL;
     private List<String> weaknesses = new ArrayList<>();
     private List<String> resistances = new ArrayList<>();
@@ -162,7 +162,7 @@ public class Pokemon {
         return eggGroups;
     }
 
-    public EvolutionChain getEvolutionChain() {
+    public List<Evolution> getEvolutionChain() {
         return evolutionChain;
     }
 
