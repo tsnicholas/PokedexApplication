@@ -1,10 +1,15 @@
 package edu.bsu.cs222.model;
 
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
-public class Move {
+public class Move{
     public static Builder withName(String name) {
         return new Builder(name);
+    }
+
+    public static ObservableList<Move> stream() {
     }
 
     public static final class Builder {
@@ -63,22 +68,27 @@ public class Move {
     }
 
     public String getName() {
+
         return name;
     }
 
     public String getType() {
+
         return type;
     }
 
     public String getPP() {
+
         return PP;
     }
 
     public String getPower() {
+
         return power;
     }
 
     public String getAccuracy() {
+
         return accuracy;
     }
 

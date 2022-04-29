@@ -186,7 +186,8 @@ public class MainWindow extends Application {
     }
 
     private void setUpLowerContent() {
-        List<MenuDisplay> menuDisplays = List.of(new StatsDisplay(), new MoveDisplay(), new DamageRelationsDisplay());
+        List<MenuDisplay> menuDisplays = List.of(new StatsDisplay()
+                , new MoveDisplay(), new DamageRelationsDisplay());
         for(int i = 0; i < tabMenu.getTabs().size(); i++) {
             tabMenu.getTabs().get(i).setContent(menuDisplays.get(i).display(currentPokemon));
         }

@@ -9,7 +9,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class MoveDisplay implements MenuDisplay {
     private final String FONT_NAME = "Times New Roman";
@@ -19,7 +24,7 @@ public class MoveDisplay implements MenuDisplay {
     private final int PP_COLUMN_INDEX = 2;
     private final int POWER_COLUMN_INDEX = 3;
     private final int ACCURACY_COLUMN_INDEX = 4;
-    private final int LEARN_METHOD_COLUMN_INDEX = 5;
+    private static final int LEARN_METHOD_COLUMN_INDEX = 5;
 
     private GridPane layout;
 
@@ -50,7 +55,7 @@ public class MoveDisplay implements MenuDisplay {
     }
 
     private void createMoveDataStrings(List<Move> moveList) {
-        for(int i = 0; i < moveList.size(); i++) {
+        for (int i = 0; i < moveList.size(); i++) {
             Move move = moveList.get(i);
             layout.add(createText(nullCheck(move.getName())), NAME_COLUMN_INDEX, i + 1);
             layout.add(createText(nullCheck(move.getType())), TYPE_COLUMN_INDEX, i + 1);
@@ -62,7 +67,7 @@ public class MoveDisplay implements MenuDisplay {
     }
 
     private String nullCheck(String data) {
-        if(data == null) {
+        if (data == null) {
             return "--";
         }
         return data;
@@ -70,12 +75,14 @@ public class MoveDisplay implements MenuDisplay {
 
     private String obtainLearnMethods(List<String> learnMethods) {
         StringBuilder output = new StringBuilder();
-        for(String learnMethod: learnMethods) {
+        for (String learnMethod : learnMethods) {
             output.append(learnMethod);
             output.append(", ");
+
         }
         return output.substring(0, output.length() - 2);
     }
+
 
     private Text createText(String name) {
         Text text = new Text(name);
@@ -86,6 +93,15 @@ public class MoveDisplay implements MenuDisplay {
     // Without this, the name displayed in the drop-down menu is meaningless
     @Override
     public String toString() {
+
         return "Move Set";
     }
+    public MoveDisplay(String[]args){
+        Comparator<Move> compareByLevel;
+        compareByLevel = Comparator.comparing(Move::getLearnMethods).thenComparing(Move::getAccuracy);
+        List<Move> sortedLevel = Move.stream().sorted(compareByLevel).collect(Collectors.toList());
+        return sortedLevel;
+    }
+
 }
+
