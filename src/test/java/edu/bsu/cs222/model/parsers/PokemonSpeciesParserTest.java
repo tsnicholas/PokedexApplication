@@ -8,25 +8,25 @@ import java.util.List;
 
 class PokemonSpeciesParserTest extends TestResourceConverter {
     private final PokemonSpeciesParser pokemonSpeciesParser = new PokemonSpeciesParser();
-    private final Object charmanderSpeciesJsonDocument = convertFileNameToObject("charmanderSpecies.json");
+    private final Object raltsSpeciesJsonDocument = convertFileNameToObject("pokemon-species280.json");
 
     @Test
     public void testParseForPokemonURL_Giratina() {
-        Object giratinaSpeciesJsonDocument = convertFileNameToObject("giratinaSpecies.json");
+        Object giratinaSpeciesJsonDocument = convertFileNameToObject("pokemon-species487.json");
         List<String> pokemonURLs = pokemonSpeciesParser.parseForPokemonURL(giratinaSpeciesJsonDocument);
         Assertions.assertEquals(List.of("https://pokeapi.co/api/v2/pokemon/487/", "https://pokeapi.co/api/v2/pokemon/10007/"),
                 pokemonURLs);
     }
 
     @Test
-    public void testParseForEggGroups_Charmander() {
-        List<String> actual = pokemonSpeciesParser.parseForEggGroups(charmanderSpeciesJsonDocument);
-        Assertions.assertEquals("dragon", actual.get(1));
+    public void testParseForEggGroups_Ralts() {
+        List<String> actual = pokemonSpeciesParser.parseForEggGroups(raltsSpeciesJsonDocument);
+        Assertions.assertEquals(List.of("humanshape", "indeterminate"), actual);
     }
 
     @Test
-    public void testParseForEvolutionChain_CharmanderHasCorrectLink() {
-        Assertions.assertEquals("https://pokeapi.co/api/v2/evolution-chain/2/",
-                pokemonSpeciesParser.parseForEvolutionChain(charmanderSpeciesJsonDocument));
+    public void testParseForEvolutionChain_RaltsHasCorrectLink() {
+        Assertions.assertEquals("https://pokeapi.co/api/v2/evolution-chain/140/",
+                pokemonSpeciesParser.parseForEvolutionChain(raltsSpeciesJsonDocument));
     }
 }

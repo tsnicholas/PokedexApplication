@@ -7,22 +7,10 @@ public class Evolution {
 
     public static final class Builder {
         private final String speciesNames;
-        private boolean needsOverWorldRain;
-        private boolean needsToBeUpsideDown;
         private String evolutionTrigger;
 
         public Builder(String speciesNames) {
             this.speciesNames = speciesNames;
-        }
-
-        public Builder needsOverworldRain(boolean needsOverworldRain) {
-            this.needsOverWorldRain = needsOverworldRain;
-            return this;
-        }
-
-        public Builder needsToBeUpsideDown(boolean needsToBeUpsideDown) {
-            this.needsToBeUpsideDown = needsToBeUpsideDown;
-            return this;
         }
 
         public Evolution andEvolutionTrigger(String evolutionTrigger) {
@@ -33,9 +21,6 @@ public class Evolution {
 
     private final String speciesName;
     private final String evolutionTrigger;
-    private final boolean needsOverworldRain;
-
-    private final boolean needsToBeUpsideDown;
     private int minimumLevel = 1;
     private boolean isAffectionEvolution = false;
     private boolean isHappyEvolution = false;
@@ -46,15 +31,10 @@ public class Evolution {
     private String usedItem;
     private String knownMove;
     private String knownMoveType;
-    private PokemonSpecies tradeSpecies;
-    private PokemonSpecies partySpecies;
-    private Integer relativePhysicalStats;
 
     public Evolution(Builder builder) {
         this.speciesName = builder.speciesNames;
         this.evolutionTrigger = builder.evolutionTrigger;
-        this.needsOverworldRain = builder.needsOverWorldRain;
-        this.needsToBeUpsideDown = builder.needsToBeUpsideDown;
     }
 
     public String getSpeciesName() {
@@ -71,15 +51,6 @@ public class Evolution {
 
     public String getEvolutionTrigger() {
         return evolutionTrigger;
-    }
-
-    public boolean needsOverworldRain() {
-        return needsOverworldRain;
-    }
-
-
-    public boolean needsToBeUpsideDown() {
-        return needsToBeUpsideDown;
     }
 
     public void setMinimumLevel(int minimumLevel) {

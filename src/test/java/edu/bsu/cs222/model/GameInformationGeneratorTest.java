@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class VersionListGeneratorTest {
+public class GameInformationGeneratorTest {
     @Test
     public void testGetListOfAllVersions_justGenOne_sizeIs3() {
         TestURLProcessor testURLProcessor = new TestURLProcessor();

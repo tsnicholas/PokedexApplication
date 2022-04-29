@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,30 +16,29 @@ class PokemonParserTest extends TestResourceConverter {
     private final PokemonParser pokemonParser = new PokemonParser(testURLProcessor);
     private final Object charizardDocument = convertFileNameToObject("charizard.json");
     private final Object dittoDocument = convertFileNameToObject("ditto.json");
-    private final Object charmanderSpeciesDocument = convertFileNameToObject("charmanderSpecies.json");
+    private final Object raltsSpeciesJsonDocument = convertFileNameToObject("pokemon-species280.json");
     private final Generation genOne = makeGenOne();
-    private final Generation genThree = makeGenThree();
     private final Generation genFive = makeGenFive();
-    private final HashMap<String, Integer> generationMap = makeGenOneAndGenFiveMap();
+    private final HashMap<String, Integer> generationMap = makeTestGenerationMap();
 
     private Generation makeGenOne() {
         return Generation.withName("generation-i").andID(1).andVersionGroups(null);
-    }
-
-    private Generation makeGenThree() {
-        return Generation.withName("generation-iii").andID(3).andVersionGroups(null);
     }
 
     private Generation makeGenFive() {
         return Generation.withName("generation-v").andID(5).andVersionGroups(null);
     }
 
-    private HashMap<String, Integer> makeGenOneAndGenFiveMap() {
-        List<Generation> generationList = List.of(genOne, genThree, genFive);
+    private HashMap<String, Integer> makeTestGenerationMap() {
         HashMap<String, Integer> generationMap = new HashMap<>();
-        for (Generation generation : generationList) {
-            generationMap.put(generation.getGenerationName(), generation.getGenerationID());
-        }
+        generationMap.put("generation-i", 0);
+        generationMap.put("generation-ii", 1);
+        generationMap.put("generation-iii", 2);
+        generationMap.put("generation-iv", 3);
+        generationMap.put("generation-v", 4);
+        generationMap.put("generation-vi", 5);
+        generationMap.put("generation-vii", 6);
+        generationMap.put("generation-viii", 7);
         return generationMap;
     }
 
@@ -117,5 +117,16 @@ class PokemonParserTest extends TestResourceConverter {
                 .andVersionGroupMap(null);
         List<Ability> actualAbilities = pokemonParser.parseForAbilities(dittoDocument, yellow);
         Assertions.assertEquals(0, actualAbilities.size());
+    }
+
+    @Test
+    public void testParseForEvolutionChain_raltsHasCorrectEvolutionsInGenFive() {
+        Version white = Version.withName(null).andGeneration(genFive).andGenerationMap(generationMap).andVersionGroupMap(null);
+        List<Evolution> actualEvolutions = pokemonParser.parseForEvolutionChain(raltsSpeciesJsonDocument, white);
+        List<String> speciesNames = new LinkedList<>();
+        for(Evolution evolution: actualEvolutions) {
+            speciesNames.add(evolution.getSpeciesName());
+        }
+        Assertions.assertEquals(List.of("ralts", "kiria", "gardevoir", "gallade"), speciesNames);
     }
 }

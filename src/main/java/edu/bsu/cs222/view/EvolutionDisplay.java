@@ -94,12 +94,6 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay {
         if (evolution.isBeautyEvolution()) {
             output.append("Requires High Beauty!").append("\n");
         }
-        if (evolution.needsOverworldRain()) {
-            output.append("Requires Overworld Rain!").append("\n");
-        }
-        if (evolution.needsToBeUpsideDown()) {
-            output.append("Requires the Switch to be held upside in handheld mode!").append("\n");
-        }
         return output.toString();
     }
 

@@ -69,7 +69,7 @@ public class PokedexProcessor {
                             .andAbilities(pokemonParser.parseForAbilities(pokemonJsonDocument, version))
                             .andEggGroups(pokemonSpeciesParser.parseForEggGroups(speciesJsonDocument))
                             .andName(pokemonParser.parseName(pokemonJsonDocument))
-                            .andEvolutionChain(pokemonParser.parseForEvolutionChain(speciesJsonDocument))
+                            .andEvolutionChain(pokemonParser.parseForEvolutionChain(speciesJsonDocument, version))
                             .andImageURL(pokemonParser.parseForImage(pokemonJsonDocument, version))
             );
         }

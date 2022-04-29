@@ -182,11 +182,11 @@ public class PokemonParser {
                 .andIsHidden(isHidden);
     }
 
-    public List<Evolution> parseForEvolutionChain(Object pokemonJsonDocument) {
+    public List<Evolution> parseForEvolutionChain(Object pokemonJsonDocument, Version version) {
         PokemonSpeciesParser pokemonSpeciesParser = new PokemonSpeciesParser();
         EvolutionChainParser evolutionChainParser = new EvolutionChainParser();
         Object evolutionChainJsonDocument = urlProcessor.convertStringToObject(
                 pokemonSpeciesParser.parseForEvolutionChain(pokemonJsonDocument));
-        return evolutionChainParser.parseForEvolutions(evolutionChainJsonDocument);
+        return evolutionChainParser.parseForEvolutions(evolutionChainJsonDocument, version);
     }
 }
