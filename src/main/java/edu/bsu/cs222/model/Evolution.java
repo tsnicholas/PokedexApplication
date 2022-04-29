@@ -30,7 +30,6 @@ public class Evolution {
             return new Evolution(this);
         }
     }
-    private static final String NULL_STRING_VALUE = "--";
 
     private final String speciesName;
     private final String evolutionTrigger;
@@ -41,13 +40,12 @@ public class Evolution {
     private boolean isAffectionEvolution = false;
     private boolean isHappyEvolution = false;
     private boolean isBeautyEvolution = false;
-    private String timeOfDay = NULL_STRING_VALUE;
-    private String gender = NULL_STRING_VALUE;
-    private String location = NULL_STRING_VALUE;
-    private String heldItem = NULL_STRING_VALUE;
-    private String usedItem = NULL_STRING_VALUE;
-    private String knownMove = NULL_STRING_VALUE;
-    private String knownMoveType = NULL_STRING_VALUE;
+    private String timeOfDay;
+    private String gender;
+    private String heldItem;
+    private String usedItem;
+    private String knownMove;
+    private String knownMoveType;
     private PokemonSpecies tradeSpecies;
     private PokemonSpecies partySpecies;
     private Integer relativePhysicalStats;
@@ -124,12 +122,8 @@ public class Evolution {
         this.gender = gender;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getLocation() {
-        return location;
+    public boolean hasGender() {
+        return gender != null;
     }
 
     public void setHeldItem(String heldItem) {
@@ -160,12 +154,12 @@ public class Evolution {
         return knownMove;
     }
 
-    public String getKnownMoveType() {
-        return knownMoveType;
-    }
-
     public void setKnownMove(String known_move) {
         knownMove = known_move;
+    }
+
+    public String getKnownMoveType() {
+        return knownMoveType;
     }
 
     public boolean hasKnownMoveType() {
@@ -178,29 +172,5 @@ public class Evolution {
 
     public boolean hasKnownMove() {
         return knownMove != null;
-    }
-
-    public PokemonSpecies getTradeSpecies() {
-        return tradeSpecies;
-    }
-
-    public void setTradeSpecies(PokemonSpecies tradeSpecies) {
-        this.tradeSpecies = tradeSpecies;
-    }
-
-    public Integer getRelativePhysicalStats() {
-        return relativePhysicalStats;
-    }
-
-    public void setRelativePhysicalStats(Integer relativePhysicalStats) {
-        this.relativePhysicalStats = relativePhysicalStats;
-    }
-
-    public PokemonSpecies getPartySpecies() {
-        return partySpecies;
-    }
-
-    public void setPartySpecies(PokemonSpecies partySpecies) {
-        this.partySpecies = partySpecies;
     }
 }

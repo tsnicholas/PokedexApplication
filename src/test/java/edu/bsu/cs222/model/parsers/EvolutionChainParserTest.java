@@ -31,7 +31,7 @@ public class EvolutionChainParserTest extends TestResourceConverter {
     public void testParseEvolutionChain_verifyCharmanderChainHasCorrectNames() {
         List<Evolution> evolutions = evolutionChainParser.parseForEvolutions(charmanderEvolutionChain);
         List<String> actual = new LinkedList<>();
-        for(Evolution evolution: evolutions) {
+        for (Evolution evolution : evolutions) {
             actual.add(evolution.getSpeciesName());
         }
         Assertions.assertEquals(List.of("charmander", "charmeleon", "charizard"), actual);
@@ -47,11 +47,11 @@ public class EvolutionChainParserTest extends TestResourceConverter {
     public void testParseEvolutionChain_verifyEeveeChainHasCorrectNames() {
         List<Evolution> evolutions = evolutionChainParser.parseForEvolutions(eeveeEvolutionChain);
         List<String> actual = new LinkedList<>();
-        for(Evolution evolution: evolutions) {
+        for (Evolution evolution : evolutions) {
             actual.add(evolution.getSpeciesName());
         }
         Assertions.assertEquals(List.of("eevee", "vaporeon", "jolteon", "flareon", "espeon", "umbreon", "leafeon",
-                        "glaceon", "sylveon"), actual);
+                "glaceon", "sylveon"), actual);
     }
 
     @Test
@@ -106,5 +106,33 @@ public class EvolutionChainParserTest extends TestResourceConverter {
     public void testParseEvolutionChain_eeveeEvolvesIntoSylveonWithHighHappiness() {
         List<Evolution> actual = evolutionChainParser.parseForEvolutions(eeveeEvolutionChain);
         Assertions.assertTrue(actual.get(8).isHappyEvolution());
+    }
+
+    @Test
+    public void testParseEvolutionChain_piloswineEvolvesWhenHeHasLearnedAnicentPower() {
+        Object piloswineChain = convertFileNameToObject("evolution-chain112.json");
+        List<Evolution> actual = evolutionChainParser.parseForEvolutions(piloswineChain);
+        Assertions.assertEquals("ancient-power", actual.get(2).getKnownMove());
+    }
+
+    @Test
+    public void testParseEvolutionChain_electubuzzEvolvesWhenHoldingAElectirizer() {
+        Object eletubuzzChain = convertFileNameToObject("evolution-chain60.json");
+        List<Evolution> actual = evolutionChainParser.parseForEvolutions(eletubuzzChain);
+        Assertions.assertEquals("electirizer", actual.get(2).getHeldItem());
+    }
+
+    @Test
+    public void testParseEvolutionChain_eletubuzzEvolvesWhenTraded() {
+        Object eletubuzzChain = convertFileNameToObject("evolution-chain60.json");
+        List<Evolution> actual = evolutionChainParser.parseForEvolutions(eletubuzzChain);
+        Assertions.assertEquals("trade", actual.get(2).getEvolutionTrigger());
+    }
+
+    @Test
+    public void testParseEvolutionChain_kiriaEvolvesToGalladeWhenMale() {
+        Object kiriaEvolutionChain = convertFileNameToObject("evolution-chain140.json");
+        List<Evolution> actual = evolutionChainParser.parseForEvolutions(kiriaEvolutionChain);
+        Assertions.assertEquals("male", actual.get(3).getGender());
     }
 }

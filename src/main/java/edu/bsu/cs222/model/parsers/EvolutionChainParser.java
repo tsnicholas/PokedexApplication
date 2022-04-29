@@ -51,9 +51,13 @@ public class EvolutionChainParser {
         checkMinimumLevel(evolutionDetailsMap, evolution);
         checkGender(evolutionDetailsMap, evolution);
         checkRelationshipRequirements(evolutionDetailsMap, evolution);
-        checkTimeOfDay(evolutionDetailsMap, evolution);
-        checkUsedItem(evolutionDetailsMap, evolution);
-        checkKnownMoveType(evolutionDetailsMap, evolution);
+        evolution.setTimeOfDay(evolutionDetailsMap.get("time_of_day").toString());
+
+        evolution.setUsedItem(getObjectName(evolutionDetailsMap, "item"));
+        evolution.setHeldItem(getObjectName(evolutionDetailsMap, "held_item"));
+        evolution.setKnownMove(getObjectName(evolutionDetailsMap, "known_move"));
+        evolution.setKnownMoveType(getObjectName(evolutionDetailsMap, "known_move_type"));
+
         return evolution;
     }
 
@@ -73,8 +77,8 @@ public class EvolutionChainParser {
         if (genderValue != null) {
             evolution.setGender(
                     switch (genderValue) {
-                        case 0 -> "male";
                         case 1 -> "female";
+                        case 2 -> "male";
                         default -> "";
                     });
         }
@@ -89,21 +93,12 @@ public class EvolutionChainParser {
         evolution.setHappyEvolution(evolutionDetailsMap.get("min_happiness") != null);
     }
 
-    private void checkTimeOfDay(LinkedHashMap<String, Object> evolutionDetailsMap, Evolution evolution) {
-        evolution.setTimeOfDay(evolutionDetailsMap.get("time_of_day").toString());
+    private String getObjectName(LinkedHashMap<String, Object> evolutionDetailsMap, String key) {
+        Object jsonHashMap = evolutionDetailsMap.get(key);
+        if(jsonHashMap != null) {
+            return JsonPath.read(jsonHashMap, "$.name");
+        }
+        return null;
     }
 
-    private void checkUsedItem(LinkedHashMap<String, Object> evolutionDetailsMap, Evolution evolution) {
-        Object item = evolutionDetailsMap.get("item");
-        if(item != null) {
-            evolution.setUsedItem(JsonPath.read(item, "$.name"));
-        }
-    }
-
-    private void checkKnownMoveType(LinkedHashMap<String, Object> evolutionDetailsMap, Evolution evolution) {
-        Object moveType = evolutionDetailsMap.get("known_move_type");
-        if(moveType != null) {
-            evolution.setKnownMoveType(JsonPath.read(moveType, "$.name"));
-        }
-    }
 }

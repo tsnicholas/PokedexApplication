@@ -49,23 +49,34 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay {
     }
 
     private Text createEvolutionChart(Evolution evolution) {
-        String evolutionMethodChart = "Trigger: " + evolution.getEvolutionTrigger() + "\n" +
-                "Minimum Level: " + evolution.getMinimumLevel() + "\n" +
-                "Used Item: " + evolution.getUsedItem() + "\n" +
-                "Held Item: " + evolution.getHeldItem() + "\n" +
-                "Time of Day: " + evolution.getTimeOfDay() + "\n" +
-                "Location: " + evolution.getLocation() + "\n" +
-                "Gender: " + evolution.getGender() + "\n" +
-                "Known Move: " + evolution.getKnownMove() + "\n" +
-                "Known Move Type: " + evolution.getKnownMoveType() + "\n" +
-                getOutlierCases(evolution) +
-                getConditionalCases(evolution);
-        return createText(evolutionMethodChart, DEFAULT_FONT);
+        StringBuilder evolutionChart = new StringBuilder();
+        evolutionChart.append("Trigger: ").append(evolution.getEvolutionTrigger()).append("\n");
+        evolutionChart.append("Minimal Level: ").append(evolution.getMinimumLevel()).append("\n");
+        if (!evolution.getEvolutionTrigger().equals("base pokemon")) {
+            evolutionChart.append("Time of Day: ").append(evolution.getTimeOfDay()).append("\n");
+        }
+        evolutionChart.append(getOutlierCases(evolution));
+        evolutionChart.append(getConditionalCases(evolution));
+        return createText(evolutionChart.toString(), DEFAULT_FONT);
     }
 
-    // More cases will be added later
     private String getOutlierCases(Evolution evolution) {
         StringBuilder output = new StringBuilder();
+        if(evolution.hasUsedItem()) {
+            output.append("Used item: ").append(evolution.getUsedItem()).append("\n");
+        }
+        if(evolution.hasHeldItem()) {
+            output.append("Held Item: ").append(evolution.getHeldItem()).append("\n");
+        }
+        if(evolution.hasKnownMove()) {
+            output.append("Known Move: ").append(evolution.getKnownMove()).append("\n");
+        }
+        if(evolution.hasKnownMoveType()) {
+            output.append("Known Move Type: ").append(evolution.getKnownMoveType()).append("\n");
+        }
+        if(evolution.hasGender()) {
+            output.append("Gender: ").append(evolution.getGender()).append("\n");
+        }
         if(evolution.getEvolutionTrigger().equals("shed")) {
             output.append("This pokemon will be included in your party automatically when the base pokemon has evolved.").append("\n");
         }
