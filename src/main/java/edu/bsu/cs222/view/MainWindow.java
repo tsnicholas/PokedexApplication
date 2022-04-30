@@ -37,11 +37,11 @@ public class MainWindow extends Application {
     private final List<MenuDisplay> menuDisplayList = List.of(new MoveDisplay(), new DamageRelationsDisplay(),
             new AbilitiesDisplay(), new EvolutionDisplay());
 
-    private final Text instruction = new Text(INSTRUCTION_STRING);
+    private final Text searchInstruction = new Text(INSTRUCTION_STRING);
     private final SearchBar searchBar = new SearchBar(pokedexProcessor);
     private final HBox typeImages = new HBox(SMALL_SPACING);
     private final Text stats = new Text();
-    private final Text egg_groups = new Text();
+    private final Text eggGroups = new Text();
     private final ImageView pokemonImage = new ImageView();
     private final Text pokemonFormInstruction = new Text("Select a form:");
     private final ChoiceBox<Pokemon> pokemonForms = new ChoiceBox<>();
@@ -84,14 +84,14 @@ public class MainWindow extends Application {
     }
 
     private void setUpSizesAndFonts() {
-        instruction.setFont(INSTRUCTION_FONT);
+        searchInstruction.setFont(INSTRUCTION_FONT);
         pokemonImage.setFitHeight(300);
         pokemonImage.setFitWidth(300);
         pokemonFormInstruction.setFont(INSTRUCTION_FONT);
         pokemonForms.setPrefWidth(300);
         stats.setFont(UPPER_TEXT_FONT);
-        egg_groups.setFont(UPPER_TEXT_FONT);
-        egg_groups.setWrappingWidth(300);
+        eggGroups.setFont(UPPER_TEXT_FONT);
+        eggGroups.setWrappingWidth(300);
         tabMenu.setPrefWidth(WIDTH_OF_WINDOW);
         tabMenu.setPrefHeight(HEIGHT_OF_WINDOW);
     }
@@ -100,7 +100,7 @@ public class MainWindow extends Application {
         VBox mainWindow = new VBox(SMALL_SPACING);
         mainWindow.setAlignment(DEFAULT_POSITION);
         mainWindow.getChildren().addAll(
-                instruction,
+                searchInstruction,
                 searchBar.getDisplay(),
                 createUpperPortion(),
                 tabMenu
@@ -155,7 +155,7 @@ public class MainWindow extends Application {
         pokeFacts.getChildren().addAll(
                 typeImages,
                 stats,
-                egg_groups
+                eggGroups
         );
         return pokeFacts;
     }
@@ -179,11 +179,11 @@ public class MainWindow extends Application {
     private void fireExecutor() {
         executor.execute(() -> {
             searchBar.setDisable(true);
-            instruction.setText("The pokedex is searching. Please wait...");
+            searchInstruction.setText("The pokedex is searching. Please wait...");
             beginProcessingPokemon();
             Platform.runLater(() -> {
                 pokemonForms.getSelectionModel().selectFirst();
-                instruction.setText(INSTRUCTION_STRING);
+                searchInstruction.setText(INSTRUCTION_STRING);
                 searchBar.setDisable(false);
             });
         });
@@ -211,7 +211,7 @@ public class MainWindow extends Application {
         if (currentPokemon != null) {
             retrieveTypeImages(currentPokemon.getTypes());
             stats.setText(pokedexProcessor.convertStatsToString(currentPokemon.getStats()));
-            egg_groups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
+            eggGroups.setText("Egg Groups: " + pokedexProcessor.convertEggGroupsToString(currentPokemon.getEggGroups()));
             pokemonImage.setImage(retrievePokemonImage(currentPokemon));
             insertContentIntoTabs(currentPokemon);
             pokemonFormInstruction.setVisible(true);

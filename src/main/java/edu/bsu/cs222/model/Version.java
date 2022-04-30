@@ -76,6 +76,6 @@ public class Version {
     // Without this, names on the ChoiceBox will be meaningless
     @Override
     public String toString() {
-        return versionName;
+        return versionName.replace("-", " ");
     }
 }

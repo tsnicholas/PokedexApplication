@@ -1,7 +1,6 @@
 package edu.bsu.cs222.model;
 
 public class TestURLProcessor implements URLProcessor {
-
     @Override
     public Object getNationalPokedex() {
         return convertStringToObject("nationalPokedex.json");
@@ -10,11 +9,9 @@ public class TestURLProcessor implements URLProcessor {
     @Override
     public Object convertStringToObject(String fileName) {
         InputStreamConverter resourceConverter = new InputStreamConverter();
-
         if (isUrl(fileName)) {
             fileName = getFileName(fileName);
         }
-
         return resourceConverter.inputStreamToJsonObject
                 (Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
     }

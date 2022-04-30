@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AbilityTest {
-
     @Test
     public void testGetAbilityName() {
         Ability actual = Ability.withName("limber").andIsHidden(false);

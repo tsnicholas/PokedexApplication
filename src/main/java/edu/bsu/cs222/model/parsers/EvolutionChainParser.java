@@ -99,12 +99,12 @@ public class EvolutionChainParser {
         evolution.setMinimumLevel(Objects.requireNonNullElse(minLevel, 1));
     }
 
+    // Gender doesn't need to be an integer value.
+    // Not entirely sure why it's stored as an integer in the first place.
     private void checkGender(LinkedHashMap<String, Object> evolutionDetailsMap, Evolution evolution) {
         Integer genderValue = (Integer) evolutionDetailsMap.get("gender");
         if (genderValue != null) {
             evolution.setGender(
-                    // Gender doesn't need to be an integer value.
-                    // Not entirely sure why it's stored as an integer in the first place.
                     switch (genderValue) {
                         case 1 -> "female";
                         case 2 -> "male";
@@ -113,9 +113,8 @@ public class EvolutionChainParser {
         }
     }
 
-    // The specific affection, happiness, and beauty values mean nothing for normal players, it's also the same value almost every time.
-    // However, it's still important to know if high affection or happiness is needed to evolve a pokemon.
-    // Thus, why we're checking if it's null or not rather than getting the integer values since they'd go unused.
+    // These values are completely invisible to the player in-game, so it will mean nothing to them in terms of evolving their pokemon.
+    // However, we still need to know if these values are involved in general.
     private void checkRelationshipRequirements(LinkedHashMap<String, Object> evolutionDetailsMap, Evolution evolution) {
         evolution.setAffectionEvolution(evolutionDetailsMap.get("min_affection") != null);
         evolution.setBeautyEvolution(evolutionDetailsMap.get("min_beauty") != null);

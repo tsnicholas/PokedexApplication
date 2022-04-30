@@ -28,11 +28,9 @@ public class DamageRelationsParser {
 
     private HashMap<String, List<String>> makeDamageRelationsMap(Object damageRelationsJsonDocument) {
         HashMap<String, List<String>> damageRelationsMap = new HashMap<>();
-
         damageRelationsMap.put("Weaknesses", parseWeakTo(damageRelationsJsonDocument));
         damageRelationsMap.put("Resistances", parseResistantTo(damageRelationsJsonDocument));
         damageRelationsMap.put("Immunities", parseImmuneTo(damageRelationsJsonDocument));
-
         return damageRelationsMap;
     }
 

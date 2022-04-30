@@ -23,10 +23,10 @@ public class SearchBar {
     public SearchBar(PokedexProcessor pokedexProcessor) {
         TextFields.bindAutoCompletion(searchInput, pokedexProcessor.getNationalPokedex().getPokemonNames());
         searchInput.setPrefWidth(400);
-        setUpEventTriggers();
+        setUpSearchTriggers();
     }
 
-    private void setUpEventTriggers() {
+    private void setUpSearchTriggers() {
         searchInput.setOnKeyPressed(keyPressed -> {
             if (keyPressed.getCode() == KeyCode.ENTER) {
                 fireSearch();

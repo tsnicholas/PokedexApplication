@@ -11,29 +11,30 @@ public class DamageRelationsDisplay extends DisplayCreator implements MenuDispla
     private final static String IMMUNITIES = "Immunities: ";
     private final static String RESISTANCES = "Resistances: ";
     private final static String WEAKNESSES = "Weaknesses: ";
-    private final VBox rows = new VBox(SMALL_SPACING);
+
+    private final VBox damageRelationRows = new VBox(SMALL_SPACING);
 
     public DamageRelationsDisplay() {
-        rows.setPadding(DEFAULT_INSETS);
+        damageRelationRows.setPadding(DEFAULT_INSETS);
     }
 
     public Parent getInitialDisplay() {
-        rows.getChildren().addAll(
+        damageRelationRows.getChildren().addAll(
                 createText(IMMUNITIES, HEADER_FONT),
                 createText(RESISTANCES, HEADER_FONT),
                 createText(WEAKNESSES, HEADER_FONT)
         );
-        return rows;
+        return damageRelationRows;
     }
 
     public Parent display(Pokemon pokemon) {
-        rows.getChildren().remove(0, rows.getChildren().size());
-        rows.getChildren().addAll(
+        damageRelationRows.getChildren().remove(0, damageRelationRows.getChildren().size());
+        damageRelationRows.getChildren().addAll(
                 createDamageRelationRow(IMMUNITIES, pokemon.getImmunities()),
                 createDamageRelationRow(RESISTANCES, pokemon.getResistances()),
                 createDamageRelationRow(WEAKNESSES, pokemon.getWeaknesses())
         );
-        return rows;
+        return damageRelationRows;
     }
 
     private Parent createDamageRelationRow(String damageRelation, List<String> damageRelationList) {

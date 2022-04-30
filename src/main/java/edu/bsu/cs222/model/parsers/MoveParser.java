@@ -10,12 +10,10 @@ import java.util.List;
 public class MoveParser {
     public Move parseForMove(Object moveJsonDocument, List<String> learnMethods, Version version) {
         String moveName = parseName(moveJsonDocument);
-
         String moveType = null;
         String pp = null;
         String power = null;
         String accuracy = null;
-
         JSONArray pastValuesArray = JsonPath.read(moveJsonDocument, "$.past_values");
         for (Object pastValueDocument : pastValuesArray) {
             String versionGroupName = JsonPath.read(pastValueDocument, "$.version_group.name");
@@ -31,8 +29,6 @@ public class MoveParser {
         pp = parsePP(moveJsonDocument, pp);
         power = parsePower(moveJsonDocument, power);
         accuracy = parseAccuracy(moveJsonDocument, accuracy);
-
-
         return Move.withName(moveName).andType(moveType).andPP(pp).andPower(power).andAccuracy(accuracy)
                 .andLearnMethods(learnMethods);
     }

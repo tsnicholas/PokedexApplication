@@ -13,8 +13,7 @@ public class ErrorWindow {
         error = new Alert(Alert.AlertType.ERROR, errorReason);
         Stage stage = (Stage) error.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(
-                Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("Error Icon.jpg")))
-        );
+                Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("Error Icon.jpg"))));
     }
 
     public void display() {
