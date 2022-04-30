@@ -32,11 +32,11 @@ public class AbilitiesDisplay extends DisplayCreator implements MenuDisplay {
                 createText("Hidden Abilities", BIG_HEADER_FONT),
                 convertAbilitiesIntoText(pokemon.getHiddenAbilities())
         );
-        return wrapAroundScrollPane(abilitiesRows);
+        return wrapScrollPaneAround(abilitiesRows);
     }
 
     private Parent convertAbilitiesIntoText(List<Ability> abilities) {
-        VBox abilityText = new VBox();
+        VBox abilityText = new VBox(SMALL_SPACING);
         for (Ability ability : abilities) {
             abilityText.getChildren().addAll(
                     createText(ability.getAbilityName(), HEADER_FONT),
@@ -48,8 +48,7 @@ public class AbilitiesDisplay extends DisplayCreator implements MenuDisplay {
 
     private Text createEffectText(String effect) {
         String properEffectString = encodeStringInUTF8(effect);
-        Text text = new Text(properEffectString);
-        text.setFont(DEFAULT_FONT);
+        Text text = createText(properEffectString, DEFAULT_FONT);
         text.setWrappingWidth(750);
         return text;
     }

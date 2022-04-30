@@ -37,7 +37,7 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay {
         evolutionRows = createNewGridPane();
         createHeaders();
         createEvolutionMethods(pokemon.getEvolutionChain());
-        return wrapAroundScrollPane(evolutionRows);
+        return wrapScrollPaneAround(evolutionRows);
     }
 
     private void createEvolutionMethods(List<Evolution> evolutions) {

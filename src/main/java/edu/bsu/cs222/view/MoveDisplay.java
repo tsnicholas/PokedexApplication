@@ -44,14 +44,14 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
         moveLayout = makeNewGridPane();
         createMoveDataHeaders();
         createMoveDataStrings(pokemon.getMoves());
-        return wrapAroundScrollPane(moveLayout);
+        return wrapScrollPaneAround(moveLayout);
     }
 
     private void createMoveDataStrings(List<Move> moveList) {
         for (int i = 0; i < moveList.size(); i++) {
             Move move = moveList.get(i);
             moveLayout.add(createText(move.getName(), DEFAULT_FONT), NAME_COLUMN_INDEX, i + 1);
-            moveLayout.add(createImage(move.getType() + ".png"), TYPE_COLUMN_INDEX, i + 1);
+            moveLayout.add(retrieveTypeImage(move.getType() + ".png"), TYPE_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(move.getPP(), DEFAULT_FONT), PP_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(move.getPower(), DEFAULT_FONT), POWER_COLUMN_INDEX, i + 1);
             moveLayout.add(createText(move.getAccuracy(), DEFAULT_FONT), ACCURACY_COLUMN_INDEX, i + 1);

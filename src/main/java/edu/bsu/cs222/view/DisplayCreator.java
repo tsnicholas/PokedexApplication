@@ -24,7 +24,8 @@ public abstract class DisplayCreator {
         return input.replace("-", " ");
     }
 
-    public ImageView createImage(String imageString) {
+
+    public ImageView retrieveTypeImage(String imageString) {
         if(imageString == null) {
             imageString = "unknown.png";
         }
@@ -33,7 +34,7 @@ public abstract class DisplayCreator {
         );
     }
 
-    public Parent wrapAroundScrollPane(Parent input) {
+    public Parent wrapScrollPaneAround(Parent input) {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(input);
         return scrollPane;

@@ -48,7 +48,7 @@ public class DamageRelationsDisplay extends DisplayCreator implements MenuDispla
     private Parent createDamageRelationImages(List<String> damageRelationList) {
         HBox typeImages = new HBox(SMALL_SPACING);
         for(String type: damageRelationList) {
-            typeImages.getChildren().add(createImage(type + ".png"));
+            typeImages.getChildren().add(retrieveTypeImage(type + ".png"));
         }
         return typeImages;
     }
