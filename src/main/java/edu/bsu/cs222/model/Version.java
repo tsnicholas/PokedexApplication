@@ -76,6 +76,7 @@ public class Version {
     // Without this, names on the ChoiceBox will be meaningless
     @Override
     public String toString() {
-        return versionName.replace("-", " ");
+        String capitalizedVersionName = versionName.substring(0, 1).toUpperCase() + versionName.substring(1);
+        return capitalizedVersionName.replace("-", " ");
     }
 }

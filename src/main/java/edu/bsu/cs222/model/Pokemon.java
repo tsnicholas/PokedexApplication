@@ -182,7 +182,10 @@ public class Pokemon {
         return immunities;
     }
 
+    // With this, the names on the pokemon drop down menu will be meaningless
+    @Override
     public String toString() {
-        return name.replace("-", " ");
+        String capitalizedName = name.substring(0, 1).toUpperCase() + name.substring(1);
+        return capitalizedName.replace("-", " ");
     }
 }
