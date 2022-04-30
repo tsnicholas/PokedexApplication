@@ -10,20 +10,19 @@ import javafx.scene.text.Text;
 import java.util.Objects;
 
 public abstract class DisplayCreator {
-    public Text createText(String input, Font font) {
-        String outputString = processStringIntoFormat(input);
+    public Text createText(String inputString, Font chosenFont) {
+        String outputString = processStringIntoFormat(inputString);
         Text text = new Text(outputString);
-        text.setFont(font);
+        text.setFont(chosenFont);
         return text;
     }
 
-    private String processStringIntoFormat(String input) {
-        if (input == null) {
+    private String processStringIntoFormat(String textString) {
+        if (textString == null) {
             return "--";
         }
-        return input.replace("-", " ");
+        return textString.replace("-", " ");
     }
-
 
     public ImageView retrieveTypeImage(String imageString) {
         if(imageString == null) {
@@ -34,9 +33,9 @@ public abstract class DisplayCreator {
         );
     }
 
-    public Parent wrapScrollPaneAround(Parent input) {
+    public Parent wrapScrollPaneAround(Parent display) {
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(input);
+        scrollPane.setContent(display);
         return scrollPane;
     }
 }

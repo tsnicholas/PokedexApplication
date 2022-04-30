@@ -117,7 +117,7 @@ public class MainWindow extends Application {
 
     private void insertTabsIntoTabMenu() {
         for (MenuDisplay menuDisplay : menuDisplayList) {
-            tabMenu.getTabs().add(new Tab(menuDisplay.toString(), menuDisplay.getInitialDisplay()));
+            tabMenu.getTabs().add(new Tab(menuDisplay.getDisplayName(), menuDisplay.getInitialDisplay()));
         }
     }
 

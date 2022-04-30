@@ -76,7 +76,7 @@ public class MoveDisplay extends DisplayCreator implements MenuDisplay {
         return output.substring(0, output.length() - 2);
     }
 
-    public String toString() {
+    public String getDisplayName() {
         return "Move Set";
     }
 }

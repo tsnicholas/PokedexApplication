@@ -60,7 +60,7 @@ public class AbilitiesDisplay extends DisplayCreator implements MenuDisplay {
         return new String(stringBytes, StandardCharsets.UTF_8);
     }
 
-    public String toString() {
+    public String getDisplayName() {
         return "Abilities";
     }
 }

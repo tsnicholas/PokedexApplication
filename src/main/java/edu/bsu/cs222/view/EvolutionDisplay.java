@@ -97,7 +97,7 @@ public class EvolutionDisplay extends DisplayCreator implements MenuDisplay {
         return output.toString();
     }
 
-    public String toString() {
+    public String getDisplayName() {
         return "Evolutions";
     }
 

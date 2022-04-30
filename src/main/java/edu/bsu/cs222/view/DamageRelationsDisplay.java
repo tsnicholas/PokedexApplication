@@ -53,7 +53,7 @@ public class DamageRelationsDisplay extends DisplayCreator implements MenuDispla
         return typeImages;
     }
 
-    public String toString() {
+    public String getDisplayName() {
         return "Damage Relations";
     }
 }

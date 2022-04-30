@@ -18,5 +18,5 @@ public interface MenuDisplay {
 
     Parent display(Pokemon pokemon);
 
-    String toString();
+    String getDisplayName();
 }
