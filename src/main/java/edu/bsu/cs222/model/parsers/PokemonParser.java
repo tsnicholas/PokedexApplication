@@ -184,7 +184,7 @@ public class PokemonParser {
 
     public List<Evolution> parseForEvolutionChain(Object pokemonJsonDocument, Version version) {
         PokemonSpeciesParser pokemonSpeciesParser = new PokemonSpeciesParser();
-        EvolutionChainParser evolutionChainParser = new EvolutionChainParser();
+        EvolutionChainParser evolutionChainParser = new EvolutionChainParser(urlProcessor);
         Object evolutionChainJsonDocument = urlProcessor.convertStringToObject(
                 pokemonSpeciesParser.parseForEvolutionChain(pokemonJsonDocument));
         return evolutionChainParser.parseForEvolutions(evolutionChainJsonDocument, version);
