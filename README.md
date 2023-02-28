@@ -8,4 +8,4 @@ This is an application that can be used to search for data
 on a Pokemon from the main series of the franchise. You can
 use the search bar to enter the name of a pokemon and the 
 drop down menu beside the search button to select the game
-you want to retrieve from.
+you want to retrieve from. It's meant to demonstrate our understanding of Martin Robert's Clean Code and it's principles such as TDD and DRY.
